@@ -59,7 +59,9 @@ class VBULLETIN3_Converter_Module_Privatemessages extends Converter_Module_Priva
         // However afterwards we need to properly encode all elements again, otherwise we'd get other issues again
         if (!is_array($touserarray)) {
             $touserarray = unserialize(utf8_decode($data['touserarray']));
-            array_walk_recursive($touserarray, create_function('&$value, $key', '$value = utf8_encode($value);'));
+            array_walk_recursive($touserarray, function (&$value, $key): void {
+                $value = utf8_encode($value);
+            });
         }
 
         // This is the original check in vB

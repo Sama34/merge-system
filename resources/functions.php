@@ -714,12 +714,16 @@ function utf8_unhtmlentities(string $string): int
     // Replace numeric entities
     $string = preg_replace_callback(
         '~&#x([0-9a-f]+);~i',
-        create_function('$matches', 'return unichr(hexdec($matches[1]));'), // todo
+        function (array $matches): int {
+            return unichr(hexdec($matches[1]));
+        },
         $string
     );
     $string = preg_replace_callback(
         '~&#([0-9]+);~',
-        create_function('$matches', 'return unichr($matches[1]);'),
+        function (array $matches): int {
+            return unichr($matches[1]);
+        },
         $string
     );
 

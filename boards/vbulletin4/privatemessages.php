@@ -61,7 +61,9 @@ class VBULLETIN4_Converter_Module_Privatemessages extends Converter_Module_Priva
             $touserarray = unserialize(utf8_decode($data['touserarray']));
             array_walk_recursive(
                 $touserarray,
-                create_function('&$value, $key', '$value = utf8_encode($value);')
+                function (&$value, $key): void {
+                    $value = utf8_encode($value);
+                },
             ); // todo
         }
 
