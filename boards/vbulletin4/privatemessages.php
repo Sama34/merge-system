@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN4_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'pmid',
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -37,7 +37,7 @@ class VBULLETIN4_Converter_Module_Privatemessages extends Converter_Module_Priva
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         // vBulletin 4 values
         $insert_data['uid'] = $this->get_import->uid($data['userid']);
@@ -57,7 +57,10 @@ class VBULLETIN4_Converter_Module_Privatemessages extends Converter_Module_Priva
         // However afterwards we need to properly encode all elements again, otherwise we'd get other issues again
         if (!is_array($touserarray)) {
             $touserarray = unserialize(utf8_decode($data['touserarray']));
-            array_walk_recursive($touserarray, create_function('&$value, $key', '$value = utf8_encode($value);'));
+            array_walk_recursive(
+                $touserarray,
+                create_function('&$value, $key', '$value = utf8_encode($value);')
+            ); // todo
         }
 
         // This is the original check in vB
@@ -115,7 +118,7 @@ class VBULLETIN4_Converter_Module_Privatemessages extends Converter_Module_Priva
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

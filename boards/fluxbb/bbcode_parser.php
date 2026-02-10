@@ -21,7 +21,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
      * @param string $text Text to convert
      * @return string converted text
      */
-    function convert($text)
+    function convert(string $text): string
     {
         // First: do our usual things
         $text = parent::convert($text);
@@ -46,7 +46,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
         return $text;
     }
 
-    function topic_callback($matches)
+    function topic_callback(array $matches): string
     {
         global $mybb, $module;
 
@@ -58,7 +58,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
         return "[url]{$mybb->settings['bburl']}/showthread.php?tid={$id}[/url]";
     }
 
-    function post_callback($matches)
+    function post_callback(array $matches): string
     {
         global $mybb, $module;
 
@@ -70,7 +70,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
         return "[url]{$mybb->settings['bburl']}/showthread.php?pid={$id}[/url]";
     }
 
-    function forum_callback($matches)
+    function forum_callback(array $matches): string
     {
         global $mybb, $module;
 
@@ -82,7 +82,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
         return "[url]{$mybb->settings['bburl']}/forumdisplay.php?fid={$id}[/url]";
     }
 
-    function user_callback($matches)
+    function user_callback(array $matches): string
     {
         global $mybb, $module;
 

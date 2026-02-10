@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Users extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'import_usergroup' => 0,
         'import_additionalgroups' => '',
         'import_displaygroup' => 0,
@@ -103,12 +103,12 @@ abstract class Converter_Module_Users extends Converter_Module
         'passwordconvertsalt' => '',
     ];
 
-    public $binary_fields = [
+    public array $binary_fields = [
         'regip',
         'lastip',
     ];
 
-    public $integer_fields = [
+    public array $integer_fields = [
         'import_usergroup',
         'import_displaygroup',
         'import_uid',
@@ -169,7 +169,7 @@ abstract class Converter_Module_Users extends Converter_Module
     /**
      * Total users queried from the MyBB Database used in the users module
      */
-    public $total_users = 0;
+    public int $total_users = 0;
 
     /**
      * Insert user into database
@@ -177,7 +177,7 @@ abstract class Converter_Module_Users extends Converter_Module
      * @param array $data The insert array going into the MyBB database
      * @return int|bool The new id or false if it's a duplicated user
      */
-    public function insert($data)
+    public function insert(array $data): int|bool
     {
         global $db, $output;
 
@@ -219,7 +219,7 @@ abstract class Converter_Module_Users extends Converter_Module
         return $uid;
     }
 
-    public function check_for_duplicates(&$user)
+    public function check_for_duplicates(array &$user): bool
     {
         global $db, $output, $import_session;
 

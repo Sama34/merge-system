@@ -12,6 +12,8 @@ if (!defined("IN_MYBB")) {
     die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
+global $plugins;
+
 $plugins->add_hook("datahandler_login_validate_start", "loginconvert_convert", 1);
 
 global $valid_login_types, $utf8_recheck;
@@ -54,7 +56,7 @@ $utf8_recheck = [
     'vb',
 ];
 
-function loginconvert_info()
+function loginconvert_info(): array
 {
     global $db;
 
@@ -89,7 +91,7 @@ function loginconvert_info()
     return $info;
 }
 
-function loginconvert_activate()
+function loginconvert_activate(): void
 {
     global $db;
 
@@ -103,7 +105,7 @@ function loginconvert_activate()
     }
 }
 
-function loginconvert_deactivate()
+function loginconvert_deactivate(): void
 {
     global $db;
 
@@ -124,7 +126,7 @@ function loginconvert_deactivate()
 /**
  * @param LoginDataHandler $login
  */
-function loginconvert_convert(&$login)
+function loginconvert_convert(LoginDataHandler &$login): void
 {
     global $mybb, $valid_login_types, $utf8_recheck, $db, $settings;
 
@@ -221,7 +223,7 @@ function loginconvert_convert(&$login)
 
 // Password functions
 
-function check_vb($password, $user)
+function check_vb(string $password, array $user): bool
 {
     if (md5(md5($password) . $user['passwordconvertsalt']) == $user['passwordconvert'] || md5(
             $password . $user['passwordconvertsalt']
@@ -232,7 +234,7 @@ function check_vb($password, $user)
     return false;
 }
 
-function check_vb5($password, $user)
+function check_vb5(string $password, array $user): bool
 {
     if ($user['passwordconvert'] == crypt($password, $user['passwordconvert'])) {
         return true;
@@ -241,7 +243,7 @@ function check_vb5($password, $user)
     return false;
 }
 
-function check_ipb($password, $user)
+function check_ipb(string $password, array $user): bool
 {
     // The salt was saved in the "salt" column on IPB 2 but we changed it in IPB 3 to use the correct "passwordconvertsalt" column
     if (!empty($user['passwordconvertsalt'])) {
@@ -261,7 +263,7 @@ function check_ipb($password, $user)
     return false;
 }
 
-function check_ipb4($password, $user)
+function check_ipb4(string $password, array $user): bool
 {
     if ($user['passwordconvert'] == crypt($password, '$2a$13$' . $user['passwordconvertsalt'])) {
         return true;
@@ -270,7 +272,7 @@ function check_ipb4($password, $user)
     return false;
 }
 
-function check_smf($password, $user)
+function check_smf(string $password, array $user): bool
 {
     if (crypt($password, substr($password, 0, 2)) == $user['passwordconvert']) {
         return true;
@@ -290,7 +292,7 @@ function check_smf($password, $user)
     return false;
 }
 
-function check_smf11($password, $user)
+function check_smf11(string $password, array $user): bool
 {
     if (my_strlen($user['passwordconvert']) == 40) {
         $is_sha1 = true;
@@ -307,7 +309,7 @@ function check_smf11($password, $user)
     }
 }
 
-function check_smf2($password, $user)
+function check_smf2(string $password, array $user): bool
 {
     if (my_strlen($user['passwordconvert']) == 40) {
         $is_sha1 = true;
@@ -324,7 +326,7 @@ function check_smf2($password, $user)
     }
 }
 
-function check_punbb($password, $user)
+function check_punbb(string $password, array $user): bool
 {
     if (my_strlen($user['passwordconvert']) == 40) {
         $is_sha1 = true;
@@ -351,7 +353,7 @@ function check_punbb($password, $user)
     return false;
 }
 
-function check_phpbb3($password, $user)
+function check_phpbb3(string $password, array $user): bool
 {
     // The bcrypt hash is at least 60 chars and is used in phpBB 3.1
     if (my_strlen($user['passwordconvert']) >= 60 && $user['passwordconvert'] == crypt(
@@ -377,7 +379,7 @@ function check_phpbb3($password, $user)
     return false;
 }
 
-function check_bbpress($password, $user)
+function check_bbpress(string $password, array $user): bool
 {
     // WordPress (and so bbPress) used simple md5 hashing some time ago
     if (strlen($user['passwordconvert']) <= 32) {
@@ -392,13 +394,13 @@ function check_bbpress($password, $user)
     }
 }
 
-function check_xf11($password, $user)
+function check_xf11(string $password, array $user): bool
 {
     $hash = xf_hash(xf_hash($password));
     return ($hash === $user['passwordconvert']);
 }
 
-function check_xf12($password, $user)
+function check_xf12(string $password, array $user): bool
 {
     if ($user['passwordconvert'] == crypt($password, $user['passwordconvert'])) {
         return true;
@@ -407,7 +409,7 @@ function check_xf12($password, $user)
     return false;
 }
 
-function check_wcf1($password, $user)
+function check_wcf1(string $password, array $user): bool
 {
     // WCF 1 has some special parameters, which are saved in the passwordconvert field
     $settings = my_unserialize($user['passwordconvert']);
@@ -423,7 +425,7 @@ function check_wcf1($password, $user)
     return false;
 }
 
-function check_wcf2($password, $user)
+function check_wcf2(string $password, array $user): bool
 {
     // WCF 2 doesn't save the salt in a seperate column and it's easier to fetch it when it's needed than doing it while merging
     $salt = mb_substr($user['passwordconvert'], 0, 29);
@@ -431,7 +433,7 @@ function check_wcf2($password, $user)
     return (crypt(crypt($password, $salt), $salt) == $user['passwordconvert']);
 }
 
-function check_vanilla($password, $user)
+function check_vanilla(string $password, array $user): bool
 {
     if ($user['passwordconvert'][0] === '_' || $user['passwordconvert'][0] === '$') {
         $hash = vanilla_crypt_private($password, $user['passwordconvert']);
@@ -456,7 +458,7 @@ function check_vanilla($password, $user)
  ************************************/
 
 // Used by WCF1
-function wcf1_encrypt($value, $method)
+function wcf1_encrypt(string $value, string $method): string
 {
     switch ($method) {
         case 'sha1':
@@ -472,7 +474,7 @@ function wcf1_encrypt($value, $method)
     }
 }
 
-function wcf1_hash($value, $salt, $settings)
+function wcf1_hash(string $value, string $salt, array $settings): string
 {
     if ($settings['encryption_enable_salting']) {
         $hash = '';
@@ -501,7 +503,7 @@ function wcf1_hash($value, $salt, $settings)
 
 
 // Used by XenForo 1.0 and 1.1
-function xf_hash($data)
+function xf_hash(string $data): string
 {
     if (extension_loaded('hash')) {
         return hash('sha256', $data);
@@ -511,7 +513,7 @@ function xf_hash($data)
 }
 
 // Used by SMF 1.0
-function md5_hmac($username, $password)
+function md5_hmac(string $username, string $password): string
 {
     if (my_strlen($username) > 64) {
         $username = pack('H*', md5($username));
@@ -530,7 +532,7 @@ function md5_hmac($username, $password)
  ********************************************************/
 
 // Used by bbPress
-function bbpress_crypt_private($password, $setting)
+function bbpress_crypt_private(string $password, string $setting): string
 {
     $itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
@@ -579,7 +581,7 @@ function bbpress_crypt_private($password, $setting)
 }
 
 // Used by phpBB 3
-function phpbb3_crypt_private($password, $setting)
+function phpbb3_crypt_private(string $password, string $setting): string
 {
     $itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
@@ -630,7 +632,7 @@ function phpbb3_crypt_private($password, $setting)
 }
 
 // Used by Vanilla
-function vanilla_crypt_private($password, $setting)
+function vanilla_crypt_private(string $password, string $setting): string
 {
     $itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
@@ -715,7 +717,7 @@ function vanilla_crypt_private($password, $setting)
 /**
  * Encode hash
  */
-function _hash_encode64($input, $count, &$itoa64)
+function _hash_encode64(array $input, int $count, array &$itoa64): string
 {
     $output = '';
     $i = 0;

@@ -9,7 +9,7 @@
  */
 class debugMyLanguage extends MyLanguage
 {
-    function count($string, $num, $sprintf = true)
+    function count(string $string, int $num, bool $sprintf = true)
     {
         if ($num != 1) {
             $pl = $string . "_plural";

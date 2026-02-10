@@ -16,14 +16,14 @@ class BBCode_Parser extends BBCode_Parser_HTML
 {
 
     // This contains the attachment bbcode which is handled as special code as the id needs to be changed too
-    var $attachment = "\[attachment=([0-9]+):(.*?)\]";
+    var string $attachment = "\[attachment=([0-9]+):(.*?)\]";
 
     /**
      * Unconvert the HTML in posts, back to BBCode
      * @param string $text post message
      * @return string post message
      */
-    function convert($text)
+    function convert(string $text): string
     {
         $text = preg_replace('# data-ipb=\'(.*?)\'#si', "", $text);
 
@@ -44,7 +44,7 @@ class BBCode_Parser extends BBCode_Parser_HTML
         return $text;
     }
 
-    function topic_callback($matches)
+    function topic_callback(array $matches): string
     {
         global $mybb, $module;
 
@@ -56,7 +56,7 @@ class BBCode_Parser extends BBCode_Parser_HTML
         return "[url]{$mybb->settings['bburl']}/showthread.php?tid={$id}[/url]";
     }
 
-    function post_callback($matches)
+    function post_callback(array $matches): string
     {
         global $mybb, $module;
 

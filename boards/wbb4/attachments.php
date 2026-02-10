@@ -15,17 +15,17 @@ if (!defined("IN_MYBB")) {
 class WBB4_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'attachmentID',
         'default_per_screen' => 20,
     ];
 
-    var $objectID;
+    var int $objectID;
 
-    public $path_column = "attachmentID,fileHash";
+    public string $path_column = "attachmentID,fileHash";
 
-    function pre_setup()
+    function pre_setup(): void
     {
         $this->test_table = WCF_PREFIX . "attachment";
 
@@ -38,14 +38,14 @@ class WBB4_Converter_Module_Attachments extends Converter_Module_Attachments
         $this->old_db->free_result($query);
     }
 
-    function get_upload_path()
+    function get_upload_path(): string
     {
         $query = $this->old_db->simple_select(WCF_PREFIX . "application", "domainName,domainPath", "isPrimary='1'");
         $data = $this->old_db->fetch_array($query);
         return "http://" . $data['domainName'] . $data['domainPath'] . "wcf/attachments/";
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -63,7 +63,7 @@ class WBB4_Converter_Module_Attachments extends Converter_Module_Attachments
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $db;
 
@@ -103,13 +103,13 @@ class WBB4_Converter_Module_Attachments extends Converter_Module_Attachments
         return $insert_data;
     }
 
-    function generate_raw_filename($attach)
+    function generate_raw_filename(array $attach): string
     {
         $dir = substr($attach['fileHash'], 0, 2);
         return "{$dir}/{$attach['attachmentID']}-{$attach['fileHash']}";
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

@@ -21,7 +21,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
      * @param string $text Text to convert
      * @return string converted text
      */
-    function convert($text)
+    function convert(string $text): string
     {
         // First: do our usual things
         $text = parent::convert($text);

@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'forum permissions',
         'progress_column' => 'fid',
         'default_per_screen' => 1000,
     ];
 
-    var $convert_val = [
+    var array $convert_val = [
         'caneditposts' => 'f_edit',
         'candeleteposts' => 'f_delete',
         'caneditattachments' => 'f_attach',
@@ -36,12 +36,12 @@ class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
         'cansearch' => 'f_search',
     ];
 
-    var $role_cache = [];
-    var $role_perm_cache = [];
-    var $option_cache = [];
-    var $perm_cache = [];
+    var array $role_cache = [];
+    var array $role_perm_cache = [];
+    var array $option_cache = [];
+    var array $perm_cache = [];
 
-    function pre_setup($cache = true)
+    function pre_setup(bool $cache = true): void
     {
         $query = $this->old_db->simple_select(
             "acl_options",
@@ -83,7 +83,7 @@ class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
         }
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -112,7 +112,7 @@ class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
         }
     }
 
-    function process_permissions($data)
+    function process_permissions(array $data): void
     {
         if ($data['auth_option_id'] > 0) {
             // Single permission
@@ -127,7 +127,7 @@ class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -150,7 +150,7 @@ class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
         return $insert_data;
     }
 
-    function get_role_options($id)
+    function get_role_options(int $id): array
     {
         if (isset($this->role_perm_cache[$id])) {
             return $this->role_perm_cache[$id];
@@ -169,7 +169,7 @@ class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
         return $perms;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

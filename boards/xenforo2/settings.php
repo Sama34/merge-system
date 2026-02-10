@@ -14,13 +14,13 @@ if (!defined("IN_MYBB")) {
 
 class XENFORO2_Converter_Module_Settings extends Converter_Module_Settings
 {
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'settings',
         'default_per_screen' => 1000,
     ];
 
     // What settings do we need to get and what is their MyBB equivalent?
-    var $convert_settings = [
+    var array $convert_settings = [
         /* Options - Board active */
         "boardActive" => "boardclosed",    // Inverted
         "boardInactiveMessage" => "boardclosed_reason",
@@ -79,7 +79,7 @@ class XENFORO2_Converter_Module_Settings extends Converter_Module_Settings
         "attachmentThumbnailDimensions" => "attachthumbw|attachthumbh",
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -211,7 +211,7 @@ class XENFORO2_Converter_Module_Settings extends Converter_Module_Settings
         }
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -229,7 +229,7 @@ class XENFORO2_Converter_Module_Settings extends Converter_Module_Settings
         return $import_session['total_settings'];
     }
 
-    public function update_setting($name, $value)
+    public function update_setting(string $name, string $value): void
     {
         global $db, $output, $lang;
 
@@ -244,6 +244,16 @@ class XENFORO2_Converter_Module_Settings extends Converter_Module_Settings
         // Increase the tracker manually.
         //$this->increment_tracker('settings');
         $output->print_progress("end");
+    }
+
+    function convert_data(array $data): array
+    {
+        return [];
+    }
+
+    function insert(array $data): bool|int
+    {
+        return false;
     }
 }
 

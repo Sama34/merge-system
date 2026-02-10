@@ -15,15 +15,15 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'attach_id',
         'default_per_screen' => 20,
     ];
 
-    public $path_column = "physical_filename";
+    public string $path_column = "physical_filename";
 
-    function get_upload_path()
+    function get_upload_path(): string
     {
         $query = $this->old_db->simple_select(
             "config",
@@ -64,7 +64,7 @@ class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -82,7 +82,7 @@ class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -127,7 +127,7 @@ class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

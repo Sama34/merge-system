@@ -16,7 +16,7 @@ if (!defined("IN_MYBB")) {
  * Updates the import session cache which contains: stats, completed modules, paused modules, current modules, etc
  *
  */
-function update_import_session()
+function update_import_session(): void
 {
     global $import_session, $cache, $board, $db;
 
@@ -65,7 +65,7 @@ function update_import_session()
  * @param string yes or no. Tells the function how to process it
  * @return int Corresponding to 1 or 0
  */
-function yesno_to_int($setting, $yes = "yes")
+function yesno_to_int(int|string $setting, string $yes = "yes"): int
 {
     if (is_integer($setting)) {
         return $setting;
@@ -89,7 +89,7 @@ function yesno_to_int($setting, $yes = "yes")
  * @param int Integer to be converted
  * @return string Correspondig no or yes
  */
-function int_to_01($var)
+function int_to_01(int $var): int
 {
     return int_to_yes_no($var, 0);
 }
@@ -100,7 +100,7 @@ function int_to_01($var)
  * @param bool|int $yes Whether 0 is yes or not
  * @return int Correspondig 1 or 0. Tells the function how to process it
  */
-function int_to_yes_no($setting, $yes = 1)
+function int_to_yes_no(int $setting, bool|int $yes = 1): int
 {
     $setting = intval($setting);
 
@@ -123,7 +123,7 @@ function int_to_yes_no($setting, $yes = 1)
  * @param bool|int $on whether 1 is on or not
  * @return string Correspondig on or off
  */
-function int_to_on_off($setting, $on = 1)
+function int_to_on_off(int $setting, bool|int $on = 1): string
 {
     $setting = intval($setting);
 
@@ -146,7 +146,7 @@ function int_to_on_off($setting, $on = 1)
  * @param array $array Errors
  * @return string Formatted errors list
  */
-function error_list($array)
+function error_list(array $array): string
 {
     $string = "<ul>\n";
     foreach ($array as $error) {
@@ -161,7 +161,7 @@ function error_list($array)
  *
  * @param boolean $text Show text progress
  */
-function delete_import_fields($text = true)
+function delete_import_fields(bool $text = true): void
 {
     global $db, $output, $lang;
 
@@ -223,7 +223,7 @@ function delete_import_fields($text = true)
  *
  * @param boolean $text Show text progress
  */
-function create_import_fields($text = true)
+function create_import_fields(bool $text = true): void
 {
     global $db, $output, $lang;
 
@@ -364,7 +364,7 @@ function create_import_fields($text = true)
  * @param string $new_table_name The new table (e.x. MyBB's user table)
  * @return string The converted text in utf8 format
  */
-function encode_to_utf8($text, $old_table_name, $new_table_name)
+function encode_to_utf8(string $text, string $old_table_name, string $new_table_name): string
 {
     global $import_session, $db, $module;
 
@@ -451,7 +451,7 @@ function encode_to_utf8($text, $old_table_name, $new_table_name)
  * @param string $mysql_encoding The MySQL encoding
  * @return string The iconv encoding
  */
-function fetch_iconv_encoding($mysql_encoding)
+function fetch_iconv_encoding(string $mysql_encoding): string
 {
     $mysql_encoding = explode("_", $mysql_encoding);
     switch ($mysql_encoding[0]) {
@@ -475,7 +475,7 @@ function fetch_iconv_encoding($mysql_encoding)
  * @param string $parent_list
  * @return string The built parent list
  */
-function make_parent_list($fid, $navsep = ",", $parent_list = "")
+function make_parent_list(int $fid, string $navsep = ",", string $parent_list = ""): string
 {
     global $pforumcache, $db;
 
@@ -517,7 +517,7 @@ function make_parent_list($fid, $navsep = ",", $parent_list = "")
  * @param string $parent_list
  * @return string The built parent list
  */
-function make_parent_list_pid($fid, $navsep = ",", $parent_list = "")
+function make_parent_list_pid(int $fid, string $navsep = ",", string $parent_list = ""): string
 {
     global $pforumcache, $db;
 
@@ -552,7 +552,7 @@ function make_parent_list_pid($fid, $navsep = ",", $parent_list = "")
  * @param string $url The link to the url
  * @return boolean Whether or not the url exists
  */
-function check_url_exists($url)
+function check_url_exists(string $url): bool
 {
     if (!$url) {
         return false;
@@ -592,7 +592,7 @@ function check_url_exists($url)
  * @param array $post_data
  * @return string The remote file contents.
  */
-function merge_fetch_remote_file($url, $post_data = [])
+function merge_fetch_remote_file(string $url, array $post_data = []): string
 {
     $post_body = '';
     if (!empty($post_data)) {
@@ -696,7 +696,7 @@ if (!function_exists('htmlspecialchars_decode')) {
      * @param string $text The encoded string of html special characters
      * @return string  The decoded string of html special characters
      */
-    function htmlspecialchars_decode($text)
+    function htmlspecialchars_decode(string $text): string
     {
         return strtr($text, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
     }
@@ -708,12 +708,12 @@ if (!function_exists('htmlspecialchars_decode')) {
  * @param string $string The string to un-htmlentitize.
  * @return int The un-htmlentitied' string.
  */
-function utf8_unhtmlentities($string)
+function utf8_unhtmlentities(string $string): int
 {
     // Replace numeric entities
     $string = preg_replace_callback(
         '~&#x([0-9a-f]+);~i',
-        create_function('$matches', 'return unichr(hexdec($matches[1]));'),
+        create_function('$matches', 'return unichr(hexdec($matches[1]));'), // todo
         $string
     );
     $string = preg_replace_callback(
@@ -736,7 +736,7 @@ if (!function_exists('unichr')) {
      * @param string $c The ascii to characterize.
      * @return int The characterized ascii.
      */
-    function unichr($c)
+    function unichr(string $c): int
     {
         // Covers first 127 ASCII characters
         if ($c <= 0x7F) {
@@ -768,9 +768,9 @@ if (!function_exists('unichr')) {
  *
  * @param string $string The string to check
  * @param string $encoding the encoding to check against
- * @return mixed true on success, false on failure, -1 on unknown (couldn't detect)
+ * @return bool|int true on success, false on failure, -1 on unknown (couldn't detect)
  **/
-function check_encoding($string, $encoding)
+function check_encoding(string $string, string $encoding): bool|int
 {
     if (strlen($string) == 0) {
         return true;
@@ -805,7 +805,7 @@ function check_encoding($string, $encoding)
  *
  * @return boolean true on success, false on failure
  **/
-function check_memory()
+function check_memory(): bool
 {
     $memory_usage = get_memory_usage();
     if (!$memory_usage) {
@@ -855,7 +855,7 @@ function check_memory()
     return true;
 }
 
-function my_friendly_time($timestamp)
+function my_friendly_time(float $timestamp): string
 {
     $timestamp = floor($timestamp);
 
@@ -910,7 +910,7 @@ function my_friendly_time($timestamp)
 }
 
 // Converts a string format to MyBB's date format
-function get_date_format($format, $add = '')
+function get_date_format(string $format, string $add = ''): int
 {
     if (strpos($format, "{$add}d {$add}M {$add}Y") !== false) {
         $dateformat = 11;
@@ -926,7 +926,7 @@ function get_date_format($format, $add = '')
 }
 
 // Converts a string format to MyBB's time format
-function get_time_format($format, $add = '')
+function get_time_format(string $format, string $add = ''): int
 {
     if (strpos($format, "{$add}H:{$add}i") !== false) {
         $timeformat = 3;
@@ -940,7 +940,7 @@ function get_time_format($format, $add = '')
 }
 
 // Converts a String timezone (Europe/Berlin) to a MyBB number
-function get_timezone($zone)
+function get_timezone(string $zone): string
 {
     try {
         $time = new DateTime('now', new DateTimeZone($zone));
@@ -987,7 +987,7 @@ const SQL_LONGTEXT = 4294967295;
  * Returns an array of length informations about one table
  *
  */
-function get_length_info($table, $cache = true)
+function get_length_info(string $table, bool $cache = true): array
 {
     global $import_session, $db;
 
@@ -1031,7 +1031,7 @@ function get_length_info($table, $cache = true)
  *
  * @return array
  */
-function get_column_length_info($table, $cache = true, $hard = false)
+function get_column_length_info(string $table, bool $cache = true, bool $hard = false): array
 {
     global $import_session, $db;
 

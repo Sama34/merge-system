@@ -16,13 +16,13 @@ if (!defined("IN_MYBB")) {
 class FLUXBB_Converter_Module_Threads extends Converter_Module_Threads
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'id',
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -37,7 +37,7 @@ class FLUXBB_Converter_Module_Threads extends Converter_Module_Threads
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -68,7 +68,7 @@ class FLUXBB_Converter_Module_Threads extends Converter_Module_Threads
      * @param int Thread ID
      * @return integer first post id
      */
-    function get_first_post($tid)
+    function get_first_post(int $tid): int
     {
         $query = $this->old_db->simple_select(
             "posts",
@@ -79,7 +79,7 @@ class FLUXBB_Converter_Module_Threads extends Converter_Module_Threads
         return $this->old_db->fetch_field($query, "id");
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

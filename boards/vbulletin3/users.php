@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN3_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'userid',
         'encode_table' => 'user',
@@ -25,7 +25,7 @@ class VBULLETIN3_Converter_Module_Users extends Converter_Module_Users
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -44,7 +44,7 @@ class VBULLETIN3_Converter_Module_Users extends Converter_Module_Users
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -108,7 +108,7 @@ class VBULLETIN3_Converter_Module_Users extends Converter_Module_Users
      * @param int $aid Avatar ID
      * @return array The avatar
      */
-    function get_avatar($aid)
+    function get_avatar(int $aid): array
     {
         $aid = intval($aid);
         $query = $this->old_db->simple_select("avatar", "*", "avatarid = '{$aid}'");
@@ -124,14 +124,14 @@ class VBULLETIN3_Converter_Module_Users extends Converter_Module_Users
      * @param int $uid Avatar ID
      * @return array The avatar
      */
-    function get_custom_avatar($uid)
+    function get_custom_avatar(int $uid): array
     {
         $uid = intval($uid);
         $query = $this->old_db->simple_select("customavatar", "*", "userid = '{$uid}'");
         return $this->old_db->fetch_array($query);
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

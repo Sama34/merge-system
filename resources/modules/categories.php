@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Categories extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'import_fid' => 0,
         'import_pid' => 0,
 
@@ -55,7 +55,7 @@ abstract class Converter_Module_Categories extends Converter_Module
         'defaultsortorder' => '',
     ];
 
-    public $integer_fields = [
+    public array $integer_fields = [
         'import_fid',
         'import_pid',
 
@@ -95,7 +95,7 @@ abstract class Converter_Module_Categories extends Converter_Module
      * @param array $data The insert array going into the MyBB database
      * @return int The new id
      */
-    public function insert($data)
+    public function insert(array $data): bool|int
     {
         global $db, $output;
 
@@ -128,7 +128,7 @@ abstract class Converter_Module_Categories extends Converter_Module
         return $fid;
     }
 
-    function fix_ampersand($text)
+    function fix_ampersand(string $text): string
     {
         return str_replace('&amp;', '&', $text);
     }

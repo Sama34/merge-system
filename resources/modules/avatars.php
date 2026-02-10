@@ -14,7 +14,7 @@ const AVATAR_TYPE_GRAVATAR = 'gravatar';
 
 abstract class Converter_Module_Avatars extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'uid' => 0,
         'avatar' => '',
         'avatardimensions' => '',
@@ -27,7 +27,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
 
     abstract function get_avatar_path();
 
-    function pre_setup()
+    function pre_setup(): void
     {
         global $mybb, $import_session;
 
@@ -56,7 +56,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
      * @param array $data The insert array going into the MyBB database
      * @return int The new id
      */
-    public function insert($data)
+    public function insert(array $data): int
     {
         global $db, $output;
 
@@ -100,7 +100,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
         return $insert_array['uid'];
     }
 
-    public function check_avatar_dir_perms()
+    public function check_avatar_dir_perms(): void
     {
         global $import_session, $output, $lang;
 
@@ -129,7 +129,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
         }
     }
 
-    public function test_readability()
+    public function test_readability(): void
     {
         global $mybb, $import_session, $lang;
 
@@ -177,7 +177,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
         }
     }
 
-    function after_insert($unconverted_data, $converted_data, $aid)
+    function after_insert(array $unconverted_data, array $converted_data, int $aid): void
     {
         global $lang;
 
@@ -213,7 +213,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
      *
      * @return string
      */
-    function get_file_data($unconverted_data)
+    function get_file_data(array $unconverted_data): string
     {
         global $import_session;
         return merge_fetch_remote_file(
@@ -221,7 +221,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
         );
     }
 
-    function print_avatars_per_screen_page()
+    function print_avatars_per_screen_page(): void
     {
         global $import_session, $lang;
 
@@ -249,7 +249,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
      *
      * @return bool|string
      */
-    abstract function generate_raw_filename($avatar);
+    abstract function generate_raw_filename(array $avatar): bool|string;
 
     /**
      * Generates the MyBB friendly gravatar url for an email and with a specified default
@@ -258,7 +258,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
      * @param string $default
      * @return string
      */
-    function get_gravatar_url($email, $default = 'mm')
+    function get_gravatar_url(string $email, string $default = 'mm'): string
     {
         global $mybb;
 
@@ -292,7 +292,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
      * @param string $email
      * @return bool
      */
-    function check_gravatar_exists($email)
+    function check_gravatar_exists(string $email): bool
     {
         $headers = @get_headers($this->get_gravatar_url($email, '404'));
 
@@ -316,7 +316,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
      *
      * @return string
      */
-    function get_upload_avatar_name($user, $avatar)
+    function get_upload_avatar_name(string $user, string $avatar): string
     {
         global $mybb;
 

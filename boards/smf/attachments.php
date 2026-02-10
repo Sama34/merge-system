@@ -15,17 +15,17 @@ if (!defined("IN_MYBB")) {
 class SMF_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'ID_ATTACH',
         'default_per_screen' => 20,
     ];
 
-    var $thumbs = [];
+    var array $thumbs = [];
 
-    var $cache_attach_filenames = [];
+    var array $cache_attach_filenames = [];
 
-    function pre_setup()
+    function pre_setup(): void
     {
         if ($this->old_db->field_exists("file_hash", "attachments")) {
             $this->path_column = "ID_ATTACH,file_hash";
@@ -36,7 +36,7 @@ class SMF_Converter_Module_Attachments extends Converter_Module_Attachments
         parent::pre_setup();
     }
 
-    function get_upload_path()
+    function get_upload_path(): string
     {
         $query = $this->old_db->simple_select(
             "settings",
@@ -56,7 +56,7 @@ class SMF_Converter_Module_Attachments extends Converter_Module_Attachments
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -78,7 +78,7 @@ class SMF_Converter_Module_Attachments extends Converter_Module_Attachments
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $import_session;
 
@@ -149,7 +149,7 @@ class SMF_Converter_Module_Attachments extends Converter_Module_Attachments
         return $insert_data;
     }
 
-    function get_import_attach_filename($aid)
+    function get_import_attach_filename(int $aid): array
     {
         if (array_key_exists($aid, $this->cache_attach_filenames)) {
             return $this->cache_attach_filenames[$aid];
@@ -164,7 +164,7 @@ class SMF_Converter_Module_Attachments extends Converter_Module_Attachments
         return $thumbnail;
     }
 
-    function generate_raw_filename($attachment)
+    function generate_raw_filename(array $attachment): bool|string
     {
         // If we're using the newer model, return it here.
         if (isset($attachment['file_hash']) && !empty($attachment['file_hash'])) {
@@ -207,7 +207,7 @@ class SMF_Converter_Module_Attachments extends Converter_Module_Attachments
             );
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

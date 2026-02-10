@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class IPB4_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'member_id',
         'default_per_screen' => 20,
     ];
 
-    function get_avatar_path()
+    function get_avatar_path(): string
     {
         global $mybb;
         // IPB 4 seems to save the full location - reset the input so the we check whether we can read the attachments
@@ -29,7 +29,7 @@ class IPB4_Converter_Module_Avatars extends Converter_Module_Avatars
         return "";
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -44,7 +44,7 @@ class IPB4_Converter_Module_Avatars extends Converter_Module_Avatars
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $mybb;
 
@@ -83,7 +83,7 @@ class IPB4_Converter_Module_Avatars extends Converter_Module_Avatars
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -97,7 +97,7 @@ class IPB4_Converter_Module_Avatars extends Converter_Module_Avatars
         return $import_session['total_avatars'];
     }
 
-    function generate_raw_filename($data)
+    function generate_raw_filename(array $data): bool|string
     {
         $url = $data['pp_main_photo'];
 
@@ -109,7 +109,7 @@ class IPB4_Converter_Module_Avatars extends Converter_Module_Avatars
     }
 
     // Overwrite parent function. As the full path is saved we don't need to ask for it
-    function print_avatars_per_screen_page()
+    function print_avatars_per_screen_page(): void
     {
     }
 }

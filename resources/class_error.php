@@ -9,6 +9,7 @@
 
 class debugErrorHandler extends errorHandler
 {
+    private Debug $debug;
 
     /**
      * Initializes the error handler
@@ -30,10 +31,18 @@ class debugErrorHandler extends errorHandler
      * @param string $message The error message
      * @param string $file The error file
      * @param integer $line The error line
+     * @param boolean $allow_output Whether output is permitted
+     * @param ?array $trace The stack trace
      * @return boolean True if parsing was a success, otherwise assume a error
      */
-    function error($type, $message, $file = null, $line = 0, $allow_output = true)
-    {
+    function error(
+        $type,
+        $message,
+        $file = null,
+        $line = 0,
+        $allow_output = true,
+        ?array $trace = null
+    ): bool {
         // Error reporting turned off (either globally or by @ before erroring statement)
         if (error_reporting() == 0) {
             return true;
@@ -53,7 +62,7 @@ class debugErrorHandler extends errorHandler
             $this->debug->log->warning("\$type: {$type} \$message: {$message} \$file: {$file} \$line: {$line}");
         }
 
-        return parent::error($type, $message, $file, $line, $allow_output);
+        return parent::error($type, $message, $file, $line, $allow_output, $trace);
     }
 
     /**

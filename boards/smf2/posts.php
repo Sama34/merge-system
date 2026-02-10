@@ -15,16 +15,16 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Posts extends Converter_Module_Posts
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'posts',
         'progress_column' => 'id_msg',
         'default_per_screen' => 1000,
         'check_table_type' => 'messages',
     ];
 
-    var $cache_first_posts = [];
+    var array $cache_first_posts = [];
 
-    function import()
+    function import(): void
     {
         global $import_session, $db;
 
@@ -41,7 +41,7 @@ class SMF2_Converter_Module_Posts extends Converter_Module_Posts
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $db;
 
@@ -99,7 +99,7 @@ class SMF2_Converter_Module_Posts extends Converter_Module_Posts
         return $insert_data;
     }
 
-    function after_insert($data, $insert_data, $pid)
+    function after_insert(array $data, array $insert_data, int $pid): void
     {
         global $db;
 
@@ -113,7 +113,7 @@ class SMF2_Converter_Module_Posts extends Converter_Module_Posts
         }
     }
 
-    function cache_first_post($tid)
+    function cache_first_post(int $tid): int
     {
         if (array_key_exists($tid, $this->cache_first_posts)) {
             return $this->cache_first_posts[$tid];
@@ -128,7 +128,7 @@ class SMF2_Converter_Module_Posts extends Converter_Module_Posts
         return $first_post;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

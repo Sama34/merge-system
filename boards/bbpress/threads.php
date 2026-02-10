@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class BBPRESS_Converter_Module_Threads extends Converter_Module_Threads
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'ID',
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session, $db;
 
@@ -67,7 +67,7 @@ class BBPRESS_Converter_Module_Threads extends Converter_Module_Threads
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -86,7 +86,7 @@ class BBPRESS_Converter_Module_Threads extends Converter_Module_Threads
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

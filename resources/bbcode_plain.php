@@ -15,7 +15,7 @@ class BBCode_Parser_Plain
 {
 
     // This contains the attachment bbcode which is handled as special code as the id needs to be changed too
-    var $attachment = "";
+    var string $attachment = "";
 
     /**
      * We handle some special codes already here eg [s] and [del] are the same for mybb
@@ -24,7 +24,7 @@ class BBCode_Parser_Plain
      *
      * @return string
      */
-    function convert($text)
+    function convert(string $text): string
     {
         // IMG tag with alt attribute - remove the attribute
         $text = preg_replace("#\[img=(.*?)\](.*?)\[/img\]#i", "[img]$2[/img]", $text);
@@ -53,7 +53,7 @@ class BBCode_Parser_Plain
      *
      * @return string
      */
-    function convert_title($text)
+    function convert_title(string $text): string
     {
         return $text;
     }
@@ -65,7 +65,7 @@ class BBCode_Parser_Plain
      *
      * @return string
      */
-    function handle_attachments($text)
+    function handle_attachments(string $text): string
     {
         if (empty($this->attachment)) {
             return $text;
@@ -86,7 +86,7 @@ class BBCode_Parser_Plain
      *
      * @param array $attachment
      */
-    function change_attachment($attachment)
+    function change_attachment(array $attachment): void
     {
         // No attachment code? Skip this
         if (empty($this->attachment)) {

@@ -16,7 +16,7 @@ abstract class Converter_Module_Settings extends Converter_Module
      * @param string $name The name of the setting being inserted
      * @param string $value The value of the setting being inserted
      */
-    public function update_setting($name, $value)
+    public function update_setting(string $name, string $value): void
     {
         global $db, $output, $lang;
 
@@ -40,19 +40,15 @@ abstract class Converter_Module_Settings extends Converter_Module
     /**
      * Rebuild the settings file at the end of this
      */
-    function finish()
+    function finish(): void
     {
         rebuild_settings();
     }
 
     // Nothing to do for settings, they're handled differently
-    function convert_data($data)
-    {
-    }
+    abstract function convert_data(array $data): array;
 
-    function insert($data)
-    {
-    }
+    abstract function insert(array $data): bool|int;
 }
 
 

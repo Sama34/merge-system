@@ -14,15 +14,15 @@ if (!defined("IN_MYBB")) {
 
 class XENFORO2_Converter_Module_Polls extends Converter_Module_Polls
 {
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'polls',
         'progress_column' => 'poll_id',
         'default_per_screen' => 1000,
     ];
 
-    var $cache_tid_polls = null;
+    var null $cache_tid_polls = null;
 
-    function import()
+    function import(): void
     {
         global $import_session, $db;
 
@@ -40,7 +40,7 @@ class XENFORO2_Converter_Module_Polls extends Converter_Module_Polls
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -85,7 +85,7 @@ class XENFORO2_Converter_Module_Polls extends Converter_Module_Polls
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

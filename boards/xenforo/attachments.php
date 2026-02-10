@@ -15,17 +15,17 @@ if (!defined("IN_MYBB")) {
 class XENFORO_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'attachment_id',
         'default_per_screen' => 20,
     ];
 
-    public $path_column = "attachment_id, data_id";
+    public string $path_column = "attachment_id, data_id";
 
-    public $test_table = "attachment";
+    public string $test_table = "attachment";
 
-    function get_upload_path()
+    function get_upload_path(): string
     {
         $query = $this->old_db->simple_select("option", "option_value", "option_id='boardUrl'");
         $uploadspath = $this->old_db->fetch_field($query, "option_value") . "/internal_data/attachments/";
@@ -33,7 +33,7 @@ class XENFORO_Converter_Module_Attachments extends Converter_Module_Attachments
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -49,7 +49,7 @@ class XENFORO_Converter_Module_Attachments extends Converter_Module_Attachments
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $db;
 
@@ -111,7 +111,7 @@ class XENFORO_Converter_Module_Attachments extends Converter_Module_Attachments
         return $insert_data;
     }
 
-    function generate_raw_filename($attach)
+    function generate_raw_filename($attach): bool|string
     {
         if (!isset($attach['file_hash'])) {
             $query = $this->old_db->simple_select("attachment_data", "file_hash", "data_id='{$attach['data_id']}'");
@@ -124,7 +124,7 @@ class XENFORO_Converter_Module_Attachments extends Converter_Module_Attachments
         return $name;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

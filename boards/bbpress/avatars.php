@@ -15,19 +15,15 @@ if (!defined("IN_MYBB")) {
 class BBPRESS_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'ID',
         'default_per_screen' => 20,
     ];
 
-    var $dimension;
+    var string $dimension;
 
-    function get_avatar_path()
-    {
-    }
-
-    function pre_setup()
+    function pre_setup(): void
     {
         global $mybb, $import_session;
 
@@ -44,11 +40,11 @@ class BBPRESS_Converter_Module_Avatars extends Converter_Module_Avatars
         $this->dimension = "{$maxheight}|{$maxwidth}";
     }
 
-    function print_avatars_per_screen_page()
+    function print_avatars_per_screen_page(): void
     {
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -63,7 +59,7 @@ class BBPRESS_Converter_Module_Avatars extends Converter_Module_Avatars
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -79,7 +75,7 @@ class BBPRESS_Converter_Module_Avatars extends Converter_Module_Avatars
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -93,8 +89,13 @@ class BBPRESS_Converter_Module_Avatars extends Converter_Module_Avatars
         return $import_session['total_avatars'];
     }
 
-    function generate_raw_filename($avatar)
+    function get_avatar_path(): void
     {
+    }
+
+    function generate_raw_filename(array $avatar): bool|string
+    {
+        return false;
     }
 }
 

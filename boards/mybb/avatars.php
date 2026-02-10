@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'uid',
         'default_per_screen' => 20,
     ];
 
-    function get_avatar_path()
+    function get_avatar_path(): string
     {
         global $import_session;
         $query = $this->old_db->simple_select("settings", "value", "name = 'bburl'", ['limit' => 1]);
@@ -39,7 +39,7 @@ class MYBB_Converter_Module_Avatars extends Converter_Module_Avatars
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -54,7 +54,7 @@ class MYBB_Converter_Module_Avatars extends Converter_Module_Avatars
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -75,7 +75,7 @@ class MYBB_Converter_Module_Avatars extends Converter_Module_Avatars
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -89,7 +89,7 @@ class MYBB_Converter_Module_Avatars extends Converter_Module_Avatars
         return $import_session['total_avatars'];
     }
 
-    function generate_raw_filename($avatar)
+    function generate_raw_filename(array $avatar): bool|string
     {
         global $import_session;
 

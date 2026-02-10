@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class BBPRESS_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'ID',
         'encode_table' => 'users',
@@ -24,7 +24,7 @@ class BBPRESS_Converter_Module_Users extends Converter_Module_Users
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -41,7 +41,7 @@ class BBPRESS_Converter_Module_Users extends Converter_Module_Users
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -62,7 +62,7 @@ class BBPRESS_Converter_Module_Users extends Converter_Module_Users
         return $insert_data;
     }
 
-    function get_user_lastpost($uid)
+    function get_user_lastpost(int $uid): int
     {
         $query = $this->old_db->simple_select("usermeta", "COUNT(*) as count", "user_id = '{$uid}'");
 
@@ -77,7 +77,7 @@ class BBPRESS_Converter_Module_Users extends Converter_Module_Users
         return $last;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

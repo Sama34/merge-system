@@ -10,7 +10,7 @@
 
 abstract class Converter_Module_Bans extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'uid' => 0,
         'gid' => 0,
         'oldgroup' => '',
@@ -23,7 +23,7 @@ abstract class Converter_Module_Bans extends Converter_Module
         'reason' => ''
     ];
 
-    public $integer_fields = [
+    public array $integer_fields = [
         'uid',
         'gid',
         'oldgroup',
@@ -33,7 +33,7 @@ abstract class Converter_Module_Bans extends Converter_Module
         'lifed'
     ];
 
-    public function insert($data)
+    public function insert(array $data): bool
     {
         global $db, $output;
 

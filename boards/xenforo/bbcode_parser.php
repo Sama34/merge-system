@@ -16,9 +16,9 @@ class BBCode_Parser extends BBCode_Parser_Plain
 {
 
     // This contains the attachment bbcode which is handled as special code as the id needs to be changed too
-    var $attachment = "\[attach\]([0-9]+)\[/attach\]";
+    var string $attachment = "\[attach\]([0-9]+)\[/attach\]";
 
-    function convert($text)
+    function convert(string $text): string
     {
         // Attachment codes have an optional full parameter which we need to remove
         $text = str_ireplace("[attach=full]", "[attach]", $text);

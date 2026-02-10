@@ -15,14 +15,14 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN4_Converter_Module_Posts extends Converter_Module_Posts
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'posts',
         'progress_column' => 'postid',
         'default_per_screen' => 1000,
         'check_table_type' => 'post',
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -37,7 +37,7 @@ class VBULLETIN4_Converter_Module_Posts extends Converter_Module_Posts
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         // vBulletin 4 values
         $insert_data['import_pid'] = $data['postid'];
@@ -61,7 +61,7 @@ class VBULLETIN4_Converter_Module_Posts extends Converter_Module_Posts
         return $insert_data;
     }
 
-    function after_insert($data, $insert_data, $pid)
+    function after_insert(array $data, array $insert_data, int $pid): void
     {
         global $db;
 
@@ -85,7 +85,7 @@ class VBULLETIN4_Converter_Module_Posts extends Converter_Module_Posts
      * @param int Thread ID
      * @return array The thread
      */
-    function get_thread($tid)
+    function get_thread(int $tid): array
     {
         $tid = intval($tid);
         $query = $this->old_db->simple_select("thread", "forumid,title", "threadid = '{$tid}'", ['limit' => 1]);
@@ -101,7 +101,7 @@ class VBULLETIN4_Converter_Module_Posts extends Converter_Module_Posts
      * @param int $pid Post ID
      * @return array The edit log
      */
-    function get_editlog($pid)
+    function get_editlog(int $pid): array
     {
         $pid = intval($pid);
         $query = $this->old_db->simple_select("editlog", "userid,dateline", "postid = '{$pid}'", ['limit' => 1]);
@@ -111,7 +111,7 @@ class VBULLETIN4_Converter_Module_Posts extends Converter_Module_Posts
         return $results;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

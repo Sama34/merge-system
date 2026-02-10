@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class WBB3_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'userID',
         'encode_table' => 'user',
@@ -25,7 +25,7 @@ class WBB3_Converter_Module_Users extends Converter_Module_Users
         'default_per_screen' => 1000,
     ];
 
-    var $options = [
+    var array $options = [
         "homepage",
         "birthday",
         "hideEmailAddress",
@@ -37,11 +37,11 @@ class WBB3_Converter_Module_Users extends Converter_Module_Users
         "enableDaylightSavingTime",
     ];
 
-    var $enc_options;
-    var $nice_options;
-    var $fields;
+    var array $enc_options;
+    var array $nice_options;
+    var string $fields;
 
-    function pre_setup()
+    function pre_setup(): void
     {
         global $import_session;
 
@@ -81,7 +81,7 @@ class WBB3_Converter_Module_Users extends Converter_Module_Users
         $this->fields = "o.userOption" . implode(", o.userOption", array_keys($this->nice_options));
     }
 
-    function finish()
+    function finish(): void
     {
         global $import_session;
 
@@ -89,7 +89,7 @@ class WBB3_Converter_Module_Users extends Converter_Module_Users
         unset($import_session['nice_options']);
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -119,7 +119,7 @@ class WBB3_Converter_Module_Users extends Converter_Module_Users
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -196,7 +196,7 @@ class WBB3_Converter_Module_Users extends Converter_Module_Users
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

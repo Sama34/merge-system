@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class WBB4_Converter_Module_Forumperms extends Converter_Module_Forumperms
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'forum permissions',
         'progress_column' => 'boardID',
         'default_per_screen' => 1000,
     ];
 
-    var $convert_val = [
+    var array $convert_val = [
         "canViewBoard" => "canview",
         "canReadThread" => "canviewthreads",
         "canStartThread" => "canpostthreads",
@@ -34,10 +34,10 @@ class WBB4_Converter_Module_Forumperms extends Converter_Module_Forumperms
         "canEditOwnPost" => "caneditposts",
     ];
 
-    var $group_cache = [];
-    var $perm_cache = [];
+    var array $group_cache = [];
+    var array $perm_cache = [];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -68,7 +68,7 @@ class WBB4_Converter_Module_Forumperms extends Converter_Module_Forumperms
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data['fid'] = $this->get_import->fid($data['boardID']);
         $insert_data['gid'] = $this->board->get_gid($data['groupID']);
@@ -80,7 +80,7 @@ class WBB4_Converter_Module_Forumperms extends Converter_Module_Forumperms
         return $insert_data;
     }
 
-    function insert_all($data)
+    function insert_all(array $data): void
     {
         global $db;
 
@@ -132,7 +132,7 @@ class WBB4_Converter_Module_Forumperms extends Converter_Module_Forumperms
         }
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

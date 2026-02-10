@@ -14,15 +14,15 @@ if (!defined("IN_MYBB")) {
 
 class XENFORO2_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 {
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'poll votes',
         'progress_column' => 'poll_response_id',
         'default_per_screen' => 1000,
     ];
 
-    var $poll_response_cache = [];
+    var array $poll_response_cache = [];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -41,7 +41,7 @@ class XENFORO2_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -54,7 +54,7 @@ class XENFORO2_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
         return $insert_data;
     }
 
-    function cache_vote_id($pid)
+    function cache_vote_id(int $pid): bool
     {
         if (!isset($this->poll_response_cache[$pid]) || empty($this->poll_response_cache[$pid])) {
             $query = $this->old_db->simple_select("poll", "responses", "poll_id='{$pid}' AND content_type='thread'");
@@ -73,7 +73,7 @@ class XENFORO2_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
         return true;
     }
 
-    function get_vote_id($pid, $answer)
+    function get_vote_id(int $pid, int $answer): bool
     {
         // XenForo saves the "responseid" which is an autoincremented column so it ignores the poll.
         // However we increment the id per poll (starts at 1 every time). So we need some magic to get "our" id
@@ -90,7 +90,7 @@ class XENFORO2_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
         return false;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

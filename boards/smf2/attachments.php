@@ -15,19 +15,19 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'id_attach',
         'default_per_screen' => 20,
     ];
 
-    var $thumbs = [];
+    var array $thumbs = [];
 
-    var $cache_attach_filenames = [];
+    var array $cache_attach_filenames = [];
 
-    public $path_column = "id_attach,file_hash";
+    public string $path_column = "id_attach,file_hash";
 
-    function get_upload_path()
+    function get_upload_path(): string
     {
         $query = $this->old_db->simple_select(
             "settings",
@@ -47,7 +47,7 @@ class SMF2_Converter_Module_Attachments extends Converter_Module_Attachments
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -69,7 +69,7 @@ class SMF2_Converter_Module_Attachments extends Converter_Module_Attachments
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -145,7 +145,7 @@ class SMF2_Converter_Module_Attachments extends Converter_Module_Attachments
         return $insert_data;
     }
 
-    function get_import_attach_filename($aid)
+    function get_import_attach_filename(int $aid): array
     {
         if (array_key_exists($aid, $this->cache_attach_filenames)) {
             return $this->cache_attach_filenames[$aid];
@@ -160,12 +160,12 @@ class SMF2_Converter_Module_Attachments extends Converter_Module_Attachments
         return $thumbnail;
     }
 
-    function generate_raw_filename($attachment)
+    function generate_raw_filename(array $attachment): bool|string
     {
         return $attachment['id_attach'] . "_" . $attachment['file_hash'];
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

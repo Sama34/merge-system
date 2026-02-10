@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class PUNBB_Converter_Module_Settings extends Converter_Module_Settings
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'settings',
         'default_per_screen' => 1000,
     ];
 
     // What settings do we need to get and what is their MyBB equivalent?
-    var $convert_settings = [
+    var array $convert_settings = [
         "o_server_timezone" => "timezoneoffset",
         "o_time_format" => "timeformat",
         "o_date_format" => "dateformat",
@@ -49,7 +49,7 @@ class PUNBB_Converter_Module_Settings extends Converter_Module_Settings
         "p_sig_length" => "siglength"
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -126,7 +126,7 @@ class PUNBB_Converter_Module_Settings extends Converter_Module_Settings
         }
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

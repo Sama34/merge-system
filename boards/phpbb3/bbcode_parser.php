@@ -16,9 +16,9 @@ class BBCode_Parser extends BBCode_Parser_Plain
 {
 
     // This contains the attachment bbcode which is handled as special code as the id needs to be changed too
-    var $attachment = "\[attachment=([0-9]+)\].*?\[/attachment\]";
+    var string $attachment = "\[attachment=([0-9]+)\].*?\[/attachment\]";
     // Cache for attachment codes (pid and counter)
-    var $pid;
+    var int $pid;
 
     /**
      * Converts messages containing phpBB code to MyBB BBcode
@@ -28,7 +28,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
      * @param int $pid
      * @return string the converted text
      */
-    function convert($text, $uid = 0, $pid = 0)
+    function convert(string $text, int $uid = 0, int $pid = 0): string
     {
         $text = utf8_unhtmlentities($text);
 
@@ -51,7 +51,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
         return parent::convert($text);
     }
 
-    function convert_title($text)
+    function convert_title(string $text): string
     {
         $text = utf8_unhtmlentities($text);
 
@@ -59,7 +59,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
     }
 
     // Callback for attachment bbcodes
-    function attachment_callback($matches)
+    function attachment_callback(array $matches): string
     {
         // Sorry guys, without pid nothing to do
         if ($this->pid == 0) {

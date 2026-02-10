@@ -16,9 +16,9 @@ class BBCode_Parser extends BBCode_Parser_Plain
 {
 
     // This contains the attachment bbcode which is handled as special code as the id needs to be changed too
-    var $attachment = "\[attach=([0-9]+)\](\[/attach\])?";
+    var string $attachment = "\[attach=([0-9]+)\](\[/attach\])?";
 
-    function convert($message)
+    function convert(string $message): string
     {
         // As WBB changed the attach bbcode they support three different type: "[attach={id}]", "[attach={id}][/attach]", "[attach]{id}[/attach]"
         // The first two are handled by the regex above, however the third one needs to be changed to the first so the handle_attachment function detects it

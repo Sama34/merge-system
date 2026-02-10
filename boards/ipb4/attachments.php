@@ -15,17 +15,17 @@ if (!defined("IN_MYBB")) {
 class IPB4_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => "attachments",
         'progress_column' => "attach_id",
         'default_per_screen' => 20,
     ];
 
-    public $path_column = "attach_location";
+    public string $path_column = "attach_location";
 
-    public $test_table = "core_attachments";
+    public string $test_table = "core_attachments";
 
-    function get_upload_path()
+    function get_upload_path(): string
     {
         global $mybb;
         // IPB 4 seems to save the full location - reset the input so the we check whether we can read the attachments
@@ -33,7 +33,7 @@ class IPB4_Converter_Module_Attachments extends Converter_Module_Attachments
         return "";
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -49,7 +49,7 @@ class IPB4_Converter_Module_Attachments extends Converter_Module_Attachments
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $db, $error_notice;
 
@@ -116,7 +116,7 @@ class IPB4_Converter_Module_Attachments extends Converter_Module_Attachments
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -135,7 +135,7 @@ class IPB4_Converter_Module_Attachments extends Converter_Module_Attachments
         return $import_session['total_attachments'];
     }
 
-    function generate_raw_filename($data)
+    function generate_raw_filename(array $data): bool|string
     {
         $url = $data['attach_location'];
 
@@ -147,7 +147,7 @@ class IPB4_Converter_Module_Attachments extends Converter_Module_Attachments
     }
 
     // Overwrite parent function. As the full path is saved we don't need to ask for it
-    function print_attachments_per_screen_page()
+    function print_attachments_per_screen_page(): void
     {
         global $import_session, $lang;
 

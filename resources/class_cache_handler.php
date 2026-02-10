@@ -17,67 +17,67 @@ class Cache_Handler
     /**
      * Cache for the new UIDs
      */
-    var $cache_uids;
+    var array $cache_uids;
 
     /**
      * Cache for the new FIDs
      */
-    var $cache_fids;
+    var array $cache_fids;
 
     /**
      * Cache for the new type 'f' FIDs
      */
-    var $cache_fids_f;
+    var array $cache_fids_f;
 
     /**
      * Cache for the new type 'c' FIDs
      */
-    var $cache_fids_c;
+    var array $cache_fids_c;
 
     /**
      * Cache for the new TIDs
      */
-    var $cache_tids;
+    var array $cache_tids;
 
     /**
      * Cache for the new GIDs
      */
-    var $cache_gids;
+    var array $cache_gids;
 
     /**
      * Cache for the new Usernames
      */
-    var $cache_usernames;
+    var array $cache_usernames;
 
     /**
      * Cache for the new Attachments
      */
-    var $cache_attachments;
+    var array $cache_attachments;
 
     /**
      * Cache for poll information
      */
-    var $cache_polls = [];
+    var array $cache_polls = [];
 
     /**
      * Cache for post attachment information
      */
-    var $cache_post_attachment_details = [];
+    var array $cache_post_attachment_details = [];
 
     /**
      * Cache for poll ids
      */
-    var $cache_pollids;
+    var array $cache_pollids;
 
     /**
      * Cache for poll votes
      */
-    var $cache_pollvotes;
+    var array $cache_pollvotes;
 
     /**
      * Cache for post information
      */
-    var $cache_posts;
+    var array $cache_posts;
 
     /**
      * Get an array of data needed for attachments from the posts table
@@ -85,7 +85,7 @@ class Cache_Handler
      * @param int $old_pid Import Post ID
      * @return array
      */
-    function post_attachment_details($old_pid)
+    function post_attachment_details(int $old_pid): array
     {
         global $db;
 
@@ -107,7 +107,7 @@ class Cache_Handler
      *
      * @return array
      */
-    function cache_pollids()
+    function cache_pollids(): array
     {
         global $db;
 
@@ -128,7 +128,7 @@ class Cache_Handler
      * @param int $old_pid Poll ID used before import (e.x. vBulletin poll id)
      * @return int Poll ID in MyBB or 0 if the old PID cannot be found
      */
-    function pollid($old_pid)
+    function pollid(int $old_pid): int
     {
         if (!is_array($this->cache_pollids)) {
             $this->cache_pollids();
@@ -147,7 +147,7 @@ class Cache_Handler
      * @param int $old_pid Poll ID used before import (e.x. vBulletin poll id)
      * @return int Poll ID in MyBB or 0 if the old PID cannot be found
      */
-    function poll($old_pid)
+    function poll(int $old_pid): int
     {
         global $db;
 
@@ -169,7 +169,7 @@ class Cache_Handler
      *
      * @return array
      */
-    function cache_pollvotes()
+    function cache_pollvotes(): array
     {
         global $db;
 
@@ -190,7 +190,7 @@ class Cache_Handler
      * @param int $old_vid Vote ID used before import
      * @return int Vote ID in MyBB or 0 if the old VID cannot be found
      */
-    function vid($old_vid)
+    function vid(int $old_vid): int
     {
         if (!is_array($this->cache_pollvotes)) {
             $this->cache_pollvotes();
@@ -208,7 +208,7 @@ class Cache_Handler
      *
      * @return array
      */
-    function cache_users()
+    function cache_users(): array
     {
         global $db;
 
@@ -229,7 +229,7 @@ class Cache_Handler
      * @param int $old_uid User ID used before import
      * @return int User ID in MyBB or 0 if the old UID cannot be found
      */
-    function uid($old_uid)
+    function uid(int $old_uid): int
     {
         if (!is_array($this->cache_uids)) {
             $this->cache_users();
@@ -247,7 +247,7 @@ class Cache_Handler
      *
      * @return array
      */
-    function cache_usernames()
+    function cache_usernames(): array
     {
         global $db;
 
@@ -269,7 +269,7 @@ class Cache_Handler
      * @param string $old_username Username used before import
      * @return string Username in MyBB or the old username (if provided)/'Guest' if the old UID cannot be found
      */
-    function username($old_uid, $old_username = "")
+    function username(int $old_uid, string $old_username = ""): string
     {
         if (!is_array($this->cache_usernames)) {
             $this->cache_usernames();
@@ -291,7 +291,7 @@ class Cache_Handler
      *
      * @return array
      */
-    function cache_forums()
+    function cache_forums(): array
     {
         global $db;
 
@@ -312,7 +312,7 @@ class Cache_Handler
      * @param int $old_fid Forum ID used before import
      * @return int Forum ID in MyBB
      */
-    function fid($old_fid)
+    function fid(int $old_fid): int
     {
         if (!is_array($this->cache_fids)) {
             $this->cache_forums();
@@ -326,7 +326,7 @@ class Cache_Handler
      *
      * @return array
      */
-    function cache_forums_f()
+    function cache_forums_f(): array
     {
         global $db;
 
@@ -347,7 +347,7 @@ class Cache_Handler
      * @param int $old_fid Forum ID used before import
      * @return int Forum ID in MyBB
      */
-    function fid_f($old_fid)
+    function fid_f(int $old_fid): int
     {
         if (!is_array($this->cache_fids_f)) {
             $this->cache_forums_f();
@@ -361,7 +361,7 @@ class Cache_Handler
      *
      * @return array
      */
-    function cache_forums_c()
+    function cache_forums_c(): array
     {
         global $db;
 
@@ -382,7 +382,7 @@ class Cache_Handler
      * @param int $old_fid Forum ID used before import
      * @return int Forum ID in MyBB
      */
-    function fid_c($old_fid)
+    function fid_c(int $old_fid): int
     {
         if (!is_array($this->cache_fids_c)) {
             $this->cache_forums_c();
@@ -396,7 +396,7 @@ class Cache_Handler
      *
      * @return array
      */
-    function cache_threads()
+    function cache_threads(): array
     {
         global $db;
 
@@ -417,7 +417,7 @@ class Cache_Handler
      * @param int Thread ID used before import
      * @return int Thread ID in MyBB
      */
-    function tid($old_tid)
+    function tid(int $old_tid): int
     {
         if (!is_array($this->cache_tids)) {
             $this->cache_threads();
@@ -431,14 +431,14 @@ class Cache_Handler
      *
      * @return array
      */
-    function cache_usergroups()
+    function cache_usergroups(): array
     {
         global $db;
 
         $query = $db->simple_select("usergroups", "gid, import_gid", "import_gid>0");
         $usergroups = [];
         while ($usergroup = $db->fetch_array($query)) {
-            $usergroups[$usergroup['import_gid']] = $usergroup['gid'];
+            $usergroups[(int)$usergroup['import_gid']] = $usergroup['gid'];
         }
         $this->cache_gids = $usergroups;
         $db->free_result($query);
@@ -452,7 +452,7 @@ class Cache_Handler
      * @param int $old_gid Group ID used before import
      * @return int Group ID in MyBB
      */
-    function gid($old_gid)
+    function gid(int $old_gid): int
     {
         if (!is_array($this->cache_gids)) {
             $this->cache_usergroups();
@@ -466,7 +466,7 @@ class Cache_Handler
      *
      * @return array
      */
-    function cache_attachments()
+    function cache_attachments(): array
     {
         global $db;
 
@@ -487,7 +487,7 @@ class Cache_Handler
      * @param int $old_aid Attachment ID used before import
      * @return int Attachment ID in MyBB
      */
-    function aid($old_aid)
+    function aid(int $old_aid): int
     {
         if (!is_array($this->cache_attachments)) {
             $this->cache_attachments();
@@ -501,7 +501,7 @@ class Cache_Handler
      *
      * @return array|false
      */
-    function cache_posts()
+    function cache_posts(): array|false
     {
         global $db;
 
@@ -522,7 +522,7 @@ class Cache_Handler
      * @param int $old_pid Post ID used before import
      * @return int Post ID in MyBB
      */
-    function pid($old_pid)
+    function pid(int $old_pid): int
     {
         if (!is_array($this->cache_posts)) {
             $this->cache_posts();

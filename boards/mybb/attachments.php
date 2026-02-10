@@ -15,15 +15,15 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'aid',
         'default_per_screen' => 20,
     ];
 
-    public $path_column = "attachname";
+    public string $path_column = "attachname";
 
-    function get_upload_path()
+    function get_upload_path(): string
     {
         $query = $this->old_db->simple_select("settings", "value", "name = 'bburl'", ['limit' => 1]);
         $bburl = $this->old_db->fetch_field($query, 'value');
@@ -36,7 +36,7 @@ class MYBB_Converter_Module_Attachments extends Converter_Module_Attachments
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -54,7 +54,7 @@ class MYBB_Converter_Module_Attachments extends Converter_Module_Attachments
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $db;
         /** @var array $field_info */
@@ -96,7 +96,7 @@ class MYBB_Converter_Module_Attachments extends Converter_Module_Attachments
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

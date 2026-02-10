@@ -16,15 +16,15 @@ if (!defined("IN_MYBB")) {
 class SMF_Converter_Module_Threads extends Converter_Module_Threads
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'ID_TOPIC',
         'default_per_screen' => 1000,
     ];
 
-    var $get_attachment_count_cache = [];
+    var array $get_attachment_count_cache = [];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -39,7 +39,7 @@ class SMF_Converter_Module_Threads extends Converter_Module_Threads
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -67,7 +67,7 @@ class SMF_Converter_Module_Threads extends Converter_Module_Threads
         return $insert_data;
     }
 
-    function get_attachment_count($tid)
+    function get_attachment_count(int $tid): int
     {
         if (array_key_exists($tid, $this->get_attachment_count_cache)) {
             return $this->get_attachment_count_cache[$tid];
@@ -96,7 +96,7 @@ class SMF_Converter_Module_Threads extends Converter_Module_Threads
         return $count;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

@@ -19,13 +19,13 @@ const FORUM_AVATAR_PNG = 3;
 class PUNBB_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'id',
         'default_per_screen' => 20,
     ];
 
-    function get_avatar_path()
+    function get_avatar_path(): string
     {
         $query = $this->old_db->simple_select('config', 'conf_value', "conf_name='o_avatars_dir'");
         $uploadspath = $this->old_db->fetch_field($query, 'conf_value');
@@ -34,7 +34,7 @@ class PUNBB_Converter_Module_Avatars extends Converter_Module_Avatars
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -49,7 +49,7 @@ class PUNBB_Converter_Module_Avatars extends Converter_Module_Avatars
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -66,7 +66,7 @@ class PUNBB_Converter_Module_Avatars extends Converter_Module_Avatars
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -80,7 +80,7 @@ class PUNBB_Converter_Module_Avatars extends Converter_Module_Avatars
         return $import_session['total_avatars'];
     }
 
-    function generate_raw_filename($avatar)
+    function generate_raw_filename(array $avatar): bool|string
     {
         switch ($avatar['avatar']) {
             case FORUM_AVATAR_GIF:

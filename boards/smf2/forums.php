@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Forums extends Converter_Module_Forums
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'forums',
         'progress_column' => 'id_board',
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -36,7 +36,7 @@ class SMF2_Converter_Module_Forums extends Converter_Module_Forums
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -68,7 +68,7 @@ class SMF2_Converter_Module_Forums extends Converter_Module_Forums
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -85,7 +85,7 @@ class SMF2_Converter_Module_Forums extends Converter_Module_Forums
     /**
      * Update imported forums that don't have a parent forum assigned.
      */
-    function finish()
+    function finish(): void
     {
         global $db;
 
@@ -105,7 +105,7 @@ class SMF2_Converter_Module_Forums extends Converter_Module_Forums
      * Correctly associate any forums with their correct parent ids. This is automagically run after importing
      * forums.
      */
-    function cleanup()
+    function cleanup(): void
     {
         global $db;
 

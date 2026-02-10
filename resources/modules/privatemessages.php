@@ -20,7 +20,7 @@ const PM_STATUS_FORWARDED = 4;
 
 abstract class Converter_Module_Privatemessages extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'uid' => 0,
         'toid' => 0,
         'fromid' => 0,
@@ -40,7 +40,7 @@ abstract class Converter_Module_Privatemessages extends Converter_Module
         'ipaddress' => '',
     ];
 
-    public $integer_fields = [
+    public array $integer_fields = [
         'uid',
         'toid',
         'fromid',
@@ -56,7 +56,7 @@ abstract class Converter_Module_Privatemessages extends Converter_Module
         'readtime',
     ];
 
-    public $binary_fields = [
+    public array $binary_fields = [
         'ipaddress'
     ];
 
@@ -66,7 +66,7 @@ abstract class Converter_Module_Privatemessages extends Converter_Module
      * @param array $data The insert array going into the MyBB database
      * @return int The new id
      */
-    public function insert($data)
+    public function insert(array $data): bool|int
     {
         global $db, $output;
 
@@ -95,7 +95,7 @@ abstract class Converter_Module_Privatemessages extends Converter_Module
     /**
      * Update user counters
      */
-    public function cleanup()
+    public function cleanup(): void
     {
         global $db, $output, $lang;
 

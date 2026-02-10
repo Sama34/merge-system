@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN5_Converter_Module_Settings extends Converter_Module_Settings
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'settings',
         'default_per_screen' => 1000,
     ];
 
     // What settings do we need to get and what is their MyBB equivalent?
-    var $convert_settings = [
+    var array $convert_settings = [
         "addtemplatename" => "tplhtmlcomments",
         "allowregistration" => "disableregs",
         "allowkeepbannedemail" => "emailkeep",
@@ -82,7 +82,7 @@ class VBULLETIN5_Converter_Module_Settings extends Converter_Module_Settings
         "WOLrefresh" => "refreshwol"
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -182,7 +182,7 @@ class VBULLETIN5_Converter_Module_Settings extends Converter_Module_Settings
         }
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -198,6 +198,16 @@ class VBULLETIN5_Converter_Module_Settings extends Converter_Module_Settings
         }
 
         return $import_session['total_settings'];
+    }
+
+    function convert_data(array $data): array
+    {
+        return [];
+    }
+
+    function insert(array $data): bool|int
+    {
+        return false;
     }
 }
 

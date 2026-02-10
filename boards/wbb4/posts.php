@@ -15,20 +15,20 @@ if (!defined("IN_MYBB")) {
 class WBB4_Converter_Module_Posts extends Converter_Module_Posts
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'posts',
         'progress_column' => 'postID',
         'default_per_screen' => 1000,
         'check_table_type' => 'post',
     ];
 
-    function pre_setup()
+    function pre_setup(): void
     {
         // We need to do that as WBB uses different prefixes and we cant set it above
         $this->settings['check_table_type'] = WBB_PREFIX . $this->settings['check_table_type'];
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -44,7 +44,7 @@ class WBB4_Converter_Module_Posts extends Converter_Module_Posts
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -69,7 +69,7 @@ class WBB4_Converter_Module_Posts extends Converter_Module_Posts
         return $insert_data;
     }
 
-    function after_insert($data, $insert_data, $pid)
+    function after_insert(array $data, array $insert_data, int $pid): void
     {
         global $db;
 
@@ -87,7 +87,7 @@ class WBB4_Converter_Module_Posts extends Converter_Module_Posts
         }
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

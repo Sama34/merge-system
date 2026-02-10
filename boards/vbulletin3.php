@@ -20,28 +20,28 @@ class VBULLETIN3_Converter extends Converter
      *
      * @var string
      */
-    var $bbname = "vBulletin 3";
+    var string $bbname = "vBulletin 3";
 
     /**
      * String of the plain bulletin board name
      *
      * @var string
      */
-    var $plain_bbname = "vBulletin 3";
+    var string $plain_bbname = "vBulletin 3";
 
     /**
      * Whether or not this module requires the loginconvert.php plugin
      *
      * @var boolean
      */
-    var $requires_loginconvert = true;
+    var bool $requires_loginconvert = true;
 
     /**
      * Array of all of the modules
      *
      * @var array
      */
-    var $modules = [
+    var array $modules = [
         "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
         "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
         "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
@@ -70,14 +70,14 @@ class VBULLETIN3_Converter extends Converter
      *
      * @var String
      */
-    var $check_table = "forumpermission";
+    var string $check_table = "forumpermission";
 
     /**
      * The table prefix we suggest to use
      *
      * @var String
      */
-    var $prefix_suggestion = "";
+    var string $prefix_suggestion = "";
 
     /**
      * An array of mybb -> mybb groups
@@ -85,7 +85,7 @@ class VBULLETIN3_Converter extends Converter
      *
      * @var array
      */
-    var $groups = [
+    var array $groups = [
         1 => MYBB_GUESTS, // Guests
         2 => MYBB_REGISTERED, // Registered
         3 => MYBB_AWAITING, // Awaiting activation
@@ -100,9 +100,9 @@ class VBULLETIN3_Converter extends Converter
      * An array of supported databases
      * vB only supports MySQL
      */
-    var $supported_databases = ["mysql"];
+    var array $supported_databases = ["mysql"];
 
-    var $column_length_to_check = [
+    var array $column_length_to_check = [
         'post' => [
             'posts' => [
                 'title' => 'subject',

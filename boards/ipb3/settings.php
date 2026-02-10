@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Settings extends Converter_Module_Settings
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'settings',
         'default_per_screen' => 1000,
     ];
 
     // What settings do we need to get and what is their MyBB equivalent?
-    var $convert_settings = [
+    var array $convert_settings = [
         "board_offline" => "boardclosed",
         "offline_msg" => "boardclosed_reason",
         "au_cutoff" => "wolcutoffmins",
@@ -64,7 +64,7 @@ class IPB3_Converter_Module_Settings extends Converter_Module_Settings
         "ipb_display_version" => "showvernum",
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -104,7 +104,7 @@ class IPB3_Converter_Module_Settings extends Converter_Module_Settings
         }
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -120,6 +120,16 @@ class IPB3_Converter_Module_Settings extends Converter_Module_Settings
         }
 
         return $import_session['total_settings'];
+    }
+
+    function convert_data(array $data): array
+    {
+        return [];
+    }
+
+    function insert(array $data): bool|int
+    {
+        return false;
     }
 }
 

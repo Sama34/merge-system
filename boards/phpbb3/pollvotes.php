@@ -15,15 +15,15 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'poll votes',
         'progress_column' => 'topic_id',
         'default_per_screen' => 1000,
     ];
 
-    var $cache_poll_details = [];
+    var array $cache_poll_details = [];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -41,7 +41,7 @@ class PHPBB3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -56,7 +56,7 @@ class PHPBB3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
         return $insert_data;
     }
 
-    function get_poll_details($tid)
+    function get_poll_details(int $tid): array
     {
         global $db;
 
@@ -73,7 +73,7 @@ class PHPBB3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
         return $poll;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

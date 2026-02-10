@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class WBB4_Converter_Module_Usergroups extends Converter_Module_Usergroups
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'usergroups',
         'progress_column' => 'groupID',
         'default_per_screen' => 1000,
     ];
 
-    var $options = [
+    var array $options = [
         "admin.general.canUseAcp",
         "user.profile.canViewUserProfile",
         "user.profile.rank.canEditUserTitle",
@@ -38,9 +38,9 @@ class WBB4_Converter_Module_Usergroups extends Converter_Module_Usergroups
         "mod.board.isSuperMod",
     ];
 
-    var $nice_options;
+    var array $nice_options;
 
-    function pre_setup()
+    function pre_setup(): void
     {
         global $import_session;
 
@@ -62,7 +62,7 @@ class WBB4_Converter_Module_Usergroups extends Converter_Module_Usergroups
         }
     }
 
-    function finish()
+    function finish(): void
     {
         global $import_session;
 
@@ -70,7 +70,7 @@ class WBB4_Converter_Module_Usergroups extends Converter_Module_Usergroups
         unset($import_session['nice_options']);
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -110,7 +110,7 @@ class WBB4_Converter_Module_Usergroups extends Converter_Module_Usergroups
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -145,7 +145,7 @@ class WBB4_Converter_Module_Usergroups extends Converter_Module_Usergroups
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

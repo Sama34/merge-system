@@ -15,17 +15,17 @@ if (!defined("IN_MYBB")) {
 class SMF_Converter_Module_Polls extends Converter_Module_Polls
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'polls',
         'progress_column' => 'ID_POLL',
         'default_per_screen' => 1000,
     ];
 
-    var $cache_poll_choices = [];
+    var array $cache_poll_choices = [];
 
-    var $cache_get_poll_thread = [];
+    var array $cache_get_poll_thread = [];
 
-    function import()
+    function import(): void
     {
         global $import_session, $db;
 
@@ -43,7 +43,7 @@ class SMF_Converter_Module_Polls extends Converter_Module_Polls
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -67,7 +67,7 @@ class SMF_Converter_Module_Polls extends Converter_Module_Polls
         return $insert_data;
     }
 
-    function get_poll_thread($pid)
+    function get_poll_thread(int $pid): array
     {
         global $db;
 
@@ -83,7 +83,7 @@ class SMF_Converter_Module_Polls extends Converter_Module_Polls
         return $thread;
     }
 
-    function get_poll_choices($pid)
+    function get_poll_choices(int $pid): array
     {
         if (array_key_exists($pid, $this->cache_poll_choices)) {
             return $this->cache_poll_choices[$pid];
@@ -117,7 +117,7 @@ class SMF_Converter_Module_Polls extends Converter_Module_Polls
         return $poll_choices;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

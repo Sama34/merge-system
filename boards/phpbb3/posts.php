@@ -15,14 +15,14 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Posts extends Converter_Module_Posts
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'posts',
         'progress_column' => 'post_id',
         'default_per_screen' => 1000,
         'check_table_type' => 'posts',
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -37,7 +37,7 @@ class PHPBB3_Converter_Module_Posts extends Converter_Module_Posts
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -69,7 +69,7 @@ class PHPBB3_Converter_Module_Posts extends Converter_Module_Posts
         return $insert_data;
     }
 
-    function after_insert($data, $insert_data, $pid)
+    function after_insert(array $data, array $insert_data, int $pid): void
     {
         global $db;
 
@@ -87,7 +87,7 @@ class PHPBB3_Converter_Module_Posts extends Converter_Module_Posts
         }
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

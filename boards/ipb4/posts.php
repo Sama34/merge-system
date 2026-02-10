@@ -15,14 +15,14 @@ if (!defined("IN_MYBB")) {
 class IPB4_Converter_Module_Posts extends Converter_Module_Posts
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'posts',
         'progress_column' => 'pid',
         'default_per_screen' => 1000,
         'check_table_type' => 'forums_posts',
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -37,7 +37,7 @@ class IPB4_Converter_Module_Posts extends Converter_Module_Posts
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -67,7 +67,7 @@ class IPB4_Converter_Module_Posts extends Converter_Module_Posts
         return $insert_data;
     }
 
-    function after_insert($data, $insert_data, $pid)
+    function after_insert(array $data, array $insert_data, int $pid): void
     {
         global $db;
 
@@ -91,7 +91,7 @@ class IPB4_Converter_Module_Posts extends Converter_Module_Posts
      * @param int Thread ID
      * @return array The thread
      */
-    function get_thread($tid)
+    function get_thread(int $tid): array
     {
         $query = $this->old_db->simple_select("forums_topics", "*", "tid='{$tid}'", ['limit' => 1]);
         $results = $this->old_db->fetch_array($query);
@@ -106,7 +106,7 @@ class IPB4_Converter_Module_Posts extends Converter_Module_Posts
      * @param string $username Username
      * @return int If the username is blank it returns 0. Otherwise returns the user id
      */
-    function get_uid_from_username($username)
+    function get_uid_from_username(string $username): int
     {
         if ($username == '') {
             return 0;
@@ -125,7 +125,7 @@ class IPB4_Converter_Module_Posts extends Converter_Module_Posts
         return $results;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

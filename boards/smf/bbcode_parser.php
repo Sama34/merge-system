@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class BBCode_Parser extends BBCode_Parser_Plain
 {
 
-    function convert($message)
+    function convert(string $message): string
     {
         $message = str_ireplace(
             [
@@ -34,19 +34,19 @@ class BBCode_Parser extends BBCode_Parser_Plain
                 '-->'
             ],
             [
-            '[list=1]',
-            '[align=right]',
-            '[/align]',
-            '[align=left]',
-            '[/align]',
-            '[align=center]',
-            '[/align]',
-            "\n",
-            '[url',
-            '[/url]',
-            '',
-            '',
-            ''
+                '[list=1]',
+                '[align=right]',
+                '[/align]',
+                '[align=left]',
+                '[/align]',
+                '[align=center]',
+                '[/align]',
+                "\n",
+                '[url',
+                '[/url]',
+                '',
+                '',
+                ''
             ],
             $message
         );
@@ -68,7 +68,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
      * @param array $matches The matches from the regex
      * @return string The parsed message.
      */
-    function mycode_parse_post_quotes($matches)
+    function mycode_parse_post_quotes(array $matches): string
     {
         global $module;
 

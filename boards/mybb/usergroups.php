@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Usergroups extends Converter_Module_Usergroups
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'usergroups',
         'progress_column' => 'gid',
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session, $db;
 
@@ -47,7 +47,7 @@ class MYBB_Converter_Module_Usergroups extends Converter_Module_Usergroups
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $db;
         /** @var array $field_info */
@@ -77,7 +77,7 @@ class MYBB_Converter_Module_Usergroups extends Converter_Module_Usergroups
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

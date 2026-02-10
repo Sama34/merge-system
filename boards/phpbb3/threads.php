@@ -15,15 +15,15 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Threads extends Converter_Module_Threads
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'topic_id',
         'default_per_screen' => 1000,
     ];
 
-    var $get_poll_pid_cache = [];
+    var array $get_poll_pid_cache = [];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -43,7 +43,7 @@ class PHPBB3_Converter_Module_Threads extends Converter_Module_Threads
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -87,7 +87,7 @@ class PHPBB3_Converter_Module_Threads extends Converter_Module_Threads
      * @param int thread id
      * @return int poll option id
      */
-    function get_poll_pid($tid)
+    function get_poll_pid(int $tid): int
     {
         if (array_key_exists($tid, $this->get_poll_pid_cache)) {
             return $this->get_poll_pid_cache[$tid];
@@ -107,7 +107,7 @@ class PHPBB3_Converter_Module_Threads extends Converter_Module_Threads
         return $results;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

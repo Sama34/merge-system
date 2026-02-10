@@ -20,28 +20,28 @@ class PUNBB_Converter extends Converter
      *
      * @var string
      */
-    var $bbname = "punBB 1.2";
+    var string $bbname = "punBB 1.2";
 
     /**
      * String of the plain bulletin board name
      *
      * @var string
      */
-    var $plain_bbname = "punBB 1";
+    var string $plain_bbname = "punBB 1";
 
     /**
      * Whether or not this module requires the loginconvert.php plugin
      *
      * @var boolean
      */
-    var $requires_loginconvert = true;
+    var bool $requires_loginconvert = true;
 
     /**
      * Array of all of the modules
      *
      * @var array
      */
-    var $modules = [
+    var array $modules = [
         "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
         "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
         "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
@@ -59,21 +59,21 @@ class PUNBB_Converter extends Converter
      *
      * @var String
      */
-    var $check_table = "extensions";
+    var string $check_table = "extensions";
 
     /**
      * The table prefix we suggest to use
      *
      * @var String
      */
-    var $prefix_suggestion = "punbb_";
+    var string $prefix_suggestion = "punbb_";
 
     /**
      * An array of punbb -> mybb groups
      *
      * @var array
      */
-    var $groups = [
+    var array $groups = [
         1 => MYBB_ADMINS, // Administrators
         2 => MYBB_GUESTS, // Guests
         3 => MYBB_REGISTERED, // Registered
@@ -86,7 +86,7 @@ class PUNBB_Converter extends Converter
      * @param string $username Username
      * @return array If the uid is 0, returns an array of username as Guest.  Otherwise returns the user
      */
-    function get_user($username)
+    function get_user(string $username): array
     {
         if (empty($username)) {
             return [

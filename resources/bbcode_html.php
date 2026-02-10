@@ -21,7 +21,7 @@ class BBCode_Parser_HTML extends BBCode_Parser_Plain
      *
      * @return string
      */
-    function convert($text)
+    function convert(string $text): string
     {
         $text = str_replace(["<br>", "<br />"], "\n", $text);
         $text = str_replace(["<hr>", "<hr />"], "[hr]", $text);
@@ -90,7 +90,7 @@ class BBCode_Parser_HTML extends BBCode_Parser_Plain
      *
      * @return string
      */
-    function convert_title($text)
+    function convert_title(string $text): string
     {
         return utf8_unhtmlentities($text);
     }
@@ -102,7 +102,7 @@ class BBCode_Parser_HTML extends BBCode_Parser_Plain
      *
      * @return string
      */
-    function handle_size($matches)
+    function handle_size(array $matches): string
     {
         if ($matches[1] > 50) {
             $matches[1] = 50;

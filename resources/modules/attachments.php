@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Attachments extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'import_aid' => 0,
 
         'pid' => 0,
@@ -25,7 +25,7 @@ abstract class Converter_Module_Attachments extends Converter_Module
         'thumbnail' => ''
     ];
 
-    public $integer_fields = [
+    public array $integer_fields = [
         'import_aid',
 
         'pid',
@@ -39,21 +39,21 @@ abstract class Converter_Module_Attachments extends Converter_Module
     /**
      * @var string
      */
-    public $path_column = "";
+    public string $path_column = "";
 
     /**
      * @var string
      */
-    public $test_table = "attachments";
+    public string $test_table = "attachments";
 
     /**
      * @var array
      */
-    private $thread_cache = [];
+    private array $thread_cache = [];
 
-    abstract function get_upload_path();
+    abstract function get_upload_path(): string;
 
-    function pre_setup()
+    function pre_setup(): void
     {
         global $mybb, $import_session;
 
@@ -86,7 +86,7 @@ abstract class Converter_Module_Attachments extends Converter_Module
      * @param array $data The insert array going into the MyBB database
      * @return int The new id
      */
-    public function insert($data)
+    public function insert(array $data): int
     {
         global $db, $output;
 
@@ -133,7 +133,7 @@ abstract class Converter_Module_Attachments extends Converter_Module
         return $aid;
     }
 
-    public function check_attachments_dir_perms()
+    public function check_attachments_dir_perms(): void
     {
         global $import_session, $output, $lang;
 
@@ -162,7 +162,7 @@ abstract class Converter_Module_Attachments extends Converter_Module
         }
     }
 
-    public function test_readability()
+    public function test_readability(): void
     {
         global $mybb, $import_session, $lang;
 
@@ -225,7 +225,7 @@ abstract class Converter_Module_Attachments extends Converter_Module
         }
     }
 
-    function after_insert($unconverted_data, $converted_data, $aid)
+    function after_insert(array $unconverted_data, array $converted_data, int $aid): void
     {
         global $mybb, $import_session, $lang, $db;
 
@@ -283,7 +283,7 @@ abstract class Converter_Module_Attachments extends Converter_Module
      *
      * @return string
      */
-    function get_file_data($unconverted_data)
+    function get_file_data(array $unconverted_data): string
     {
         global $import_session;
         return merge_fetch_remote_file(
@@ -291,7 +291,7 @@ abstract class Converter_Module_Attachments extends Converter_Module
         );
     }
 
-    function print_attachments_per_screen_page()
+    function print_attachments_per_screen_page(): void
     {
         global $import_session, $lang;
 
@@ -334,7 +334,7 @@ abstract class Converter_Module_Attachments extends Converter_Module
      *
      * @return bool|string
      */
-    function generate_raw_filename($attachment)
+    function generate_raw_filename(array $attachment): bool|string
     {
         return isset($attachment[$this->path_column]) ? $attachment[$this->path_column] : '';
     }

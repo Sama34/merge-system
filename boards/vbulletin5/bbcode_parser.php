@@ -16,9 +16,9 @@ class BBCode_Parser extends BBCode_Parser_Plain
 {
 
     // This contains the attachment bbcode which is handled as special code as the id needs to be changed too
-    var $attachment = "\[attach\]([0-9]+)\[/attach\]";
+    var string $attachment = "\[attach\]([0-9]+)\[/attach\]";
 
-    function convert($text)
+    function convert(string $text): string
     {
         $find = [
             '#\[COLOR\="([a-zA-Z]*|\#?[\da-fA-F]{3}|\#?[\da-fA-F]{6})"\](.*?)\[/COLOR\]#i',

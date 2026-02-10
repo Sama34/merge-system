@@ -20,28 +20,28 @@ class VANILLA_Converter extends Converter
      *
      * @var string
      */
-    var $bbname = "Vanilla 2";
+    var string $bbname = "Vanilla 2";
 
     /**
      * String of the plain bulletin board name
      *
      * @var string
      */
-    var $plain_bbname = "Vanilla 2";
+    var string $plain_bbname = "Vanilla 2";
 
     /**
      * Whether or not this module requires the loginconvert.php plugin
      *
      * @var boolean
      */
-    var $requires_loginconvert = true;
+    var bool $requires_loginconvert = true;
 
     /**
      * Array of all of the modules
      *
      * @var array
      */
-    var $modules = [
+    var array $modules = [
         "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
         "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
         "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
@@ -60,21 +60,21 @@ class VANILLA_Converter extends Converter
      *
      * @var String
      */
-    var $check_table = "regarding";
+    var string $check_table = "regarding";
 
     /**
      * The table prefix we suggest to use
      *
      * @var String
      */
-    var $prefix_suggestion = "gdn_";
+    var string $prefix_suggestion = "gdn_";
 
     /**
      * An array of vanilla -> mybb groups
      *
      * @var array
      */
-    var $groups = [
+    var array $groups = [
         2 => MYBB_GUESTS, // Guests
         3 => MYBB_AWAITING, // Unconfirmed
         4 => MYBB_AWAITING, // Applicant
@@ -88,12 +88,12 @@ class VANILLA_Converter extends Converter
      *
      * @var String
      */
-    var $parser_class = "html";
+    var string $parser_class = "html";
 
     /**
      * An array of supported databases
      * Vanilla only supports MySQL
      */
-    var $supported_databases = ["mysql"];
+    var array $supported_databases = ["mysql"];
 }
 

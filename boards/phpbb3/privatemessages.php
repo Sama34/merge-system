@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'msg_id',
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -39,7 +39,7 @@ class PHPBB3_Converter_Module_Privatemessages extends Converter_Module_Privateme
         }
     }
 
-    function convert_data($data)
+    function convert_data(array$data):array
     {
         global $db;
 
@@ -151,7 +151,7 @@ class PHPBB3_Converter_Module_Privatemessages extends Converter_Module_Privateme
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

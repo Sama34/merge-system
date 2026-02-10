@@ -20,28 +20,28 @@ class IPB4_Converter extends Converter
      *
      * @var string
      */
-    var $bbname = "Invision Power Board 4";
+    var string $bbname = "Invision Power Board 4";
 
     /**
      * String of the plain bulletin board name
      *
      * @var string
      */
-    var $plain_bbname = "Invision Power Board 4";
+    var string $plain_bbname = "Invision Power Board 4";
 
     /**
      * Whether or not this module requires the loginconvert.php plugin
      *
      * @var boolean
      */
-    var $requires_loginconvert = true;
+    var bool $requires_loginconvert = true;
 
     /**
      * Array of all of the modules
      *
      * @var array
      */
-    var $modules = [
+    var array $modules = [
         "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
         "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
         "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
@@ -65,21 +65,21 @@ class IPB4_Converter extends Converter
      *
      * @var String
      */
-    var $check_table = "core_leaders";
+    var string $check_table = "core_leaders";
 
     /**
      * The table prefix we suggest to use
      *
      * @var String
      */
-    var $prefix_suggestion = "";
+    var string $prefix_suggestion = "";
 
     /**
      * An array of ipb3 -> mybb groups
      *
      * @var array
      */
-    var $groups = [
+    var array $groups = [
         2 => MYBB_GUESTS, // Guests
         3 => MYBB_REGISTERED, // Registered
         4 => MYBB_ADMINS, // Administrators
@@ -90,9 +90,9 @@ class IPB4_Converter extends Converter
      * An array of supported databases
      * IPB only supports MySQL
      */
-    var $supported_databases = ["mysql"];
+    var array $supported_databases = ["mysql"];
 
-    private $defaultLanguage = null;
+    private null|string|int $defaultLanguage = null;
 
     /**
      * @param string $key The language key to retrieve
@@ -103,8 +103,13 @@ class IPB4_Converter extends Converter
      *
      * @return string
      */
-    public function getLanguageString($key, $app = 'core', $plugin = null, $language = 'default', $default = false)
-    {
+    public function getLanguageString(
+        string $key,
+        string $app = 'core',
+        ?int $plugin = null,
+        string $language = 'default',
+        bool $default = false
+    ): string {
         if ($language == 'default') {
             if ($this->defaultLanguage == null) {
                 $query = $this->old_db->simple_select('core_sys_lang', 'lang_id', 'lang_default=1');

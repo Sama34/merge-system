@@ -16,15 +16,15 @@ if (!defined("IN_MYBB")) {
 class SMF_Converter_Module_Events extends Converter_Module_Events
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'events',
         'progress_column' => 'ID_EVENT',
         'default_per_screen' => 1000,
     ];
 
-    var $threads_cache = [];
+    var array $threads_cache = [];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -39,7 +39,7 @@ class SMF_Converter_Module_Events extends Converter_Module_Events
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -66,7 +66,7 @@ class SMF_Converter_Module_Events extends Converter_Module_Events
      * @param int Thread ID
      * @return array The thread
      */
-    function get_thread($tid)
+    function get_thread(int $tid): array
     {
         if (array_key_exists($tid, $this->threads_cache)) {
             return $this->threads_cache[$tid];
@@ -82,7 +82,7 @@ class SMF_Converter_Module_Events extends Converter_Module_Events
         return $firstpost;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

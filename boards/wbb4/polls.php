@@ -15,19 +15,19 @@ if (!defined("IN_MYBB")) {
 class WBB4_Converter_Module_Polls extends Converter_Module_Polls
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'polls',
         'progress_column' => 'pollID',
         'default_per_screen' => 1000,
     ];
 
-    var $cache_poll_choices = [];
+    var array $cache_poll_choices = [];
 
-    var $cache_get_poll_thread = [];
+    var array $cache_get_poll_thread = [];
 
-    var $objectID;
+    var int $objectID;
 
-    function pre_setup()
+    function pre_setup(): void
     {
         // Don't ask - wbb...
         $class = $this->old_db->escape_string("wbb\system\poll\PostPollHandler");
@@ -36,7 +36,7 @@ class WBB4_Converter_Module_Polls extends Converter_Module_Polls
         $this->old_db->free_result($query);
     }
 
-    function import()
+    function import(): void
     {
         global $import_session, $db;
 
@@ -67,7 +67,7 @@ class WBB4_Converter_Module_Polls extends Converter_Module_Polls
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -94,7 +94,7 @@ class WBB4_Converter_Module_Polls extends Converter_Module_Polls
         return $insert_data;
     }
 
-    function get_poll_choices($pid)
+    function get_poll_choices(int $pid): array
     {
         if (array_key_exists($pid, $this->cache_poll_choices)) {
             return $this->cache_poll_choices[$pid];
@@ -133,7 +133,7 @@ class WBB4_Converter_Module_Polls extends Converter_Module_Polls
         return $poll_choices;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

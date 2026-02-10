@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Polls extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'import_pid' => 0,
         'import_tid' => 0,
 
@@ -27,7 +27,7 @@ abstract class Converter_Module_Polls extends Converter_Module
         'maxoptions' => 0,
     ];
 
-    public $integer_fields = [
+    public array $integer_fields = [
         'import_pid',
         'import_tid',
 
@@ -42,7 +42,7 @@ abstract class Converter_Module_Polls extends Converter_Module
         'maxoptions',
     ];
 
-    var $mark_as_run_modules = [
+    var array $mark_as_run_modules = [
         'pollvotes',
     ];
 
@@ -52,7 +52,7 @@ abstract class Converter_Module_Polls extends Converter_Module
      * @param array $data The insert array going into the MyBB database
      * @return int The new id
      */
-    public function insert($data)
+    public function insert(array $data): bool|int
     {
         global $db, $output;
 

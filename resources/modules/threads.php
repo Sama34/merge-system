@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Threads extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'import_tid' => 0,
         'import_uid' => 0,
         'import_poll' => 0,
@@ -41,7 +41,7 @@ abstract class Converter_Module_Threads extends Converter_Module
         'deletetime' => 0,
     ];
 
-    public $integer_fields = [
+    public array $integer_fields = [
         'import_tid',
         'import_uid',
         'import_poll',
@@ -68,7 +68,7 @@ abstract class Converter_Module_Threads extends Converter_Module
         'deletetime',
     ];
 
-    var $mark_as_run_modules = [
+    var array $mark_as_run_modules = [
         'polls',
         'posts',
     ];
@@ -79,7 +79,7 @@ abstract class Converter_Module_Threads extends Converter_Module
      * @param array $data The insert array going into the MyBB database
      * @return int The new id
      */
-    public function insert($data)
+    public function insert(array $data): bool|int
     {
         global $db, $output;
 

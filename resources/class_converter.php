@@ -17,38 +17,38 @@ abstract class Converter
     /**
      * An array of custom defined errors (i.e. attachments directory permission error)
      */
-    var $errors = [];
+    var array $errors = [];
 
     /**
      * @var Debug
      */
-    var $debug;
+    var Debug $debug;
 
     /**
-     * @var DB_MySQL|DB_MySQLi|DB_PgSQL|DB_SQLite|PostgresPdoDbDriver|MysqlPdoDbDriver
+     * @var DB_Base
      */
-    var $old_db;
+    var DB_Base $old_db;
 
     /**
      * @var array
      */
-    var $trackers = [];
+    var array $trackers = [];
 
     /**
      * @var Cache_Handler
      */
-    var $get_import;
+    var Cache_Handler $get_import;
 
     /**
      * @var array
      */
-    var $settings;
+    var array $settings;
 
     /**
      * An array of supported databases
      * defaulting to every databases if not set by the board itself
      */
-    var $supported_databases = ["mysql", "pgsql", "sqlite"];
+    var array $supported_databases = ["mysql", "pgsql", "sqlite"];
 
 
     /**
@@ -56,56 +56,56 @@ abstract class Converter
      *
      * @var string
      */
-    var $bbname;
+    var string $bbname;
 
     /**
      * String of the plain bulletin board name
      *
      * @var string
      */
-    var $plain_bbname;
+    var string $plain_bbname;
 
     /**
      * Whether or not this module requires the loginconvert.php plugin
      *
      * @var boolean
      */
-    var $requires_loginconvert = false;
+    var bool $requires_loginconvert = false;
 
     /**
      * Array of all of the modules
      *
      * @var array
      */
-    var $modules = [];
+    var array $modules = [];
 
     /**
      * The table we check to verify it's "our" database
      *
      * @var string
      */
-    var $check_table;
+    var string $check_table;
 
     /**
      * The table prefix we suggest to use
      *
      * @var string
      */
-    var $prefix_suggestion = "";
+    var string $prefix_suggestion = "";
 
     /**
      * An array of board -> mybb groups
      *
      * @var array
      */
-    var $groups = [];
+    var array $groups = [];
 
     /**
      * What BBCode Parser we're using
      *
      * @var string
      */
-    var $parser_class;
+    var string $parser_class;
 
     /**
      * An array of columns that should be checked against the length of our database.
@@ -114,7 +114,7 @@ abstract class Converter
      *
      * @var array
      */
-    var $column_length_to_check = [];
+    var array $column_length_to_check = [];
 
     /**
      * Class constructor
@@ -146,7 +146,7 @@ abstract class Converter
      * Create a database connection on the old database we're importing from
      *
      */
-    function db_connect()
+    function db_connect(): void
     {
         global $import_session;
 
@@ -181,7 +181,7 @@ abstract class Converter
         define('OLD_TABLE_PREFIX', $import_session['old_tbl_prefix']);
     }
 
-    function db_configuration()
+    function db_configuration(): bool
     {
         global $mybb, $output, $import_session, $tableprefix, $lang;
 
@@ -349,7 +349,7 @@ abstract class Converter
     /**
      * Checks an array of columns whether their value fits in our database (#123)
      */
-    function check_column_length()
+    function check_column_length(): void
     {
         global $output, $lang, $import_session;
 
@@ -477,7 +477,7 @@ abstract class Converter
      *
      * @return bool
      */
-    function check_if_done()
+    function check_if_done(): bool
     {
         global $import_session, $lang;
 
@@ -508,7 +508,7 @@ abstract class Converter
      *
      * @param string $error_message
      */
-    function set_error_notice_in_progress($error_message)
+    function set_error_notice_in_progress(string $error_message): void
     {
         global $output, $import_session;
 
@@ -528,8 +528,13 @@ abstract class Converter
      * @param string $message The message that will be displayed in the output result file.
      * @param string $message_log The message that will be logged into the database.
      */
-    function set_column_warning_in_progress($type, $table, $column, $message, $message_log)
-    {
+    function set_column_warning_in_progress(
+        string $type,
+        string $table,
+        string $column,
+        string $message,
+        string $message_log
+    ): void {
         global $output, $import_session;
 
         if ($type == 'column') {
@@ -552,7 +557,7 @@ abstract class Converter
      *
      * @return int
      */
-    public function get_gid($gid)
+    public function get_gid(int $gid): int
     {
         // A default group, return the correct MyBB group
         if (isset($this->groups) && isset($this->groups[$gid])) {
@@ -577,7 +582,7 @@ abstract class Converter
      * @param int|array $remove Either a single group id or an array of group ids which shouldn't be in the group array
      * @return string group id(s)
      */
-    function get_group_id($gids, $remove = [])
+    function get_group_id(string $gids, int|array $remove = []): string
     {
         if (empty($gids)) {
             return '';
@@ -611,7 +616,7 @@ abstract class Converter
     /**
      * @return string HTML to add to the db configuration page
      */
-    function db_extra()
+    function db_extra(): string
     {
         return "";
     }

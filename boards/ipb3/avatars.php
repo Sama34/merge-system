@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'member_id',
         'default_per_screen' => 20,
     ];
 
-    function get_avatar_path()
+    function get_avatar_path(): string
     {
         $query = $this->old_db->simple_select(
             "core_sys_conf_settings",
@@ -34,7 +34,7 @@ class IPB3_Converter_Module_Avatars extends Converter_Module_Avatars
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -50,7 +50,7 @@ class IPB3_Converter_Module_Avatars extends Converter_Module_Avatars
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $mybb;
 
@@ -83,7 +83,7 @@ class IPB3_Converter_Module_Avatars extends Converter_Module_Avatars
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -97,7 +97,7 @@ class IPB3_Converter_Module_Avatars extends Converter_Module_Avatars
         return $import_session['total_avatars'];
     }
 
-    function generate_raw_filename($avatar)
+    function generate_raw_filename(array $avatar): bool|string
     {
         return $avatar['pp_main_photo'];
     }

@@ -15,15 +15,15 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => "attachments",
         'progress_column' => "attach_id",
         'default_per_screen' => 20,
     ];
 
-    public $path_column = "attach_location";
+    public string $path_column = "attach_location";
 
-    public function get_upload_path()
+    public function get_upload_path(): string
     {
         $query = $this->old_db->simple_select(
             "core_sys_conf_settings",
@@ -36,7 +36,7 @@ class IPB3_Converter_Module_Attachments extends Converter_Module_Attachments
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -54,7 +54,7 @@ class IPB3_Converter_Module_Attachments extends Converter_Module_Attachments
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $db, $error_notice;
 
@@ -119,7 +119,7 @@ class IPB3_Converter_Module_Attachments extends Converter_Module_Attachments
      * @param string $ext Extension
      * @return string The mime type
      */
-    function get_attach_type($ext)
+    function get_attach_type(string $ext): string
     {
         $query = $this->old_db->simple_select("attachments_type", "atype_mimetype", "atype_extension = '{$ext}'");
         $results = $this->old_db->fetch_field($query, "atype_mimetype");
@@ -128,7 +128,7 @@ class IPB3_Converter_Module_Attachments extends Converter_Module_Attachments
         return $results;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

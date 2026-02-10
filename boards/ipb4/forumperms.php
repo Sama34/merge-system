@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class IPB4_Converter_Module_Forumperms extends Converter_Module_Forumperms
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'forum permissions',
         'progress_column' => 'perm_id',
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -39,7 +39,7 @@ class IPB4_Converter_Module_Forumperms extends Converter_Module_Forumperms
         }
     }
 
-    function process_permission($data)
+    function process_permission(array $data): void
     {
         $fid = $this->get_import->fid($data['perm_type_id']);
 
@@ -88,13 +88,13 @@ class IPB4_Converter_Module_Forumperms extends Converter_Module_Forumperms
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         // Nothing to do here, they're converted above
         return $data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

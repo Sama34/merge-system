@@ -16,14 +16,14 @@ if (!defined("IN_MYBB")) {
 class PUNBB_Converter_Module_Posts extends Converter_Module_Posts
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'posts',
         'progress_column' => 'id',
         'default_per_screen' => 1000,
         'check_table_type' => 'posts',
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -38,7 +38,7 @@ class PUNBB_Converter_Module_Posts extends Converter_Module_Posts
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $db;
 
@@ -86,7 +86,7 @@ class PUNBB_Converter_Module_Posts extends Converter_Module_Posts
         return $insert_data;
     }
 
-    function after_import($old, $new, $pid)
+    function after_import(array $old, array $new, int $pid)
     {
         global $db;
 
@@ -96,7 +96,7 @@ class PUNBB_Converter_Module_Posts extends Converter_Module_Posts
         }
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

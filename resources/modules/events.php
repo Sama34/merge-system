@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Events extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'cid' => 0,
         'uid' => 0,
         'name' => '',
@@ -25,7 +25,7 @@ abstract class Converter_Module_Events extends Converter_Module
         'repeats' => ''
     ];
 
-    public $integer_fields = [
+    public array $integer_fields = [
         'cid',
         'uid',
         'visible',
@@ -43,7 +43,7 @@ abstract class Converter_Module_Events extends Converter_Module
      * @param array $data The insert array going into the MyBB database
      * @return int The new id
      */
-    public function insert($data)
+    public function insert(array $data): bool|int
     {
         global $db, $output;
 

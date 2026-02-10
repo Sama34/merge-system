@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN5_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'pmid',
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -37,7 +37,7 @@ class VBULLETIN5_Converter_Module_Privatemessages extends Converter_Module_Priva
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         // vBulletin 5 values
         $insert_data['uid'] = $this->get_import->uid($data['userid']);
@@ -115,7 +115,7 @@ class VBULLETIN5_Converter_Module_Privatemessages extends Converter_Module_Priva
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

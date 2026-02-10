@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Settings extends Converter_Module_Settings
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'settings',
         'default_per_screen' => 1000,
     ];
 
     // What settings do we need to get and what is their MyBB equivalent?
-    var $convert_settings = [
+    var array $convert_settings = [
         "karmaMode" => "enablereputation",
         "enableCompressedOutput" => "gzipoutput",
         "attachmentNumPerPostLimit" => "maxattachments",
@@ -50,7 +50,7 @@ class SMF2_Converter_Module_Settings extends Converter_Module_Settings
         "time_offset" => "timezoneoffset"
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -130,7 +130,7 @@ class SMF2_Converter_Module_Settings extends Converter_Module_Settings
         }
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

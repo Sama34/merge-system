@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Posts extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'import_pid' => 0,
         'import_uid' => 0,
 
@@ -31,11 +31,11 @@ abstract class Converter_Module_Posts extends Converter_Module
         'visible' => 1,
     ];
 
-    public $binary_fields = [
+    public array $binary_fields = [
         'ipaddress',
     ];
 
-    public $integer_fields = [
+    public array $integer_fields = [
         'import_pid',
         'import_uid',
 
@@ -52,7 +52,7 @@ abstract class Converter_Module_Posts extends Converter_Module
         'visible',
     ];
 
-    var $mark_as_run_modules = [
+    var array $mark_as_run_modules = [
         'attachments',
     ];
 
@@ -62,7 +62,7 @@ abstract class Converter_Module_Posts extends Converter_Module
      * @param array $data The insert array going into the MyBB database
      * @return int The new id
      */
-    public function insert($data)
+    public function insert(array $data): bool|int
     {
         global $db, $output;
 
@@ -105,7 +105,7 @@ abstract class Converter_Module_Posts extends Converter_Module
      * Rebuild counters, and lastpost information right after importing posts
      *
      */
-    public function cleanup()
+    public function cleanup(): void
     {
         global $output, $lang;
 
@@ -136,7 +136,7 @@ abstract class Converter_Module_Posts extends Converter_Module
     /**
      * Rebuild all thread counters
      */
-    private function rebuild_thread_counters()
+    private function rebuild_thread_counters(): void
     {
         global $db, $output, $import_session, $lang;
 
@@ -213,7 +213,7 @@ abstract class Converter_Module_Posts extends Converter_Module
     /**
      * Rebuild forum counters
      */
-    private function rebuild_forum_counters()
+    private function rebuild_forum_counters(): void
     {
         global $db, $output, $lang, $import_session;
 
@@ -247,7 +247,7 @@ abstract class Converter_Module_Posts extends Converter_Module
         $this->redirect('counters_forum');
     }
 
-    private function rebuild_user_post_counters()
+    private function rebuild_user_post_counters(): void
     {
         global $db, $output, $lang, $import_session;
 
@@ -314,7 +314,7 @@ abstract class Converter_Module_Posts extends Converter_Module
         $this->redirect('counters_user_posts');
     }
 
-    private function rebuild_user_thread_counters()
+    private function rebuild_user_thread_counters(): void
     {
         global $db, $output, $lang;
 
@@ -376,7 +376,7 @@ abstract class Converter_Module_Posts extends Converter_Module
 //		$this->redirect('counters_users_threads');
     }
 
-    private function redirect($finished = "")
+    private function redirect(string $finished = ""): never
     {
         // Do we want to save that we've finished function?
         if (!empty($finished)) {

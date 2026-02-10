@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'id_member',
         'encode_table' => 'members',
@@ -25,7 +25,7 @@ class SMF2_Converter_Module_Users extends Converter_Module_Users
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -46,7 +46,7 @@ class SMF2_Converter_Module_Users extends Converter_Module_Users
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -116,7 +116,7 @@ class SMF2_Converter_Module_Users extends Converter_Module_Users
      * @param int $uid User ID
      * @return int Last post
      */
-    function get_last_post($uid)
+    function get_last_post(int $uid): int
     {
         $uid = intval($uid);
         $query = $this->old_db->simple_select(
@@ -131,7 +131,7 @@ class SMF2_Converter_Module_Users extends Converter_Module_Users
         return $result;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

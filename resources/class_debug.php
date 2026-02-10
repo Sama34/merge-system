@@ -18,7 +18,7 @@ class Debug
     /**
      * @var Log
      */
-    public $log;
+    public Log $log;
 
     /**
      * Class constructor
@@ -41,16 +41,16 @@ class Log
     const TRACE3 = 7;
     const DATATRACE = 8;
 
-    private $table_exists = false;
-    private $caused_error = false;
+    private bool $table_exists = false;
+    private bool $caused_error = false;
 
     /** @var array */
-    private $log_inserts = [];
+    private array $log_inserts = [];
 
     /**
      * @param string $message
      */
-    public function error($message)
+    public function error(string $message): void
     {
         $this->write(self::ERROR, $message);
     }
@@ -58,7 +58,7 @@ class Log
     /**
      * @param string $message
      */
-    public function warning($message)
+    public function warning(string $message): void
     {
         $this->write(self::WARNING, $message);
     }
@@ -66,7 +66,7 @@ class Log
     /**
      * @param string $message
      */
-    public function event($message)
+    public function event(string $message): void
     {
         $this->write(self::EVENT, $message);
     }
@@ -74,7 +74,7 @@ class Log
     /**
      * @param string $message
      */
-    public function trace0($message)
+    public function trace0(string $message): void
     {
         $this->write(self::TRACE0, $message);
     }
@@ -82,7 +82,7 @@ class Log
     /**
      * @param string $message
      */
-    public function trace1($message)
+    public function trace1(string $message): void
     {
         $this->write(self::TRACE1, $message);
     }
@@ -90,7 +90,7 @@ class Log
     /**
      * @param string $message
      */
-    public function trace2($message)
+    public function trace2(string $message): void
     {
         $this->write(self::TRACE2, $message);
     }
@@ -98,16 +98,16 @@ class Log
     /**
      * @param string $message
      */
-    public function trace3($message)
+    public function trace3(string $message): void
     {
         $this->write(self::TRACE3, $message);
     }
 
     /**
      * @param string $message
-     * @param mixed $data
+     * @param array|string $data
      */
-    public function datatrace($message, $data)
+    public function datatrace(string $message, array|string $data): void
     {
         $insert_data = $data;
         if (is_array($insert_data)) {
@@ -133,7 +133,7 @@ class Log
      * @param int $type
      * @param string $message
      */
-    private function write($type, $message)
+    private function write(int $type, string $message): void
     {
         global $db;
 
@@ -193,7 +193,7 @@ class Log
         }
     }
 
-    private function create_debug_table()
+    private function create_debug_table(): void
     {
         global $db;
 
@@ -253,7 +253,7 @@ class Log
      *
      * @return string The generated backtrace
      */
-    function generate_plain_backtrace($shift = 1)
+    function generate_plain_backtrace(int $shift = 1): string
     {
         if (!function_exists("debug_backtrace")) {
             return "";

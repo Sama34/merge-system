@@ -19,28 +19,28 @@ class XENFORO2_Converter extends Converter
      *
      * @var string
      */
-    var $bbname = "Xenforo 2";
+    var string $bbname = "Xenforo 2";
 
     /**
      * String of the plain bulletin board name
      *
      * @var string
      */
-    var $plain_bbname = "Xenforo 2";
+    var string $plain_bbname = "Xenforo 2";
 
     /**
      * Whether or not this module requires the loginconvert.php plugin
      *
      * @var boolean
      */
-    var $requires_loginconvert = true;
+    var bool $requires_loginconvert = true;
 
     /**
      * Array of all of the modules
      *
      * @var array
      */
-    var $modules = [
+    var array $modules = [
         "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
         "import_settings" => ["name" => "Settings", "dependencies" => "db_configuration"],
         "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
@@ -67,21 +67,21 @@ class XENFORO2_Converter extends Converter
      *
      * @var String
      */
-    var $check_table = "ip";
+    var string $check_table = "ip";
 
     /**
      * The table prefix we suggest to use
      *
      * @var String
      */
-    var $prefix_suggestion = "xf_";
+    var string $prefix_suggestion = "xf_";
 
     /**
      * An array of xenforo -> mybb groups
      *
      * @var array
      */
-    var $groups = [
+    var array $groups = [
         1 => MYBB_GUESTS, // Guests
         2 => MYBB_REGISTERED, // Registered
         3 => MYBB_ADMINS, // Administrators
@@ -92,9 +92,9 @@ class XENFORO2_Converter extends Converter
      * An array of supported databases
      * XenForo only supports MySQL
      */
-    var $supported_databases = ["mysql"];
+    var array $supported_databases = ["mysql"];
 
-    var $column_length_to_check = [
+    var array $column_length_to_check = [
         "user_group" => [
             "usergroups" => [
                 "title" => "title",
@@ -127,9 +127,9 @@ class XENFORO2_Converter extends Converter
     /**
      * Get imported thread and cache it during script processing.
      */
-    var $cache_threads = [];
+    var array $cache_threads = [];
 
-    function get_thread($tid)
+    function get_thread(int $tid): array
     {
         global $db;
 

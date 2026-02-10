@@ -16,9 +16,9 @@ class BBCode_Parser extends BBCode_Parser_Plain
 {
     // This contains the attachment bbcode which is handled as special code as the id needs to be changed too
     // Xenforo 2 has different in-post attachment forms.
-    var $attachment = "\[attach.*?\]([0-9]+)\[/attach\]";
+    var string $attachment = "\[attach.*?\]([0-9]+)\[/attach\]";
 
-    function convert($text)
+    function convert(string $text): string
     {
         // Attachment codes have an optional parameters which we need to remove
         $text = preg_replace("#\[attach.*?\]([0-9]+)\[/attach\]#i", "[attach]$1[/attach]", $text);
@@ -37,7 +37,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
         return $text;
     }
 
-    function convert_bbcode($text)
+    function convert_bbcode(string $text): string
     {
         $convert_standards = [
             // xf 2.1, [URL unfurl="true"]...[/URL]
@@ -62,7 +62,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
         return $text;
     }
 
-    function convert_bbcode_callback($text)
+    function convert_bbcode_callback(string $text): string
     {
         $convert_standards = [
             // [MEDIA=abc]xyz[/MEDIA]
@@ -105,7 +105,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
      *
      * @return string
      */
-    function handle_media($matches)
+    function handle_media(array $matches): string
     {
         // array( $provider_xf => array( 'provider_mybb' => $provider_mybb, 'provider_url' => $provider_url ), );
         // TODO: Only handle videos supported by MyBB 1.8? Or return formal URL?
@@ -157,7 +157,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
      *
      * @return string
      */
-    function handle_color_rgb($matches)
+    function handle_color_rgb(array $matches): string
     {
         $color = '#';
         $rgb_colors = array_filter(explode(",", substr(trim($matches[1]), 4, -1)));
@@ -178,7 +178,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
      *
      * @return string
      */
-    function handle_size_value($matches)
+    function handle_size_value(array $matches): string
     {
         $size = (int)$matches[1];
         switch ($size) {

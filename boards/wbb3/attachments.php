@@ -15,22 +15,22 @@ if (!defined("IN_MYBB")) {
 class WBB3_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'attachmentID',
         'default_per_screen' => 20,
     ];
 
-    public $path_column = "attachmentID";
+    public string $path_column = "attachmentID";
 
-    function pre_setup()
+    function pre_setup(): void
     {
         $this->test_table = WCF_PREFIX . "attachment";
 
         parent::pre_setup();
     }
 
-    function get_upload_path()
+    function get_upload_path(): string
     {
         $query = $this->old_db->simple_select(
             WCF_PREFIX . "option",
@@ -42,7 +42,7 @@ class WBB3_Converter_Module_Attachments extends Converter_Module_Attachments
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -60,7 +60,7 @@ class WBB3_Converter_Module_Attachments extends Converter_Module_Attachments
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $db;
 
@@ -100,12 +100,12 @@ class WBB3_Converter_Module_Attachments extends Converter_Module_Attachments
         return $insert_data;
     }
 
-    function generate_raw_filename($attach)
+    function generate_raw_filename(array $attach): string
     {
         return "attachment-" . $attach['attachmentID'];
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

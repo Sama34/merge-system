@@ -17,57 +17,62 @@ abstract class Converter_Module
     /**
      * @var Converter
      */
-    public $board = null;
+    public ?Converter $board = null;
 
     /**
      * @var array
      */
-    var $default_values = [];
+    var array $default_values = [];
 
     /**
-     * @var DB_MySQL|DB_MySQLi|DB_PgSQL|DB_SQLite|PostgresPdoDbDriver|MysqlPdoDbDriver
+     * @var DB_Base
      */
-    var $old_db;
+    var DB_Base $old_db;
 
     /**
      * @var array
      */
-    var $settings;
+    var array $settings;
 
     /**
      * @var Cache_Handler
      */
-    var $get_import;
+    var Cache_Handler $get_import;
 
     /**
      * @var array
      */
-    var $trackers;
+    var array $trackers;
 
     /**
      * @var Debug
      */
-    var $debug;
+    var Debug $debug;
 
     /**
      * @var array
      */
-    var $errors = [];
+    var array $errors = [];
 
     /**
      * @var bool
      */
-    var $is_errors = false;
+    var bool $is_errors = false;
 
     /**
      * @var array
      */
-    var $mark_as_run_modules = [];
+    var array $mark_as_run_modules = [];
+
+    /**
+     * @var BBCode_Parser_Plain
+     */
+    var BBCode_Parser_Plain $bbcode_parser;
 
     /**
      * @param Converter $converter_class
      */
-    public function __construct($converter_class)
+    public function __construct(Converter $converter_class)
     {
         global $import_session, $debug, $db, $lang;
 
@@ -133,7 +138,7 @@ abstract class Converter_Module
      *
      * @return array
      */
-    public function prepare_insert_array($values, $table = '')
+    public function prepare_insert_array(array $values, string $table = ''): array
     {
         global $import_session, $db, $lang;
 
@@ -504,7 +509,7 @@ abstract class Converter_Module
     /**
      * @param array|string $tables
      */
-    public function check_table_type($tables)
+    public function check_table_type(array|string $tables): void
     {
         global $output, $lang;
 
@@ -527,7 +532,7 @@ abstract class Converter_Module
      * @param string $type
      * @param int $amount
      */
-    function increment_tracker($type, $amount = 1)
+    function increment_tracker(string $type, int $amount = 1): void
     {
         global $db;
 
@@ -543,7 +548,7 @@ abstract class Converter_Module
     /**
      * Called every time when the module is setup (before "fetch_total" or "import")
      */
-    function pre_setup()
+    function pre_setup(): void
     {
     }
 
@@ -552,7 +557,7 @@ abstract class Converter_Module
      *
      * @return int
      */
-    abstract function fetch_total();
+    abstract function fetch_total(): int;
 
     /**
      * Grab the data from the original database and call "insert" on every entry to insert.
@@ -560,7 +565,7 @@ abstract class Converter_Module
      *
      * @return void
      */
-    abstract function import();
+    abstract function import(): void;
 
     /**
      * Used to show progress, insert data and insert the array. Also updates internal caches. Calls "convert_data"
@@ -570,7 +575,7 @@ abstract class Converter_Module
      *
      * @return int The ID of the new row
      */
-    abstract function insert($data);
+    abstract function insert(array $data): bool|int;
 
     /**
      * Convert an array of original entry to an array that can be inserted into our database
@@ -579,7 +584,7 @@ abstract class Converter_Module
      *
      * @return array
      */
-    abstract function convert_data($data);
+    abstract function convert_data(array $data): array;
 
     /**
      * Perform any work after the new row has been inserted. Called from "insert", but not on all modules!
@@ -589,28 +594,28 @@ abstract class Converter_Module
      * @param array $converted_values
      * @param int $id The ID of the mybb row
      */
-    function after_insert($unconverted_values, $converted_values, $id)
+    function after_insert(array $unconverted_values, array $converted_values, int $id): void
     {
     }
 
     /**
      * Called after all rows are inserted. So basically after "insert" has been called as many times as "fetch_total" returned
      */
-    function finish()
+    function finish(): void
     {
     }
 
     /**
      * Called after "finish" is called. Except that the same
      */
-    function cleanup()
+    function cleanup(): void
     {
     }
 
     /**
      * Mark any dependencies as run if we haven't imported anything
      */
-    function mark_dependencies_as_run()
+    function mark_dependencies_as_run(): void
     {
         global $import_session;
         foreach ($this->mark_as_run_modules as $module) {

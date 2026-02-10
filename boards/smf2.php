@@ -22,28 +22,28 @@ class SMF2_Converter extends Converter
      *
      * @var string
      */
-    var $bbname = "SMF 2";
+    var string $bbname = "SMF 2";
 
     /**
      * String of the plain bulletin board name
      *
      * @var string
      */
-    var $plain_bbname = "SMF 2";
+    var string $plain_bbname = "SMF 2";
 
     /**
      * Whether or not this module requires the loginconvert.php plugin
      *
      * @var boolean
      */
-    var $requires_loginconvert = true;
+    var bool $requires_loginconvert = true;
 
     /**
      * Array of all of the modules
      *
      * @var array
      */
-    var $modules = [
+    var array $modules = [
         "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
         "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
         "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
@@ -73,21 +73,21 @@ class SMF2_Converter extends Converter
      *
      * @var String
      */
-    var $check_table = "boards";
+    var string $check_table = "boards";
 
     /**
      * The table prefix we suggest to use
      *
      * @var String
      */
-    var $prefix_suggestion = "smf_";
+    var string $prefix_suggestion = "smf_";
 
     /**
      * An array of smf -> mybb groups
      *
      * @var array
      */
-    var $groups = [
+    var array $groups = [
         -1 => MYBB_GUESTS, // Guests
         0 => MYBB_REGISTERED, // Registered
         1 => MYBB_ADMINS, // Administrators
@@ -95,7 +95,7 @@ class SMF2_Converter extends Converter
         3 => MYBB_MODS, // Moderators
     ];
 
-    var $column_length_to_check = [
+    var array $column_length_to_check = [
         'polls' => [
             'polls' => [
                 'question' => 'question'
@@ -103,7 +103,7 @@ class SMF2_Converter extends Converter
         ]
     ];
 
-    var $get_post_cache = [];
+    var array $get_post_cache = [];
 
     /**
      * Get a post from the SMF database
@@ -111,7 +111,7 @@ class SMF2_Converter extends Converter
      * @param int $pid Post ID
      * @return array The post
      */
-    function get_post($pid)
+    function get_post(int $pid): array
     {
         if (array_key_exists($pid, $this->get_post_cache)) {
             return $this->get_post_cache[$pid];

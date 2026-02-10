@@ -15,15 +15,15 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Usergroups extends Converter_Module_Usergroups
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'usergroups',
         'progress_column' => 'id_group',
         'default_per_screen' => 1000,
     ];
 
-    var $permissions = [];
+    var array $permissions = [];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -42,7 +42,7 @@ class SMF2_Converter_Module_Usergroups extends Converter_Module_Usergroups
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         if (!$this->permissions) {
             // Cache permissions
@@ -98,7 +98,7 @@ class SMF2_Converter_Module_Usergroups extends Converter_Module_Usergroups
      *
      * @return array group permissions
      */
-    function get_group_permissions()
+    function get_group_permissions(): array
     {
         $query = $this->old_db->simple_select("permissions", "*", "add_deny = 1");
         $permissions = [];
@@ -116,7 +116,7 @@ class SMF2_Converter_Module_Usergroups extends Converter_Module_Usergroups
         return $permissions;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

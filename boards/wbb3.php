@@ -20,35 +20,35 @@ class WBB3_Converter extends Converter
      *
      * @var int
      */
-    var $installationnumber;
+    var int $installationnumber;
 
     /**
      * String of the bulletin board name
      *
      * @var string
      */
-    var $bbname = "WoltLab Burning Board 3 or Lite 2";
+    var string $bbname = "WoltLab Burning Board 3 or Lite 2";
 
     /**
      * String of the plain bulletin board name
      *
      * @var string
      */
-    var $plain_bbname = "WBB 3 / Lite 2";
+    var string $plain_bbname = "WBB 3 / Lite 2";
 
     /**
      * Whether or not this module requires the loginconvert.php plugin
      *
      * @var boolean
      */
-    var $requires_loginconvert = true;
+    var bool $requires_loginconvert = true;
 
     /**
      * Array of all of the modules
      *
      * @var array
      */
-    var $modules = [
+    var array $modules = [
         "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
         "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
         "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
@@ -74,22 +74,22 @@ class WBB3_Converter extends Converter
      *
      * @var String
      */
-    var $check_table = "board_ignored_by_user";
+    var string $check_table = "board_ignored_by_user";
 
     /**
      * The table prefix we suggest to use
      *
      * @var String
      */
-    var $prefix_suggestion = "";
-    var $hide_table_prefix = true;
+    var string $prefix_suggestion = "";
+    var bool $hide_table_prefix = true;
 
     /**
      * An array of wbb -> mybb groups
      *
      * @var array
      */
-    var $groups = [
+    var array $groups = [
         1 => MYBB_GUESTS, // All
         2 => MYBB_GUESTS, // Guests
         3 => MYBB_REGISTERED, // Registered
@@ -102,7 +102,7 @@ class WBB3_Converter extends Converter
      * An array of supported databases
      * WBB only supports MySQL
      */
-    var $supported_databases = ["mysql"];
+    var array $supported_databases = ["mysql"];
 
     function __construct()
     {
@@ -125,7 +125,7 @@ class WBB3_Converter extends Converter
         define("WBB_PREFIX", "wbb{$this->installationnumber}_1_");
     }
 
-    function db_extra()
+    function db_extra(): string
     {
         global $mybb, $lang;
 

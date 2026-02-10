@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class XENFORO_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'user_id',
         'default_per_screen' => 20,
     ];
 
-    function get_avatar_path()
+    function get_avatar_path(): string
     {
         $query = $this->old_db->simple_select("option", "option_value", "option_id='boardUrl'");
         $uploadspath = $this->old_db->fetch_field($query, "option_value") . "/data/avatars/";
@@ -29,7 +29,7 @@ class XENFORO_Converter_Module_Avatars extends Converter_Module_Avatars
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -44,7 +44,7 @@ class XENFORO_Converter_Module_Avatars extends Converter_Module_Avatars
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         global $mybb;
 
@@ -75,7 +75,7 @@ class XENFORO_Converter_Module_Avatars extends Converter_Module_Avatars
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -89,7 +89,7 @@ class XENFORO_Converter_Module_Avatars extends Converter_Module_Avatars
         return $import_session['total_avatars'];
     }
 
-    function generate_raw_filename($avatar)
+    function generate_raw_filename(array $avatar): bool|string
     {
         return "l/" . floor($avatar['user_id'] / 1000) . "/{$avatar['user_id']}.jpg";
     }

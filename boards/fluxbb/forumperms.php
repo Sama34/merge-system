@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class FLUXBB_Converter_Module_Forumperms extends Converter_Module_Forumperms
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'forum permissions',
         'progress_column' => 'forum_id',
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -39,7 +39,7 @@ class FLUXBB_Converter_Module_Forumperms extends Converter_Module_Forumperms
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -53,7 +53,7 @@ class FLUXBB_Converter_Module_Forumperms extends Converter_Module_Forumperms
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

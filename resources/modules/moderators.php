@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Moderators extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'fid' => 0,
         'id' => 0,
         'isgroup' => 0,
@@ -40,7 +40,7 @@ abstract class Converter_Module_Moderators extends Converter_Module
 
     // The moderators table has ONLY integer fields - use the array above
     // As we can't call array_keys here we need the constructor
-    public $integer_fields;
+    public array $integer_fields;
 
     public function __construct($converter_class)
     {
@@ -54,7 +54,7 @@ abstract class Converter_Module_Moderators extends Converter_Module
      * @param array $data The insert array going into the MyBB database
      * @return int The new id
      */
-    public function insert($data)
+    public function insert(array $data): bool|int
     {
         global $db, $output;
 

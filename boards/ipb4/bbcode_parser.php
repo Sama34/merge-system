@@ -21,7 +21,7 @@ class BBCode_Parser extends BBCode_Parser_HTML
      * @param string $text post message
      * @return string post message
      */
-    function convert($text)
+    function convert(string $text): string
     {
         $text = preg_replace('# data-ipb=\'(.*?)\'#si', "", $text);
         $text = preg_replace('# rel="(.*?)"#si', "", $text);

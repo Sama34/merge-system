@@ -14,13 +14,13 @@ if (!defined('IN_MYBB')) {
 
 class PHPBB3_Converter_Module_Bans extends Converter_Module_Bans
 {
-    public $settings = [
+    public array $settings = [
         'friendly_name' => 'bans',
         'progress_column' => 'uid',
         'default_per_screen' => 1000
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
         $query = $this->old_db->simple_select(
@@ -45,7 +45,7 @@ class PHPBB3_Converter_Module_Bans extends Converter_Module_Bans
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -62,7 +62,7 @@ class PHPBB3_Converter_Module_Bans extends Converter_Module_Bans
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -81,7 +81,7 @@ class PHPBB3_Converter_Module_Bans extends Converter_Module_Bans
         return $import_session['total_bans'];
     }
 
-    function banTime($start, $end)
+    function banTime(int $start, int $end): string
     {
         // phpBB perm ban
         if ($end == 0) {

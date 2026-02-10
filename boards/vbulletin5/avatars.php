@@ -15,15 +15,15 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN5_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'userid',
         'default_per_screen' => 20,
     ];
 
-    var $use_filesystem;
+    var string $use_filesystem;
 
-    function pre_setup()
+    function pre_setup(): void
     {
         global $mybb, $import_session;
 
@@ -40,7 +40,7 @@ class VBULLETIN5_Converter_Module_Avatars extends Converter_Module_Avatars
         parent::pre_setup();
     }
 
-    function get_avatar_path()
+    function get_avatar_path(): string
     {
         $query = $this->old_db->simple_select('setting', 'value', "varname='bburl'");
         $uploadspath = $this->old_db->fetch_field($query, 'value') . '/';
@@ -53,7 +53,7 @@ class VBULLETIN5_Converter_Module_Avatars extends Converter_Module_Avatars
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -68,7 +68,7 @@ class VBULLETIN5_Converter_Module_Avatars extends Converter_Module_Avatars
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -82,7 +82,7 @@ class VBULLETIN5_Converter_Module_Avatars extends Converter_Module_Avatars
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -103,7 +103,7 @@ class VBULLETIN5_Converter_Module_Avatars extends Converter_Module_Avatars
      *
      * @return string
      */
-    function get_file_data($unconverted_data)
+    function get_file_data(array $unconverted_data): string
     {
         if (!$this->use_filesystem) {
             return $unconverted_data['filedata'];
@@ -111,13 +111,13 @@ class VBULLETIN5_Converter_Module_Avatars extends Converter_Module_Avatars
         return parent::get_file_data($unconverted_data);
     }
 
-    function generate_raw_filename($avatar)
+    function generate_raw_filename(array $avatar): bool|string
     {
         // Yep, gif is hardcoded
         return "avatar" . $avatar['userid'] . "_" . $avatar['revision'] . ".gif";
     }
 
-    function print_avatars_per_screen_page()
+    function print_avatars_per_screen_page(): void
     {
         if ($this->use_filesystem) {
             parent::print_avatars_per_screen_page();

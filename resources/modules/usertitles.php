@@ -10,14 +10,14 @@
 abstract class Converter_Module_Usertitles extends Converter_Module
 {
 
-    public $default_values = [
+    public array $default_values = [
         'posts' => 0,
         'title' => '',
         'stars' => 1,
         'starimage' => 'star.gif'
     ];
 
-    public $integer_fields = [
+    public array $integer_fields = [
         'posts',
         'stars',
     ];
@@ -27,7 +27,7 @@ abstract class Converter_Module_Usertitles extends Converter_Module
      *
      * @param array $data The insert array going into the MyBB database
      */
-    public function insert($data)
+    public function insert(array $data): int
     {
         global $db, $output;
 

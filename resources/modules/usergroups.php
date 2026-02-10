@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Usergroups extends Converter_Module
 {
-    public $default_values = [
+    public array $default_values = [
         'import_gid' => 0,
         'type' => 2,
         'title' => '',
@@ -104,7 +104,7 @@ abstract class Converter_Module_Usergroups extends Converter_Module
         'canuseipsearch' => 0,
     ];
 
-    public $integer_fields = [
+    public array $integer_fields = [
         'import_gid',
         'type',
         'stars',
@@ -199,7 +199,7 @@ abstract class Converter_Module_Usergroups extends Converter_Module
      * @param array $data The insert array going into the MyBB database
      * @return int The new id
      */
-    public function insert($data)
+    public function insert(array $data): bool|int
     {
         global $db, $output;
 

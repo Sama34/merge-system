@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Events extends Converter_Module_Events
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'events',
         'progress_column' => 'event_id',
         'default_per_screen' => 1000,
     ];
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -36,7 +36,7 @@ class IPB3_Converter_Module_Events extends Converter_Module_Events
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -53,7 +53,7 @@ class IPB3_Converter_Module_Events extends Converter_Module_Events
         return $insert_data;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 

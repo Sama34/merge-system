@@ -22,67 +22,69 @@ class converterOutput
      *
      * @var int 1 or 0
      */
-    var $doneheader;
+    var int $doneheader;
 
     /**
      * This is set to 1 if a form has been opened.
      *
      * @var int 1 or 0
      */
-    var $opened_form;
+    var int $opened_form;
 
     /**
      * Script name
      *
      * @var string
      */
-    var $script = "index.php";
+    var string $script = "index.php";
 
     /**
      * Steps for conversion
      *
      * @var array
      */
-    var $steps = [];
+    var array $steps = [];
 
     /**
      * Title of the system
      *
      * @var string
      */
-    var $title = "MyBB Merge System";
+    var string $title = "MyBB Merge System";
 
     /**
      * Internal position counter for friendly progress bar
      *
      * @var integer
      */
-    var $_internal_counter = 0;
+    var int $_internal_counter = 0;
 
-    var $_current_id;
+    var int $_current_id;
 
     /**
      * Internal string for friendly name but in English singular form
      *
-     * @var integer
+     * @var string
      */
-    var $_friendly_name_singular = "";
+    var string $_friendly_name_singular = "";
 
     /**
      * Internal denominator for friendly progress bar percentage completed algorithm
      *
      * @var integer
      */
-    var $_progress_denominator = 0;
+    var int $_progress_denominator = 0;
 
     /**
      * Internal indicator to see if the progress bar was already constructed or not
      *
      * @var integer
      */
-    var $_progress_bar_constructed = 0;
+    var int $_progress_bar_constructed = 0;
 
-    var $_last_left = 0;
+    var int $_last_left = 0;
+
+    var string $error_notice_in_progress;
 
     /**
      * Method to print the converter header
@@ -91,7 +93,7 @@ class converterOutput
      * @param string $image Icon to be used
      * @param int $form Open a form 1/0
      */
-    function print_header($title = "", $image = "welcome", $form = 1)
+    function print_header(string $title = "", string $image = "welcome", int $form = 1): void
     {
         global $merge_version, $lang;
 
@@ -147,7 +149,7 @@ END;
      *
      * @param string $contents Contents to echo out
      */
-    function print_contents($contents)
+    function print_contents(string $contents): void
     {
         echo $contents;
     }
@@ -157,7 +159,7 @@ END;
      *
      * @param string $message Error string
      */
-    function print_error($message)
+    function print_error(string $message): void
     {
         global $lang;
 
@@ -178,7 +180,7 @@ END;
      * @param string $message Error string
      * @param string $title
      */
-    function print_warning($message, $title = "")
+    function print_warning(string $message, string $title = ""): void
     {
         global $lang;
 
@@ -196,7 +198,7 @@ END;
      * Print a list of possible boards to convert from, and the footer
      *
      */
-    function board_list()
+    function board_list(): void
     {
         global $lang;
 
@@ -253,7 +255,7 @@ END;
     /**
      * Print a list of modules and their dependencies for user to choose from, and the footer
      */
-    function module_list()
+    function module_list(): void
     {
         global $board, $import_session, $lang;
 
@@ -381,7 +383,7 @@ END;
      * @param string $name Name of the bulletin board software
      * @param string $extra Any extra text to include (optional)
      */
-    function print_database_details_table($name, $extra = "")
+    function print_database_details_table(string $name, string $extra = ""): void
     {
         global $board, $dbengines, $mybb, $lang;
 
@@ -639,7 +641,7 @@ EOF;
     /**
      * Print final page
      */
-    function finish_conversion()
+    function finish_conversion(): void
     {
         global $config, $import_session, $lang;
 
@@ -702,14 +704,14 @@ EOF;
      * @param string $extra_class
      */
     function print_footer(
-        $next_action = "",
-        $name = "",
-        $do_session = 1,
-        $override_form = false,
-        $next = false,
-        $button_extra = "",
-        $extra_class = ""
-    ) {
+        string $next_action = "",
+        string $name = "",
+        int $do_session = 1,
+        bool $override_form = false,
+        bool $next = false,
+        string $button_extra = "",
+        string $extra_class = ""
+    ): void {
         // TODO: First two params aren't used here -> research & remove
         global $import_session, $conf_global_not_found, $mybb, $lang;
 
@@ -773,12 +775,12 @@ END;
         exit;
     }
 
-    function print_inline_errors()
+    function print_inline_errors(): void
     {
         $this->print_error_page(true);
     }
 
-    function print_error_page($inline = false)
+    function print_error_page(bool $inline = false): void
     {
         global $import_session, $module, $lang;
 
@@ -816,7 +818,7 @@ END;
         }
     }
 
-    function print_per_screen_page($per_screen = 10)
+    function print_per_screen_page(int $per_screen = 10): void
     {
         global $import_session, $mybb, $module, $db, $lang;
 
@@ -877,7 +879,7 @@ END;
         $this->print_footer($import_session['module'], 'module', 1);
     }
 
-    function calculate_stats($in_progress_stats = true)
+    function calculate_stats(bool $in_progress_stats = true): void
     {
         global $import_session, $module, $lang;
 
@@ -923,12 +925,12 @@ END;
     }
 
     // TODO: Research! This function is called from the converter class. But the variable is never called again and seems pretty useless to me
-    function set_error_notice_in_progress($error_message)
+    function set_error_notice_in_progress(string $error_message): void
     {
         $this->error_notice_in_progress = $error_message;
     }
 
-    function construct_progress_bar()
+    function construct_progress_bar(): void
     {
         global $lang;
 
@@ -951,7 +953,7 @@ END;
      * @param int $left The progress. NOTE: 200 is maximum and NOT 100!!!
      * @param string $status_message
      */
-    function update_progress_bar($left, $status_message = "")
+    function update_progress_bar(int $left, string $status_message = ""): void
     {
         if ($this->_last_left == $left && empty($status_message)) {
             return;
@@ -975,7 +977,7 @@ END;
         $this->_last_left = $left;
     }
 
-    function print_progress($position, $id = "")
+    function print_progress(string $position, string $id = ""): void
     {
         global $import_session, $module, $lang;
 
@@ -1066,7 +1068,7 @@ END;
         }
     }
 
-    function print_none_left_message()
+    function print_none_left_message(): void
     {
         global $module, $import_session, $lang;
 

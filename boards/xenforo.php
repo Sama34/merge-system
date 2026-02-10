@@ -20,28 +20,28 @@ class XENFORO_Converter extends Converter
      *
      * @var string
      */
-    var $bbname = "Xenforo 1";
+    var string $bbname = "Xenforo 1";
 
     /**
      * String of the plain bulletin board name
      *
      * @var string
      */
-    var $plain_bbname = "Xenforo 1";
+    var string $plain_bbname = "Xenforo 1";
 
     /**
      * Whether or not this module requires the loginconvert.php plugin
      *
      * @var boolean
      */
-    var $requires_loginconvert = true;
+    var bool $requires_loginconvert = true;
 
     /**
      * Array of all of the modules
      *
      * @var array
      */
-    var $modules = [
+    var array $modules = [
         "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
         "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
         "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
@@ -63,21 +63,21 @@ class XENFORO_Converter extends Converter
      *
      * @var String
      */
-    var $check_table = "ip";
+    var string $check_table = "ip";
 
     /**
      * The table prefix we suggest to use
      *
      * @var String
      */
-    var $prefix_suggestion = "xf_";
+    var string $prefix_suggestion = "xf_";
 
     /**
      * An array of xenforo -> mybb groups
      *
      * @var array
      */
-    var $groups = [
+    var array $groups = [
         1 => MYBB_GUESTS, // Guests
         2 => MYBB_REGISTERED, // Registered
         3 => MYBB_ADMINS, // Administrators
@@ -88,6 +88,6 @@ class XENFORO_Converter extends Converter
      * An array of supported databases
      * XenForo only supports MySQL
      */
-    var $supported_databases = ["mysql"];
+    var array $supported_databases = ["mysql"];
 }
 

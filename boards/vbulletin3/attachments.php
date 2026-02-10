@@ -19,19 +19,19 @@ const ATTACH_AS_FILES_NEW = 2;
 class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = [
+    var array $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'attachmentid',
         'default_per_screen' => 20,
     ];
 
-    public $test_table = "attachment";
+    public string $test_table = "attachment";
 
-    public $path_column = "attachmentid,userid";
+    public string $path_column = "attachmentid,userid";
 
-    var $attach_storage;
+    var string $attach_storage;
 
-    function pre_setup()
+    function pre_setup(): void
     {
         global $mybb, $import_session;
 
@@ -48,7 +48,7 @@ class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachmen
         parent::pre_setup();
     }
 
-    function get_upload_path()
+    function get_upload_path(): string
     {
         $query = $this->old_db->simple_select('setting', 'value', "varname='attachpath'");
         $uploadspath = $this->old_db->fetch_field($query, 'value');
@@ -56,7 +56,7 @@ class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachmen
         return $uploadspath;
     }
 
-    function import()
+    function import(): void
     {
         global $import_session;
 
@@ -74,7 +74,7 @@ class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachmen
         }
     }
 
-    function convert_data($data)
+    function convert_data(array $data): array
     {
         $insert_data = [];
 
@@ -135,7 +135,7 @@ class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachmen
      *
      * @return string
      */
-    function get_file_data($unconverted_data)
+    function get_file_data(array $unconverted_data): string
     {
         if ($this->attach_storage == ATTACH_AS_DB) {
             return $unconverted_data['filedata'];
@@ -149,7 +149,7 @@ class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachmen
      * @param string $ext Extension
      * @return string The mime type
      */
-    function get_attach_type($ext)
+    function get_attach_type(string $ext): string
     {
         $query = $this->old_db->simple_select("attachmenttype", "mimetype", "extension = '{$ext}'");
         $mimetype = unserialize($this->old_db->fetch_field($query, "mimetype"));
@@ -160,7 +160,7 @@ class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachmen
         return $results;
     }
 
-    function fetch_total()
+    function fetch_total(): int
     {
         global $import_session;
 
@@ -180,7 +180,7 @@ class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachmen
      * @param array $attachment
      * @return string
      */
-    function generate_raw_filename($attachment)
+    function generate_raw_filename(array $attachment): bool|string
     {
         if ($this->attach_storage == ATTACH_AS_FILES_NEW) // expanded paths
         {
@@ -194,7 +194,7 @@ class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachmen
         return $path;
     }
 
-    function print_attachments_per_screen_page()
+    function print_attachments_per_screen_page(): void
     {
         global $import_session, $lang;
 
