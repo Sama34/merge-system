@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Usergroups extends Converter_Module_Usergroups
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'usergroups',
         'progress_column' => 'group_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -30,10 +30,10 @@ class PHPBB3_Converter_Module_Usergroups extends Converter_Module_Usergroups
             "groups",
             "*",
             "group_id > 7",
-            array(
+            [
                 'limit_start' => $this->trackers['start_usergroups'],
                 'limit' => $import_session['usergroups_per_screen']
-            )
+            ]
         );
         while ($group = $this->old_db->fetch_array($query)) {
             $this->insert($group);
@@ -42,7 +42,7 @@ class PHPBB3_Converter_Module_Usergroups extends Converter_Module_Usergroups
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // phpBB 3 values
         $insert_data['import_gid'] = $data['group_id'];

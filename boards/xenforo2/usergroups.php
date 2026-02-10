@@ -14,11 +14,11 @@ if (!defined("IN_MYBB")) {
 
 class XENFORO2_Converter_Module_Usergroups extends Converter_Module_Usergroups
 {
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'usergroups',
         'progress_column' => 'user_group_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class XENFORO2_Converter_Module_Usergroups extends Converter_Module_Usergroups
             "user_group",
             "*",
             "user_group_id > 4",
-            array(
+            [
                 'limit_start' => $this->trackers['start_usergroups'],
                 'limit' => $import_session['usergroups_per_screen']
-            )
+            ]
         );
         while ($group = $this->old_db->fetch_array($query)) {
             $this->insert($group);
@@ -41,7 +41,7 @@ class XENFORO2_Converter_Module_Usergroups extends Converter_Module_Usergroups
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Xenforo 2 values
         $insert_data['import_gid'] = $data['user_group_id'];

@@ -10,7 +10,7 @@
 
 abstract class Converter_Module_Bans extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'uid' => 0,
         'gid' => 0,
         'oldgroup' => '',
@@ -21,9 +21,9 @@ abstract class Converter_Module_Bans extends Converter_Module
         'bantime' => '',
         'lifted' => 0,
         'reason' => ''
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'uid',
         'gid',
         'oldgroup',
@@ -31,7 +31,7 @@ abstract class Converter_Module_Bans extends Converter_Module
         'admin',
         'dateline',
         'lifed'
-    );
+    ];
 
     public function insert($data)
     {

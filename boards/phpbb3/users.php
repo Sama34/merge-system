@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'user_id',
         'encode_table' => 'users',
@@ -23,9 +23,9 @@ class PHPBB3_Converter_Module_Users extends Converter_Module_Users
         'username_column' => 'username',
         'email_column' => 'user_email',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $get_private_messages_cache = array();
+    var $get_private_messages_cache = [];
 
     function import()
     {
@@ -49,7 +49,7 @@ class PHPBB3_Converter_Module_Users extends Converter_Module_Users
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // phpBB 3 values
         $insert_data['usergroup'] = $this->board->get_gid($data['group_id']);
@@ -109,7 +109,7 @@ class PHPBB3_Converter_Module_Users extends Converter_Module_Users
         if (strpos($data['user_timezone'], ".") !== false) {
             // phpBB 3.0
             $insert_data['timezone'] = $data['user_timezone'];
-            $insert_data['timezone'] = str_replace(array('.0', '.00'), array('', ''), $insert_data['timezone']);
+            $insert_data['timezone'] = str_replace(['.0', '.00'], ['', ''], $insert_data['timezone']);
         } else {
             // phpBB 3.1
             $insert_data['timezone'] = get_timezone($data['user_timezone']);

@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Moderators extends Converter_Module_Moderators
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'moderators',
         'progress_column' => 'moderator_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -57,7 +57,7 @@ class IPB3_Converter_Module_Moderators extends Converter_Module_Moderators
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Invision Power Board 3 values
         $insert_data['fid'] = $this->get_import->fid($data['forum_id']);

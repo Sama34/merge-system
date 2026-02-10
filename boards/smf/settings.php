@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class SMF_Converter_Module_Settings extends Converter_Module_Settings
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'settings',
         'default_per_screen' => 1000,
-    );
+    ];
 
     // What settings do we need to get and what is their MyBB equivalent?
-    var $convert_settings = array(
+    var $convert_settings = [
         "karmaMode" => "enablereputation",
         "enableCompressedOutput" => "gzipoutput",
         "attachmentNumPerPostLimit" => "maxattachments",
@@ -48,22 +48,22 @@ class SMF_Converter_Module_Settings extends Converter_Module_Settings
         "defaultMaxTopics" => "threadsperpage",
         "defaultMaxMembers" => "membersperpage",
         "time_offset" => "timezoneoffset"
-    );
+    ];
 
     function import()
     {
         global $import_session;
 
-        $int_to_yes_no = array(
+        $int_to_yes_no = [
             "karmaMode" => 1,
             "enableCompressedOutput" => 1,
             "attachmentThumbnails" => 1,
             "cal_enabled" => 1
-        );
+        ];
 
-        $int_to_on_off = array(
+        $int_to_on_off = [
             "enableErrorLogging" => 1
-        );
+        ];
 
         // TODO: Avatar setting needs to be researched
         $avatar_setting = '';
@@ -71,7 +71,7 @@ class SMF_Converter_Module_Settings extends Converter_Module_Settings
             "settings",
             "variable, value",
             "variable IN('" . implode("','", array_keys($this->convert_settings)) . "')",
-            array('limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen'])
+            ['limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen']]
         );
         while ($setting = $this->old_db->fetch_array($query)) {
             // SMF values

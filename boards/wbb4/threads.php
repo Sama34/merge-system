@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class WBB4_Converter_Module_Threads extends Converter_Module_Threads
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'threadID',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,7 +29,7 @@ class WBB4_Converter_Module_Threads extends Converter_Module_Threads
             WBB_PREFIX . "thread",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen'])
+            ['limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen']]
         );
         while ($thread = $this->old_db->fetch_array($query)) {
             $this->insert($thread);
@@ -38,7 +38,7 @@ class WBB4_Converter_Module_Threads extends Converter_Module_Threads
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // WBB 4 values
         $insert_data['import_tid'] = $data['threadID'];

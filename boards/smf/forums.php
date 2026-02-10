@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class SMF_Converter_Module_Forums extends Converter_Module_Forums
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forums',
         'progress_column' => 'ID_BOARD',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,7 +29,7 @@ class SMF_Converter_Module_Forums extends Converter_Module_Forums
             "boards",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_forums'], 'limit' => $import_session['forums_per_screen'])
+            ['limit_start' => $this->trackers['start_forums'], 'limit' => $import_session['forums_per_screen']]
         );
         while ($forum = $this->old_db->fetch_array($query)) {
             $this->insert($forum);
@@ -38,7 +38,7 @@ class SMF_Converter_Module_Forums extends Converter_Module_Forums
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // SMF values
         $insert_data['import_fid'] = intval($data['ID_BOARD']);
@@ -91,7 +91,7 @@ class SMF_Converter_Module_Forums extends Converter_Module_Forums
             $pid = $this->get_import->fid($forum['import_pid']);
             if (!empty($pid))    // Do another check, failure will leave dirty work to parent class's cleanup() function.
             {
-                $db->update_query("forums", array('pid' => $pid), "fid='{$forum['fid']}'", 1);
+                $db->update_query("forums", ['pid' => $pid], "fid='{$forum['fid']}'", 1);
             }
         }
         $db->free_result($query);
@@ -109,7 +109,7 @@ class SMF_Converter_Module_Forums extends Converter_Module_Forums
         while ($forum = $db->fetch_array($query)) {
             $db->update_query(
                 "forums",
-                array('parentlist' => make_parent_list_pid($forum['fid'])),
+                ['parentlist' => make_parent_list_pid($forum['fid'])],
                 "fid='{$forum['fid']}'",
                 1
             );

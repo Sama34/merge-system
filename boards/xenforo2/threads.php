@@ -14,11 +14,11 @@ if (!defined("IN_MYBB")) {
 
 class XENFORO2_Converter_Module_Threads extends Converter_Module_Threads
 {
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'thread_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -28,7 +28,7 @@ class XENFORO2_Converter_Module_Threads extends Converter_Module_Threads
             "thread",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen'])
+            ['limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen']]
         );
         while ($thread = $this->old_db->fetch_array($query)) {
             $this->insert($thread);
@@ -37,7 +37,7 @@ class XENFORO2_Converter_Module_Threads extends Converter_Module_Threads
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Xenforo 2 values
         $insert_data['import_tid'] = $data['thread_id'];
@@ -93,7 +93,7 @@ class XENFORO2_Converter_Module_Threads extends Converter_Module_Threads
 
     function xf_get_redirect($thread_id)
     {
-        $query = $this->old_db->simple_select("thread_redirect", "redirect_key,expiry_date", "", array("limit" => 1));
+        $query = $this->old_db->simple_select("thread_redirect", "redirect_key,expiry_date", "", ["limit" => 1]);
         $redirect = $this->old_db->fetch_array($query);
         $this->old_db->free_result($query);
 
@@ -101,12 +101,12 @@ class XENFORO2_Converter_Module_Threads extends Converter_Module_Threads
         if ($redirect_kyes[0] != "thread") {
             return false;
         }
-        $redirect_info = array(
+        $redirect_info = [
             "thread_id" => $redirect_kyes[1],
             "thread_fid" => $redirect_kyes[2],
             "expiry_date" => $redirect['expiry_date'],
             "data" => $redirect,
-        );
+        ];
 
         return $redirect_info;
     }

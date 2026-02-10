@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'member_id',
         'default_per_screen' => 20,
-    );
+    ];
 
     function get_avatar_path()
     {
@@ -27,7 +27,7 @@ class IPB3_Converter_Module_Avatars extends Converter_Module_Avatars
             "core_sys_conf_settings",
             "conf_value",
             "conf_key = 'upload_url'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath = $this->old_db->fetch_field($query, 'conf_value');
         $this->old_db->free_result($query);
@@ -54,7 +54,7 @@ class IPB3_Converter_Module_Avatars extends Converter_Module_Avatars
     {
         global $mybb;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // MyBB 1.8 values
         $insert_data['uid'] = $this->get_import->uid($data['member_id']);

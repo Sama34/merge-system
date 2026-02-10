@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'attach_id',
         'default_per_screen' => 20,
-    );
+    ];
 
     public $path_column = "physical_filename";
 
@@ -29,7 +29,7 @@ class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
             "config",
             "config_value",
             "config_name = 'server_protocol'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath = $this->old_db->fetch_field($query, 'config_value');
         $this->old_db->free_result($query);
@@ -38,7 +38,7 @@ class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
             "config",
             "config_value",
             "config_name = 'server_name'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath .= $this->old_db->fetch_field($query, 'config_value');
         $this->old_db->free_result($query);
@@ -47,7 +47,7 @@ class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
             "config",
             "config_value",
             "config_name = 'script_path'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath .= $this->old_db->fetch_field($query, 'config_value') . '/';
         $this->old_db->free_result($query);
@@ -56,7 +56,7 @@ class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
             "config",
             "config_value",
             "config_name = 'upload_path'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath .= $this->old_db->fetch_field($query, 'config_value');
         $this->old_db->free_result($query);
@@ -72,10 +72,10 @@ class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
             "attachments",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_attachments'],
                 'limit' => $import_session['attachments_per_screen']
-            )
+            ]
         );
         while ($attachment = $this->old_db->fetch_array($query)) {
             $this->insert($attachment);
@@ -84,7 +84,7 @@ class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // phpBB 3 values
         $insert_data['import_aid'] = $data['attach_id'];

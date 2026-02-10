@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class BBPRESS_Converter_Module_Forums extends Converter_Module_Forums
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forums',
         'progress_column' => 'ID',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function pre_setup()
     {
@@ -27,7 +27,7 @@ class BBPRESS_Converter_Module_Forums extends Converter_Module_Forums
 
         // BBPress has only "forums", so we need a parent category where we put everything to avoid loosing of threads
         if (!isset($import_session['parent_fid'])) {
-            $cat = array(
+            $cat = [
                 "name" => "BBPress imported forums",
                 "type" => "c",
                 "description" => "This forums were imported from your BBPress installation",
@@ -36,7 +36,7 @@ class BBPRESS_Converter_Module_Forums extends Converter_Module_Forums
                 "rules" => "",
                 "active" => 1,
                 "open" => 1,
-            );
+            ];
             // No "input", so no need to escape
             $import_session['parent_fid'] = $db->insert_query("forums", $cat);
         }
@@ -50,7 +50,7 @@ class BBPRESS_Converter_Module_Forums extends Converter_Module_Forums
             "posts",
             "*",
             "post_type='forum'",
-            array('limit_start' => $this->trackers['start_forums'], 'limit' => $import_session['forums_per_screen'])
+            ['limit_start' => $this->trackers['start_forums'], 'limit' => $import_session['forums_per_screen']]
         );
         while ($forum = $this->old_db->fetch_array($query)) {
             $this->insert($forum);
@@ -61,7 +61,7 @@ class BBPRESS_Converter_Module_Forums extends Converter_Module_Forums
     {
         global $import_session;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // bbPress Values
         $insert_data['import_fid'] = intval($data['ID']);
@@ -116,7 +116,7 @@ class BBPRESS_Converter_Module_Forums extends Converter_Module_Forums
         while ($forum = $db->fetch_array($query)) {
             $db->update_query(
                 "forums",
-                array('pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])),
+                ['pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])],
                 "fid='{$forum['fid']}'",
                 1
             );

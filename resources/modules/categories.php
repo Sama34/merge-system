@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Categories extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'import_fid' => 0,
         'import_pid' => 0,
 
@@ -53,9 +53,9 @@ abstract class Converter_Module_Categories extends Converter_Module
         'defaultdatecut' => 0,
         'defaultsortby' => '',
         'defaultsortorder' => '',
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'import_fid',
         'import_pid',
 
@@ -87,7 +87,7 @@ abstract class Converter_Module_Categories extends Converter_Module
         'deletedthreads',
         'deletedposts',
         'defaultdatecut',
-    );
+    ];
 
     /**
      * Insert forum into database

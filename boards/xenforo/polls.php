@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class XENFORO_Converter_Module_Polls extends Converter_Module_Polls
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'polls',
         'progress_column' => 'poll_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     var $cache_tid_polls = null;
 
@@ -31,19 +31,19 @@ class XENFORO_Converter_Module_Polls extends Converter_Module_Polls
             "poll",
             "*",
             "content_type='thread'",
-            array('limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen'])
+            ['limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen']]
         );
         while ($poll = $this->old_db->fetch_array($query)) {
             $pid = $this->insert($poll);
 
             // Restore connections
-            $db->update_query("threads", array('poll' => $pid), "import_tid = '" . $poll['content_id'] . "'");
+            $db->update_query("threads", ['poll' => $pid], "import_tid = '" . $poll['content_id'] . "'");
         }
     }
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Xenforo values
         $responses = unserialize($data['responses']);

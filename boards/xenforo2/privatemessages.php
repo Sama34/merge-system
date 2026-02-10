@@ -14,11 +14,11 @@ if (!defined("IN_MYBB")) {
 
 class XENFORO2_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'message_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -42,7 +42,7 @@ class XENFORO2_Converter_Module_Privatemessages extends Converter_Module_Private
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // Xenforo 2 values
         $insert_data['fromid'] = $this->get_import->uid($data['user_id']);
@@ -61,7 +61,7 @@ class XENFORO2_Converter_Module_Privatemessages extends Converter_Module_Private
             "*",
             "conversation_id='{$data['conversation_id']}' AND user_id!='{$data['user_id']}'"
         );
-        $to_send = $recipients = array();
+        $to_send = $recipients = [];
         while ($rec = $this->old_db->fetch_array($rec_query)) {
             $rec['user_id'] = $this->get_import->uid($rec['user_id']);
 

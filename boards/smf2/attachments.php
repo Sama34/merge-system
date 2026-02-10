@@ -15,15 +15,15 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'id_attach',
         'default_per_screen' => 20,
-    );
+    ];
 
-    var $thumbs = array();
+    var $thumbs = [];
 
-    var $cache_attach_filenames = array();
+    var $cache_attach_filenames = [];
 
     public $path_column = "id_attach,file_hash";
 
@@ -33,13 +33,13 @@ class SMF2_Converter_Module_Attachments extends Converter_Module_Attachments
             "settings",
             "value",
             "variable = 'attachmentUploadDir'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath = $this->old_db->fetch_field($query, 'value');
         $this->old_db->free_result($query);
 
         if (empty($uploadspath)) {
-            $query = $this->old_db->simple_select("settings", "value", "variable = 'avatar_url'", array('limit' => 1));
+            $query = $this->old_db->simple_select("settings", "value", "variable = 'avatar_url'", ['limit' => 1]);
             $uploadspath = str_replace('avatars', 'attachments', $this->old_db->fetch_field($query, 'value'));
             $this->old_db->free_result($query);
         }
@@ -55,10 +55,10 @@ class SMF2_Converter_Module_Attachments extends Converter_Module_Attachments
             "attachments",
             "*",
             "attachment_type != '3' AND id_msg != '0'",
-            array(
+            [
                 'limit_start' => $this->trackers['start_attachments'],
                 'limit' => $import_session['attachments_per_screen']
-            )
+            ]
         );
         while ($attachment = $this->old_db->fetch_array($query)) {
             if (in_array($attachment['id_attach'], $this->thumbs)) {
@@ -71,7 +71,7 @@ class SMF2_Converter_Module_Attachments extends Converter_Module_Attachments
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // SMF values
         $insert_data['import_aid'] = $data['id_attach'];

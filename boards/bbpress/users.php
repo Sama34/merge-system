@@ -15,14 +15,14 @@ if (!defined("IN_MYBB")) {
 class BBPRESS_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'ID',
         'encode_table' => 'users',
         'username_column' => 'user_login',
         'email_column' => 'user_email',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -43,7 +43,7 @@ class BBPRESS_Converter_Module_Users extends Converter_Module_Users
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // bbPress values
         $insert_data['usergroup'] = $this->board->get_group_id($data['usergroups']);

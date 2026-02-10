@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Threads extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'import_tid' => 0,
         'import_uid' => 0,
         'import_poll' => 0,
@@ -39,9 +39,9 @@ abstract class Converter_Module_Threads extends Converter_Module
         'deletedposts' => 0,
         'attachmentcount' => 0,
         'deletetime' => 0,
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'import_tid',
         'import_uid',
         'import_poll',
@@ -66,12 +66,12 @@ abstract class Converter_Module_Threads extends Converter_Module
         'deletedposts',
         'attachmentcount',
         'deletetime',
-    );
+    ];
 
-    var $mark_as_run_modules = array(
+    var $mark_as_run_modules = [
         'polls',
         'posts',
-    );
+    ];
 
     /**
      * Insert thread into database

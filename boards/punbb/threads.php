@@ -16,11 +16,11 @@ if (!defined("IN_MYBB")) {
 class PUNBB_Converter_Module_Threads extends Converter_Module_Threads
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -30,7 +30,7 @@ class PUNBB_Converter_Module_Threads extends Converter_Module_Threads
             "topics",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen'])
+            ['limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen']]
         );
         while ($thread = $this->old_db->fetch_array($query)) {
             $this->insert($thread);
@@ -39,7 +39,7 @@ class PUNBB_Converter_Module_Threads extends Converter_Module_Threads
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // punBB values
         $insert_data['import_tid'] = $data['id'];
@@ -74,7 +74,7 @@ class PUNBB_Converter_Module_Threads extends Converter_Module_Threads
             "posts",
             "*",
             "topic_id = '{$tid}'",
-            array('order_by' => 'posted', 'order_dir' => 'ASC', 'limit' => 1)
+            ['order_by' => 'posted', 'order_dir' => 'ASC', 'limit' => 1]
         );
         return $this->old_db->fetch_field($query, "id");
     }

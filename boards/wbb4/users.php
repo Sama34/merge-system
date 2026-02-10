@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class WBB4_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'userID',
         'encode_table' => 'user',
@@ -23,16 +23,16 @@ class WBB4_Converter_Module_Users extends Converter_Module_Users
         'username_column' => 'username',
         'email_column' => 'email',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $options = array(
+    var $options = [
         "homepage",
         "birthday",
         "timezone",
         "icq",
         "skype",
         "googlePlus",
-    );
+    ];
 
     var $nice_options;
     var $fields;
@@ -97,7 +97,7 @@ class WBB4_Converter_Module_Users extends Converter_Module_Users
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // WBB 4 values
         // Using the displaygroup as usergroup as wbb doesn't have a "primary" group
@@ -105,7 +105,7 @@ class WBB4_Converter_Module_Users extends Converter_Module_Users
         // Remove the primary usergroup and the guest group which is used for not activated users
         $insert_data['additionalgroups'] = $this->board->get_group_id(
             $data['usergroups'],
-            array($insert_data['usergroup'], MYBB_GUESTS)
+            [$insert_data['usergroup'], MYBB_GUESTS]
         );
 
         // User isn't activated

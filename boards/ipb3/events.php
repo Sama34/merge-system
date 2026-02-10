@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Events extends Converter_Module_Events
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'events',
         'progress_column' => 'event_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,7 +29,7 @@ class IPB3_Converter_Module_Events extends Converter_Module_Events
             "cal_events",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_events'], 'limit' => $import_session['events_per_screen'])
+            ['limit_start' => $this->trackers['start_events'], 'limit' => $import_session['events_per_screen']]
         );
         while ($event = $this->old_db->fetch_array($query)) {
             $this->insert($event);
@@ -38,7 +38,7 @@ class IPB3_Converter_Module_Events extends Converter_Module_Events
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Invision Power Board 3 values
         $insert_data['name'] = encode_to_utf8($data['event_title'], "cal_events", "events");

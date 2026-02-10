@@ -40,29 +40,29 @@ class MYBB_Converter extends Converter
      *
      * @var array
      */
-    var $modules = array(
-        "db_configuration" => array("name" => "Database Configuration", "dependencies" => ""),
-        "import_usergroups" => array("name" => "Usergroups", "dependencies" => "db_configuration"),
-        "import_users" => array("name" => "Users", "dependencies" => "db_configuration,import_usergroups"),
-        "import_forums" => array("name" => "Forums", "dependencies" => "db_configuration,import_users"),
-        "import_forumperms" => array("name" => "Forum Permissions", "dependencies" => "db_configuration,import_forums"),
-        "import_threads" => array("name" => "Threads", "dependencies" => "db_configuration,import_forums"),
-        "import_polls" => array("name" => "Polls", "dependencies" => "db_configuration,import_threads"),
-        "import_pollvotes" => array("name" => "Poll Votes", "dependencies" => "db_configuration,import_polls"),
-        "import_posts" => array("name" => "Posts", "dependencies" => "db_configuration,import_threads"),
-        "import_moderators" => array(
+    var $modules = [
+        "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
+        "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
+        "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
+        "import_forums" => ["name" => "Forums", "dependencies" => "db_configuration,import_users"],
+        "import_forumperms" => ["name" => "Forum Permissions", "dependencies" => "db_configuration,import_forums"],
+        "import_threads" => ["name" => "Threads", "dependencies" => "db_configuration,import_forums"],
+        "import_polls" => ["name" => "Polls", "dependencies" => "db_configuration,import_threads"],
+        "import_pollvotes" => ["name" => "Poll Votes", "dependencies" => "db_configuration,import_polls"],
+        "import_posts" => ["name" => "Posts", "dependencies" => "db_configuration,import_threads"],
+        "import_moderators" => [
             "name" => "Moderators",
             "dependencies" => "db_configuration,import_forums,import_users"
-        ),
-        "import_privatemessages" => array(
+        ],
+        "import_privatemessages" => [
             "name" => "Private Messages",
             "dependencies" => "db_configuration,import_users"
-        ),
-        "import_settings" => array("name" => "Settings", "dependencies" => "db_configuration"),
-        "import_events" => array("name" => "Calendar Events", "dependencies" => "db_configuration,import_users"),
-        "import_avatars" => array("name" => "Avatars", "dependencies" => "db_configuration,import_users"),
-        "import_attachments" => array("name" => "Attachments", "dependencies" => "db_configuration,import_posts"),
-    );
+        ],
+        "import_settings" => ["name" => "Settings", "dependencies" => "db_configuration"],
+        "import_events" => ["name" => "Calendar Events", "dependencies" => "db_configuration,import_users"],
+        "import_avatars" => ["name" => "Avatars", "dependencies" => "db_configuration,import_users"],
+        "import_attachments" => ["name" => "Attachments", "dependencies" => "db_configuration,import_posts"],
+    ];
 
     /**
      * The table we check to verify it's "our" database
@@ -84,7 +84,7 @@ class MYBB_Converter extends Converter
      *
      * @var array
      */
-    var $groups = array(
+    var $groups = [
         1 => MYBB_GUESTS, // Guests
         2 => MYBB_REGISTERED, // Registered
         3 => MYBB_SMODS, // Super Moderators
@@ -92,15 +92,15 @@ class MYBB_Converter extends Converter
         5 => MYBB_AWAITING, // Awaiting Activation
         6 => MYBB_MODS, // Mods
         7 => MYBB_BANNED, // Banned
-    );
+    ];
 
     // TODO: just for debugging here, of course it's useless to check mybb => mybb merges
-    var $column_length_to_check = array(
-        'users' => array(
-            'users' => array(
+    var $column_length_to_check = [
+        'users' => [
+            'users' => [
                 'icq' => 'icq'
-            )
-        )
-    );
+            ]
+        ]
+    ];
 }
 

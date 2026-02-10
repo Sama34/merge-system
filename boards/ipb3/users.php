@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => "users",
         'progress_column' => "member_id",
         'encode_table' => "members",
@@ -23,7 +23,7 @@ class IPB3_Converter_Module_Users extends Converter_Module_Users
         'username_column' => 'name',
         'email_column' => 'email',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -45,7 +45,7 @@ class IPB3_Converter_Module_Users extends Converter_Module_Users
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Invision Power Board 3 values
         $insert_data['usergroup'] = $this->board->get_gid($data['member_group_id']);
@@ -68,7 +68,7 @@ class IPB3_Converter_Module_Users extends Converter_Module_Users
         }
         $insert_data['icq'] = $data['field_4'];
         $insert_data['skype'] = $data['field_10'];
-        $insert_data['timezone'] = str_replace(array('.0', '.00'), array('', ''), $data['time_offset']);
+        $insert_data['timezone'] = str_replace(['.0', '.00'], ['', ''], $data['time_offset']);
         $insert_data['timezone'] = ((!strstr($insert_data['timezone'], '+') && !strstr(
                 $insert_data['timezone'],
                 '-'

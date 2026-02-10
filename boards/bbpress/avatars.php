@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class BBPRESS_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'ID',
         'default_per_screen' => 20,
-    );
+    ];
 
     var $dimension;
 
@@ -56,7 +56,7 @@ class BBPRESS_Converter_Module_Avatars extends Converter_Module_Avatars
             "users",
             "*",
             "user_email!=''",
-            array('limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen'])
+            ['limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen']]
         );
         while ($avatar = $this->old_db->fetch_array($query)) {
             $this->insert($avatar);
@@ -65,7 +65,7 @@ class BBPRESS_Converter_Module_Avatars extends Converter_Module_Avatars
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // MyBB 1.8 values
         $insert_data['uid'] = $this->get_import->uid($data['ID']);

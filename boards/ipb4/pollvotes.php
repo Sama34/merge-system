@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class IPB4_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'poll votes',
         'progress_column' => 'vid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class IPB4_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
             "core_voters",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_pollvotes'],
                 'limit' => $import_session['pollvotes_per_screen']
-            )
+            ]
         );
         while ($pollvote = $this->old_db->fetch_array($query)) {
             $this->insert($pollvote);
@@ -43,7 +43,7 @@ class IPB4_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // Invision Power Board 4 values
         $insert_data['uid'] = $this->get_import->uid($data['member_id']);
@@ -54,7 +54,7 @@ class IPB4_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
         $choices = json_decode($data['member_choices'], true);
         $choices = $choices[1];
         if (!is_array($choices)) {
-            $choices = array($choices);
+            $choices = [$choices];
         }
         foreach ($choices as $key => $choice) {
             $insert_data['voteoption'] = $choice;

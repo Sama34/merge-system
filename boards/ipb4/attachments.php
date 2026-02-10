@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class IPB4_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => "attachments",
         'progress_column' => "attach_id",
         'default_per_screen' => 20,
-    );
+    ];
 
     public $path_column = "attach_location";
 
@@ -55,7 +55,7 @@ class IPB4_Converter_Module_Attachments extends Converter_Module_Attachments
 
         $error_notice = "";
 
-        $insert_data = array();
+        $insert_data = [];
 
         // Invision Power Board 4 values
         $insert_data['import_aid'] = $data['attach_id'];

@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Forums extends Converter_Module_Forums
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forums',
         'progress_column' => 'fid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,12 +29,12 @@ class MYBB_Converter_Module_Forums extends Converter_Module_Forums
             "forums",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_forums'],
                 'limit' => $import_session['forums_per_screen'],
                 'order_by' => 'type',
                 'order_dir' => 'asc'
-            )
+            ]
         );
         while ($forum = $this->old_db->fetch_array($query)) {
             $this->insert($forum);
@@ -52,7 +52,7 @@ class MYBB_Converter_Module_Forums extends Converter_Module_Forums
             $field_info = $db->show_fields_from("forums");
         }
 
-        $insert_data = array();
+        $insert_data = [];
 
         foreach ($field_info as $key => $field) {
             if ($field['Extra'] == 'auto_increment') {
@@ -97,7 +97,7 @@ class MYBB_Converter_Module_Forums extends Converter_Module_Forums
         // Cleanup root category forums (type 'c' forums whose parent is "None").
         $query = $db->simple_select("forums", "fid", "import_fid != '0' AND import_pid = '0'");
         while ($forum = $db->fetch_array($query)) {
-            $db->update_query("forums", array('parentlist' => $forum['fid']), "fid='{$forum['fid']}'", 1);
+            $db->update_query("forums", ['parentlist' => $forum['fid']], "fid='{$forum['fid']}'", 1);
         }
 
         // Cleanup other imported forums
@@ -112,7 +112,7 @@ class MYBB_Converter_Module_Forums extends Converter_Module_Forums
         while ($forum = $db->fetch_array($query)) {
             $db->update_query(
                 "forums",
-                array('pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])),
+                ['pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])],
                 "fid='{$forum['fid']}'",
                 1
             );

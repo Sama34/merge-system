@@ -38,8 +38,8 @@ class BBCode_Parser extends BBCode_Parser_HTML
 
         // Special IPB Codes
         $text = preg_replace('#\[twitter\](.*?)\[/twitter\]#si', "[url=https://twitter.com/$1]$1[/url]\n", $text);
-        $text = preg_replace_callback("#\[topic='([0-9]+)'\](.*?)\[/topic\]#i", array($this, "topic_callback"), $text);
-        $text = preg_replace_callback("#\[post='([0-9]+)'\](.*?)\[/post\]#i", array($this, "post_callback"), $text);
+        $text = preg_replace_callback("#\[topic='([0-9]+)'\](.*?)\[/topic\]#i", [$this, "topic_callback"], $text);
+        $text = preg_replace_callback("#\[post='([0-9]+)'\](.*?)\[/post\]#i", [$this, "post_callback"], $text);
 
         return $text;
     }

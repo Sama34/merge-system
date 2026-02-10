@@ -14,16 +14,16 @@ const AVATAR_TYPE_GRAVATAR = 'gravatar';
 
 abstract class Converter_Module_Avatars extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'uid' => 0,
         'avatar' => '',
         'avatardimensions' => '',
         'avatartype' => '',
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'uid',
-    );
+    ];
 
     abstract function get_avatar_path();
 
@@ -274,7 +274,7 @@ abstract class Converter_Module_Avatars extends Converter_Module
         $maxheight = (int)$maxwidth;
 
         // Rating?
-        $types = array('g', 'pg', 'r', 'x');
+        $types = ['g', 'pg', 'r', 'x'];
         $rating = $mybb->settings['useravatarrating'];
 
         if (!in_array($rating, $types)) {

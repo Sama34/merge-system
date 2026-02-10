@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN3_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'pmid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -50,7 +50,7 @@ class VBULLETIN3_Converter_Module_Privatemessages extends Converter_Module_Priva
 
         // Rebuild the recipients array and toid field
         $touserarray = unserialize($data['touserarray']);
-        $recipients = array();
+        $recipients = [];
 
         // vB has some problems with serialized data. They use strlen (eg "s:1:ü") though PHP uses the byte count (so "s:2:ü")
         // As PHP notices that and declares the data as invalid we need to try to decode the serialized data (which indirectly forces PHP to use the strlen)

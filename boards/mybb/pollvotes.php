@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'poll votes',
         'progress_column' => 'vid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class MYBB_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
             "pollvotes",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_pollvotes'],
                 'limit' => $import_session['pollvotes_per_screen']
-            )
+            ]
         );
         while ($pollvote = $this->old_db->fetch_array($query)) {
             $this->insert($pollvote);
@@ -50,7 +50,7 @@ class MYBB_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
             $field_info = $db->show_fields_from("pollvotes");
         }
 
-        $insert_data = array();
+        $insert_data = [];
 
         foreach ($field_info as $key => $field) {
             if ($field['Extra'] == 'auto_increment') {

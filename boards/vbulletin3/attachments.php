@@ -19,11 +19,11 @@ const ATTACH_AS_FILES_NEW = 2;
 class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'attachmentid',
         'default_per_screen' => 20,
-    );
+    ];
 
     public $test_table = "attachment";
 
@@ -64,10 +64,10 @@ class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachmen
             "attachment",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_attachments'],
                 'limit' => $import_session['attachments_per_screen']
-            )
+            ]
         );
         while ($attachment = $this->old_db->fetch_array($query)) {
             $this->insert($attachment);
@@ -76,7 +76,7 @@ class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachmen
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // vBulletin 3 values
         $insert_data['import_aid'] = $data['attachmentid'];

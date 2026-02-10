@@ -20,7 +20,7 @@ const PM_STATUS_FORWARDED = 4;
 
 abstract class Converter_Module_Privatemessages extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'uid' => 0,
         'toid' => 0,
         'fromid' => 0,
@@ -38,9 +38,9 @@ abstract class Converter_Module_Privatemessages extends Converter_Module
         'receipt' => 2,
         'readtime' => 0,
         'ipaddress' => '',
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'uid',
         'toid',
         'fromid',
@@ -54,11 +54,11 @@ abstract class Converter_Module_Privatemessages extends Converter_Module
         'smilieoff',
         'receipt',
         'readtime',
-    );
+    ];
 
-    public $binary_fields = array(
+    public $binary_fields = [
         'ipaddress'
-    );
+    ];
 
     /**
      * Insert privatemessages into database
@@ -142,7 +142,7 @@ abstract class Converter_Module_Privatemessages extends Converter_Module
 
         while ($user = $db->fetch_array($query)) {
             // Simply changing the pmnotice to 2 will work
-            $db->update_query('users', array('pmnotice' => 2), "uid={$user['uid']}");
+            $db->update_query('users', ['pmnotice' => 2], "uid={$user['uid']}");
 
             ++$progress;
             // 200 is maximum, half of this has been done before. So use 100 as maximum but add the previous 100

@@ -16,12 +16,12 @@ if (!defined("IN_MYBB")) {
 class PUNBB_Converter_Module_Posts extends Converter_Module_Posts
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'posts',
         'progress_column' => 'id',
         'default_per_screen' => 1000,
         'check_table_type' => 'posts',
-    );
+    ];
 
     function import()
     {
@@ -31,7 +31,7 @@ class PUNBB_Converter_Module_Posts extends Converter_Module_Posts
             "posts",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_posts'], 'limit' => $import_session['posts_per_screen'])
+            ['limit_start' => $this->trackers['start_posts'], 'limit' => $import_session['posts_per_screen']]
         );
         while ($post = $this->old_db->fetch_array($query)) {
             $this->insert($post);
@@ -42,7 +42,7 @@ class PUNBB_Converter_Module_Posts extends Converter_Module_Posts
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // punBB values
         $insert_data['import_pid'] = $data['id'];
@@ -92,7 +92,7 @@ class PUNBB_Converter_Module_Posts extends Converter_Module_Posts
 
         // If this post isn't a reply to another post it's probably the first post for our thread
         if ($new['replyto'] == 0) {
-            $db->update_query("threads", array('firstpost' => $pid), "tid='{$new['tid']}'");
+            $db->update_query("threads", ['firstpost' => $pid], "tid='{$new['tid']}'");
         }
     }
 

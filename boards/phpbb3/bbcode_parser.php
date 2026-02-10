@@ -36,7 +36,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
             $text = str_replace(":{$uid}", '', $text);
         }
 
-        $text = str_replace(array('[/*:m]', '[/list:o]', '[/list:u]'), array('', '[/list]', '[/list]'), $text);
+        $text = str_replace(['[/*:m]', '[/list:o]', '[/list:u]'], ['', '[/list]', '[/list]'], $text);
 
         // Smilies are saved as img code, with comments before and after. Remove that stuff.
         $text = preg_replace(
@@ -68,11 +68,11 @@ class BBCode_Parser extends BBCode_Parser_Plain
 
         global $module;
 
-        $options = array(
+        $options = [
             "order_by" => "attach_id",
             "limit" => 1,
             "limit_start" => $matches[1],
-        );
+        ];
         $query = $module->old_db->simple_select("attachments", "attach_id", "post_msg_id={$this->pid}", $options);
         $id = $module->old_db->fetch_field($query, "attach_id");
         $module->old_db->free_result($query);

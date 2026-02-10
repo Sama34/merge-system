@@ -45,7 +45,7 @@ class Log
     private $caused_error = false;
 
     /** @var array */
-    private $log_inserts = array();
+    private $log_inserts = [];
 
     /**
      * @param string $message
@@ -141,11 +141,11 @@ class Log
             return;
         }
 
-        $log_insert = array(
+        $log_insert = [
             'type' => intval($type),
             'message' => $this->generate_plain_backtrace(2) . $message,
             'timestamp' => TIME_NOW,
-        );
+        ];
         $this->log_inserts[] = $log_insert;
 
         // If our database connection is established
@@ -189,7 +189,7 @@ class Log
             }
 
             // Clear out our log queue now that they're all inserted
-            $this->log_inserts = array();
+            $this->log_inserts = [];
         }
     }
 

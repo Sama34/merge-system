@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class SMF_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'ID_MEMBER',
         'encode_table' => 'members',
@@ -23,7 +23,7 @@ class SMF_Converter_Module_Users extends Converter_Module_Users
         'username_column' => 'memberName',
         'email_column' => 'emailAddress',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -34,12 +34,12 @@ class SMF_Converter_Module_Users extends Converter_Module_Users
             "members",
             "*",
             "",
-            array(
+            [
                 'order_by' => 'ID_MEMBER',
                 'order_dir' => 'ASC',
                 'limit_start' => $this->trackers['start_users'],
                 'limit' => $import_session['users_per_screen']
-            )
+            ]
         );
         while ($user = $this->old_db->fetch_array($query)) {
             $this->insert($user);
@@ -48,7 +48,7 @@ class SMF_Converter_Module_Users extends Converter_Module_Users
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // SMF values
         $insert_data['usergroup'] = $this->board->get_gid($data['ID_GROUP']);
@@ -84,7 +84,7 @@ class SMF_Converter_Module_Users extends Converter_Module_Users
         $insert_data['dateformat'] = get_date_format($data['timeFormat'], "%");
         $insert_data['timeformat'] = get_time_format($data['timeFormat'], "%");
         $insert_data['timezone'] = $data['timeOffset'];
-        $insert_data['timezone'] = str_replace(array('.0', '.00'), array('', ''), $insert_data['timezone']);
+        $insert_data['timezone'] = str_replace(['.0', '.00'], ['', ''], $insert_data['timezone']);
         $insert_data['buddylist'] = $data['buddy_list'];
         $insert_data['ignorelist'] = $data['pm_ignore_list'];
         $insert_data['regip'] = my_inet_pton($data['memberIP']);
@@ -123,7 +123,7 @@ class SMF_Converter_Module_Users extends Converter_Module_Users
             "messages",
             "*",
             "ID_MEMBER = '{$uid}'",
-            array('order_by' => 'posterTime', 'order_dir' => 'ASC', 'limit' => 1)
+            ['order_by' => 'posterTime', 'order_dir' => 'ASC', 'limit' => 1]
         );
         $result = $this->old_db->fetch_array($query);
         $this->old_db->free_result($query);

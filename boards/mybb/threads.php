@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Threads extends Converter_Module_Threads
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'tid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,7 +29,7 @@ class MYBB_Converter_Module_Threads extends Converter_Module_Threads
             "threads",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen'])
+            ['limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen']]
         );
         while ($thread = $this->old_db->fetch_array($query)) {
             $this->insert($thread);
@@ -47,7 +47,7 @@ class MYBB_Converter_Module_Threads extends Converter_Module_Threads
             $field_info = $db->show_fields_from("threads");
         }
 
-        $insert_data = array();
+        $insert_data = [];
 
         foreach ($field_info as $key => $field) {
             if ($field['Extra'] == 'auto_increment') {

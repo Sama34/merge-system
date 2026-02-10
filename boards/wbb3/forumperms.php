@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class WBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forum permissions',
         'progress_column' => 'boardID',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $convert_val = array(
+    var $convert_val = [
         "canViewBoard" => "canview",
         "canReadThread" => "canviewthreads",
         "canStartThread" => "canpostthreads",
@@ -32,9 +32,9 @@ class WBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
         "canDownloadAttachment" => "candlattachments",
         "canDeleteOwnPost" => "candeleteposts",
         "canEditOwnPost" => "caneditposts",
-    );
+    ];
 
-    var $group_cache = array();
+    var $group_cache = [];
 
     function import()
     {

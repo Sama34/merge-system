@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'poll votes',
         'progress_column' => 'vid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class IPB3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
             "voters",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_pollvotes'],
                 'limit' => $import_session['pollvotes_per_screen']
-            )
+            ]
         );
         while ($pollvote = $this->old_db->fetch_array($query)) {
             $this->insert($pollvote);
@@ -43,7 +43,7 @@ class IPB3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // Invision Power Board 3 values
         $insert_data['uid'] = $this->get_import->uid($data['member_id']);

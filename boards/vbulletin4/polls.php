@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN4_Converter_Module_Polls extends Converter_Module_Polls
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'polls',
         'progress_column' => 'pollid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     var $cache_tid_polls = null;
 
@@ -31,20 +31,20 @@ class VBULLETIN4_Converter_Module_Polls extends Converter_Module_Polls
             "poll",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen'])
+            ['limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen']]
         );
         while ($poll = $this->old_db->fetch_array($query)) {
             $pid = $this->insert($poll);
 
             // Restore connections
             $thread = $this->get_import_tid_poll($poll['pollid']);
-            $db->update_query("threads", array('poll' => $pid), "import_tid = '" . $thread['import_tid'] . "'");
+            $db->update_query("threads", ['poll' => $pid], "import_tid = '" . $thread['import_tid'] . "'");
         }
     }
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // vBulletin 4 values
         $thread = $this->get_import_tid_poll($data['pollid']);
@@ -73,10 +73,10 @@ class VBULLETIN4_Converter_Module_Polls extends Converter_Module_Polls
         if (!$this->cache_tid_polls) {
             $query = $db->simple_select("threads", "tid,import_tid,import_poll", "import_poll != 0");
             while ($thread = $db->fetch_array($query)) {
-                $this->cache_tid_polls[$thread['import_poll']] = array(
+                $this->cache_tid_polls[$thread['import_poll']] = [
                     'tid' => $thread['tid'],
                     'import_tid' => $thread['import_tid']
-                );
+                ];
             }
             $db->free_result($query);
         }

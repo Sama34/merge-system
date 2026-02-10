@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN5_Converter_Module_Forumperms extends Converter_Module_Forumperms
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forum permissions',
         'progress_column' => 'forumid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class VBULLETIN5_Converter_Module_Forumperms extends Converter_Module_Forumperms
             "forumpermission",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_forumperms'],
                 'limit' => $import_session['forumperms_per_screen']
-            )
+            ]
         );
         while ($perm = $this->old_db->fetch_array($query)) {
             $this->insert($perm);
@@ -41,13 +41,13 @@ class VBULLETIN5_Converter_Module_Forumperms extends Converter_Module_Forumperms
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // vBulletin 5 values
         $insert_data['fid'] = $this->get_import->fid($data['forumid']);
         $insert_data['gid'] = $this->board->get_gid($data['usergroupid']);
 
-        $perm_bits = array(
+        $perm_bits = [
             "canview" => 1,
             "canviewthreads" => 2,
             "candlattachments" => 4096,
@@ -62,7 +62,7 @@ class VBULLETIN5_Converter_Module_Forumperms extends Converter_Module_Forumperms
             "canpostpolls" => 16384,
             "canvotepolls" => 32768,
             "cansearch" => 4
-        );
+        ];
 
         foreach ($perm_bits as $key => $val) {
             if ($data['forumpermissions'] & $val) {

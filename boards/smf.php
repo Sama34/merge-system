@@ -41,30 +41,30 @@ class SMF_Converter extends Converter
      *
      * @var array
      */
-    var $modules = array(
-        "db_configuration" => array("name" => "Database Configuration", "dependencies" => ""),
-        "import_usergroups" => array("name" => "Usergroups", "dependencies" => "db_configuration"),
-        "import_users" => array("name" => "Users", "dependencies" => "db_configuration,import_usergroups"),
-        "import_categories" => array("name" => "Categories", "dependencies" => "db_configuration,import_users"),
-        "import_forums" => array("name" => "Forums", "dependencies" => "db_configuration,import_categories"),
-        "import_forumperms" => array("name" => "Forum Permissions", "dependencies" => "db_configuration,import_forums"),
-        "import_threads" => array("name" => "Threads", "dependencies" => "db_configuration,import_forums"),
-        "import_polls" => array("name" => "Polls", "dependencies" => "db_configuration,import_threads"),
-        "import_pollvotes" => array("name" => "Poll Votes", "dependencies" => "db_configuration,import_polls"),
-        "import_posts" => array("name" => "Posts", "dependencies" => "db_configuration,import_threads"),
-        "import_privatemessages" => array(
+    var $modules = [
+        "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
+        "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
+        "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
+        "import_categories" => ["name" => "Categories", "dependencies" => "db_configuration,import_users"],
+        "import_forums" => ["name" => "Forums", "dependencies" => "db_configuration,import_categories"],
+        "import_forumperms" => ["name" => "Forum Permissions", "dependencies" => "db_configuration,import_forums"],
+        "import_threads" => ["name" => "Threads", "dependencies" => "db_configuration,import_forums"],
+        "import_polls" => ["name" => "Polls", "dependencies" => "db_configuration,import_threads"],
+        "import_pollvotes" => ["name" => "Poll Votes", "dependencies" => "db_configuration,import_polls"],
+        "import_posts" => ["name" => "Posts", "dependencies" => "db_configuration,import_threads"],
+        "import_privatemessages" => [
             "name" => "Private Messages",
             "dependencies" => "db_configuration,import_users"
-        ),
-        "import_moderators" => array(
+        ],
+        "import_moderators" => [
             "name" => "Moderators",
             "dependencies" => "db_configuration,import_forums,import_users"
-        ),
-        "import_settings" => array("name" => "Settings", "dependencies" => "db_configuration"),
-        "import_events" => array("name" => "Calendar Events", "dependencies" => "db_configuration,import_posts"),
-        "import_avatars" => array("name" => "Avatars", "dependencies" => "db_configuration,import_users"),
-        "import_attachments" => array("name" => "Attachments", "dependencies" => "db_configuration,import_posts"),
-    );
+        ],
+        "import_settings" => ["name" => "Settings", "dependencies" => "db_configuration"],
+        "import_events" => ["name" => "Calendar Events", "dependencies" => "db_configuration,import_posts"],
+        "import_avatars" => ["name" => "Avatars", "dependencies" => "db_configuration,import_users"],
+        "import_attachments" => ["name" => "Attachments", "dependencies" => "db_configuration,import_posts"],
+    ];
 
     /**
      * The table we check to verify it's "our" database
@@ -85,15 +85,15 @@ class SMF_Converter extends Converter
      *
      * @var array
      */
-    var $groups = array(
+    var $groups = [
         -1 => MYBB_GUESTS, // Guests
         0 => MYBB_REGISTERED, // Registered
         1 => MYBB_ADMINS, // Administrators
         2 => MYBB_SMODS, // Super Moderators
         3 => MYBB_MODS, // Moderators
-    );
+    ];
 
-    var $get_post_cache = array();
+    var $get_post_cache = [];
 
     /**
      * Get a post from the SMF database
@@ -109,7 +109,7 @@ class SMF_Converter extends Converter
 
         $pid = intval($pid);
 
-        $query = $this->old_db->simple_select("messages", "*", "ID_MSG = '{$pid}'", array('limit' => 1));
+        $query = $this->old_db->simple_select("messages", "*", "ID_MSG = '{$pid}'", ['limit' => 1]);
         $results = $this->old_db->fetch_array($query);
         $this->old_db->free_result($query);
 

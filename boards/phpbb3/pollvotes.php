@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'poll votes',
         'progress_column' => 'topic_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $cache_poll_details = array();
+    var $cache_poll_details = [];
 
     function import()
     {
@@ -31,10 +31,10 @@ class PHPBB3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
             "poll_votes",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_pollvotes'],
                 'limit' => $import_session['pollvotes_per_screen']
-            )
+            ]
         );
         while ($pollvote = $this->old_db->fetch_array($query)) {
             $this->insert($pollvote);
@@ -43,7 +43,7 @@ class PHPBB3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // phpBB 3 values
         $poll = $this->get_poll_details($data['topic_id']);

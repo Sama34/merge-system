@@ -76,7 +76,7 @@ if (!isset($config['database']['type'])) {
 }
 
 // If we have register globals on and we're coming from the db config page it seems to screw up the $config variable
-$config_copy = array();
+$config_copy = [];
 if (@ini_get("register_globals") == 1) {
     $config_copy = $config;
 }
@@ -181,15 +181,15 @@ $import_session = $cache->read("import_cache", 1);
 
 // Setup our arrays if they don't exist yet
 if (!$import_session['resume_module']) {
-    $import_session['resume_module'] = array();
+    $import_session['resume_module'] = [];
 }
 
 if (!$import_session['disabled']) {
-    $import_session['disabled'] = array();
+    $import_session['disabled'] = [];
 }
 
 if (!$import_session['resume_module']) {
-    $import_session['resume_module'] = array();
+    $import_session['resume_module'] = [];
 }
 
 if ($mybb->version_code < 1700 || $mybb->version_code >= 2000) {
@@ -223,7 +223,7 @@ if (isset($mybb->input['reportgen']) && !empty($import_session['board'])) {
     $board = new $class_name;
 
     // List of statistics we'll be using
-    $import_stats = array(
+    $import_stats = [
         'total_usergroups' => 'User Groups',
         'total_users' => 'Users',
         'total_bans' => 'Bans',
@@ -242,7 +242,7 @@ if (isset($mybb->input['reportgen']) && !empty($import_session['board'])) {
         'total_smilies' => 'Smilies',
         'total_settings' => 'Settings',
         'total_attachtypes' => 'Attachment Types'
-    );
+    ];
 
     $begin_date = gmdate("r", $import_session['start_date']);
     $end_date = gmdate("r", $import_session['end_date']);
@@ -587,14 +587,14 @@ else {
 
         // We should close the board - which shouldn't be necessary if they would do the merge locally...
         if ((int)$mybb->input['close_board'] == 1) {
-            $db->update_query("settings", array("value" => 1), "name='boardclosed'");
+            $db->update_query("settings", ["value" => 1], "name='boardclosed'");
             rebuild_settings();
         }
 
         define("BACK_BUTTON", false);
 
-        $errors = array();
-        $checks = array();
+        $errors = [];
+        $checks = [];
 
         $output->print_header($lang->requirementspage_check);
 
@@ -753,7 +753,7 @@ elseif (isset($mybb->input['action']) && $mybb->input['action'] == 'finish') {
     $query = $db->simple_select("posts", "pid,message", "message LIKE '%[attachment=o%'");
     while ($post = $db->fetch_array($query)) {
         $message = preg_replace("#\[attachment=o([0-9]+)\]#i", "[ATTACHMENT NOT FOUND]", $post['message']);
-        $db->update_query("posts", array("message" => $db->escape_string($message)), "pid={$post['pid']}");
+        $db->update_query("posts", ["message" => $db->escape_string($message)], "pid={$post['pid']}");
     }
 
     // Update import session cache
@@ -770,7 +770,7 @@ elseif (isset($mybb->input['action']) && $mybb->input['action'] == 'finish') {
         $debug->log->trace0("Sending anonymous data from the conversion");
 
         // List of statistics we'll be using
-        $import_stats = array(
+        $import_stats = [
             'total_usergroups' => 'User Groups',
             'total_users' => 'Users',
             'total_cats' => 'Categories',
@@ -785,9 +785,9 @@ elseif (isset($mybb->input['action']) && $mybb->input['action'] == 'finish') {
             'total_privatemessages' => 'Private Messages',
             'total_events' => 'Events',
             'total_settings' => 'Settings',
-        );
+        ];
 
-        $post_data = array();
+        $post_data = [];
 
         // Prepare data
         $post_data['post'] = "1";
@@ -858,7 +858,7 @@ elseif ($import_session['module'] && $mybb->input['action'] != 'module_list') {
     elseif ($board->modules[$import_session['module']]) {
         $debug->log->trace0("Setting up our module");
 
-        $module_name = str_replace(array("import_", ".", ".."), "", $import_session['module']);
+        $module_name = str_replace(["import_", ".", ".."], "", $import_session['module']);
 
         require_once MERGE_ROOT . 'resources/class_converter_module.php';
         require_once MERGE_ROOT . "resources/modules/{$module_name}.php";

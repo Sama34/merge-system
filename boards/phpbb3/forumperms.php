@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forum permissions',
         'progress_column' => 'fid',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $convert_val = array(
+    var $convert_val = [
         'caneditposts' => 'f_edit',
         'candeleteposts' => 'f_delete',
         'caneditattachments' => 'f_attach',
@@ -34,12 +34,12 @@ class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
         'canviewthreads' => 'f_read',
         'canview' => 'f_read',
         'cansearch' => 'f_search',
-    );
+    ];
 
-    var $role_cache = array();
-    var $role_perm_cache = array();
-    var $option_cache = array();
-    var $perm_cache = array();
+    var $role_cache = [];
+    var $role_perm_cache = [];
+    var $option_cache = [];
+    var $perm_cache = [];
 
     function pre_setup($cache = true)
     {
@@ -66,7 +66,7 @@ class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
         if ($cache === true) {
             // Ignore newly registered and bots - otherwise we'd have multiple rows for one forum and one group
             $query = $this->old_db->simple_select("groups", "group_id", "group_id NOT IN(3,6,7)");
-            $groups = array();
+            $groups = [];
             while ($gid = $this->old_db->fetch_field($query, "group_id")) {
                 $groups[] = $gid;
             }
@@ -129,7 +129,7 @@ class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // phpBB 3 values
         $insert_data['fid'] = $this->get_import->fid($data['fid']);
@@ -161,7 +161,7 @@ class PHPBB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
             "*",
             "role_id='{$id}' AND auth_option_id IN ('" . implode("','", array_keys($this->option_cache)) . "')"
         );
-        $perms = array();
+        $perms = [];
         while ($auth = $this->old_db->fetch_array($query)) {
             $perms[$this->option_cache[$auth['auth_option_id']]] = $auth['auth_setting'];
         }

@@ -41,18 +41,18 @@ class PUNBB_Converter extends Converter
      *
      * @var array
      */
-    var $modules = array(
-        "db_configuration" => array("name" => "Database Configuration", "dependencies" => ""),
-        "import_usergroups" => array("name" => "Usergroups", "dependencies" => "db_configuration"),
-        "import_users" => array("name" => "Users", "dependencies" => "db_configuration,import_usergroups"),
-        "import_categories" => array("name" => "Categories", "dependencies" => "db_configuration,import_users"),
-        "import_forums" => array("name" => "Forums", "dependencies" => "db_configuration,import_categories"),
-        "import_forumperms" => array("name" => "Forum Permissions", "dependencies" => "db_configuration,import_forums"),
-        "import_threads" => array("name" => "Threads", "dependencies" => "db_configuration,import_forums"),
-        "import_posts" => array("name" => "Posts", "dependencies" => "db_configuration,import_threads"),
-        "import_settings" => array("name" => "Settings", "dependencies" => "db_configuration"),
-        "import_avatars" => array("name" => "Avatars", "dependencies" => "db_configuration,import_users"),
-    );
+    var $modules = [
+        "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
+        "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
+        "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
+        "import_categories" => ["name" => "Categories", "dependencies" => "db_configuration,import_users"],
+        "import_forums" => ["name" => "Forums", "dependencies" => "db_configuration,import_categories"],
+        "import_forumperms" => ["name" => "Forum Permissions", "dependencies" => "db_configuration,import_forums"],
+        "import_threads" => ["name" => "Threads", "dependencies" => "db_configuration,import_forums"],
+        "import_posts" => ["name" => "Posts", "dependencies" => "db_configuration,import_threads"],
+        "import_settings" => ["name" => "Settings", "dependencies" => "db_configuration"],
+        "import_avatars" => ["name" => "Avatars", "dependencies" => "db_configuration,import_users"],
+    ];
 
     /**
      * The table we check to verify it's "our" database
@@ -73,12 +73,12 @@ class PUNBB_Converter extends Converter
      *
      * @var array
      */
-    var $groups = array(
+    var $groups = [
         1 => MYBB_ADMINS, // Administrators
         2 => MYBB_GUESTS, // Guests
         3 => MYBB_REGISTERED, // Registered
         4 => MYBB_MODS, // Moderators
-    );
+    ];
 
     /**
      * Get a user from the punBB database
@@ -89,17 +89,17 @@ class PUNBB_Converter extends Converter
     function get_user($username)
     {
         if (empty($username)) {
-            return array(
+            return [
                 'username' => 'Guest',
                 'id' => 0,
-            );
+            ];
         }
 
         $query = $this->old_db->simple_select(
             "users",
             "id, username",
             "username = '" . $this->old_db->escape_string($username) . "'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
 
         $results = $this->old_db->fetch_array($query);

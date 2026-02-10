@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN5_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'userid',
         'default_per_screen' => 20,
-    );
+    ];
 
     var $use_filesystem;
 
@@ -70,7 +70,7 @@ class VBULLETIN5_Converter_Module_Avatars extends Converter_Module_Avatars
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // MyBB 1.8 values
         $insert_data['uid'] = $this->get_import->uid($data['userid']);

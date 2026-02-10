@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'msg_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -42,7 +42,7 @@ class IPB3_Converter_Module_Privatemessages extends Converter_Module_Privatemess
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // Invision Power Board 3 values
         $insert_data['fromid'] = $this->get_import->uid($data['msg_author_id']);
@@ -63,7 +63,7 @@ class IPB3_Converter_Module_Privatemessages extends Converter_Module_Privatemess
             $recipients[$k] = $this->get_import->uid($rec);
         }
 
-        $insert_data['recipients'] = serialize(array('to' => $recipients));
+        $insert_data['recipients'] = serialize(['to' => $recipients]);
 
         // Now save a copy for every user involved in this pm
         // First one for the sender - if he hasn't deleted the conversation

@@ -15,12 +15,12 @@ if (!defined("IN_MYBB")) {
 class BBPRESS_Converter_Module_Posts extends Converter_Module_Posts
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'posts',
         'progress_column' => 'ID',
         'default_per_screen' => 1000,
         'check_table_type' => 'posts',
-    );
+    ];
 
     function import()
     {
@@ -47,7 +47,7 @@ class BBPRESS_Converter_Module_Posts extends Converter_Module_Posts
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // bbPress values
         $insert_data['import_pid'] = $data['ID'];

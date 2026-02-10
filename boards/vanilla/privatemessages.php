@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class VANILLA_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'Message',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -41,11 +41,11 @@ class VANILLA_Converter_Module_Privatemessages extends Converter_Module_Privatem
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // Vanilla values
         $recip = unserialize($data['recips']);
-        $to_send = array();
+        $to_send = [];
         foreach ($recip as $key => $id) {
             $recip[$key] = $this->get_import->uid($id);
             // This happens eg for the System user
@@ -70,7 +70,7 @@ class VANILLA_Converter_Module_Privatemessages extends Converter_Module_Privatem
         }
 
         $insert_data['fromid'] = $this->get_import->uid($data['InsertUserID']);
-        $insert_data['recipients'] = serialize(array('to' => $recip));
+        $insert_data['recipients'] = serialize(['to' => $recip]);
         if (!empty($data['Subject'])) {
             $insert_data['subject'] = encode_to_utf8($data['Subject'], "conversation", "privatemessages");
         } else {

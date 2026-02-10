@@ -14,11 +14,11 @@ if (!defined("IN_MYBB")) {
 
 class XENFORO2_Converter_Module_Posts extends Converter_Module_Posts
 {
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'posts',
         'progress_column' => 'post_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -39,7 +39,7 @@ class XENFORO2_Converter_Module_Posts extends Converter_Module_Posts
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Xenforo 2 values
         $insert_data['import_pid'] = $data['post_id'];
@@ -85,14 +85,14 @@ class XENFORO2_Converter_Module_Posts extends Converter_Module_Posts
         // Restore first post connections
         $db->update_query(
             "threads",
-            array('firstpost' => $pid),
+            ['firstpost' => $pid],
             "tid = '{$insert_data['tid']}' AND import_firstpost = '{$insert_data['import_pid']}'"
         );
         if ($db->affected_rows() == 0) {
             $query = $db->simple_select("threads", "firstpost", "tid = '{$insert_data['tid']}'");
             $first_post = $db->fetch_field($query, "firstpost");
             $db->free_result($query);
-            $db->update_query("posts", array('replyto' => $first_post), "pid = '{$pid}'");
+            $db->update_query("posts", ['replyto' => $first_post], "pid = '{$pid}'");
         }
     }
 

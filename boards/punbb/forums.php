@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class PUNBB_Converter_Module_Forums extends Converter_Module_Forums
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forums',
         'progress_column' => 'id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,7 +29,7 @@ class PUNBB_Converter_Module_Forums extends Converter_Module_Forums
             "forums",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_forums'], 'limit' => $import_session['forums_per_screen'])
+            ['limit_start' => $this->trackers['start_forums'], 'limit' => $import_session['forums_per_screen']]
         );
         while ($forum = $this->old_db->fetch_array($query)) {
             $this->insert($forum);
@@ -38,7 +38,7 @@ class PUNBB_Converter_Module_Forums extends Converter_Module_Forums
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // punBB values
         $insert_data['import_fid'] = intval($data['id']);
@@ -87,7 +87,7 @@ class PUNBB_Converter_Module_Forums extends Converter_Module_Forums
         while ($forum = $db->fetch_array($query)) {
             $db->update_query(
                 "forums",
-                array('pid' => $forum['updatefid'], 'parentlist' => $forum['updatefid'] . "," . $forum['fid']),
+                ['pid' => $forum['updatefid'], 'parentlist' => $forum['updatefid'] . "," . $forum['fid']],
                 "fid='{$forum['fid']}'",
                 1
             );

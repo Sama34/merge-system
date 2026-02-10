@@ -15,20 +15,20 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'uid',
         'default_per_screen' => 20,
-    );
+    ];
 
     function get_avatar_path()
     {
         global $import_session;
-        $query = $this->old_db->simple_select("settings", "value", "name = 'bburl'", array('limit' => 1));
+        $query = $this->old_db->simple_select("settings", "value", "name = 'bburl'", ['limit' => 1]);
         $bburl = $this->old_db->fetch_field($query, 'value');
         $this->old_db->free_result($query);
 
-        $query = $this->old_db->simple_select("settings", "value", "name = 'avataruploadpath'", array('limit' => 1));
+        $query = $this->old_db->simple_select("settings", "value", "name = 'avataruploadpath'", ['limit' => 1]);
         $import_session['relative_avatar_path'] = $this->old_db->fetch_field(
             $query,
             'value'
@@ -47,7 +47,7 @@ class MYBB_Converter_Module_Avatars extends Converter_Module_Avatars
             "users",
             "*",
             "avatar!=''",
-            array('limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen'])
+            ['limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen']]
         );
         while ($avatar = $this->old_db->fetch_array($query)) {
             $this->insert($avatar);
@@ -56,7 +56,7 @@ class MYBB_Converter_Module_Avatars extends Converter_Module_Avatars
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // MyBB 1.8 values
         $insert_data['uid'] = $this->get_import->uid($data['uid']);

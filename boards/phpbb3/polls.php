@@ -15,32 +15,32 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Polls extends Converter_Module_Polls
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'polls',
         'progress_column' => 'topic_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $cache_poll_choices = array();
+    var $cache_poll_choices = [];
 
-    var $cache_get_poll_thread = array();
+    var $cache_get_poll_thread = [];
 
     function import()
     {
         global $import_session, $db;
 
-        $done_array = array();
+        $done_array = [];
 
         $query = $this->old_db->simple_select(
             "poll_options",
             "*",
             "",
-            array(
+            [
                 'order_by' => 'topic_id',
                 'group_by' => 'topic_id',
                 'limit_start' => $this->trackers['start_polls'],
                 'limit' => $import_session['polls_per_screen']
-            )
+            ]
         );
         while ($poll = $this->old_db->fetch_array($query)) {
             if (in_array($poll['topic_id'], $done_array)) {
@@ -52,13 +52,13 @@ class PHPBB3_Converter_Module_Polls extends Converter_Module_Polls
             $done_array[] = $poll['topic_id'];
 
             // Restore connections
-            $db->update_query("threads", array('poll' => $pid), "import_tid = '" . $poll['topic_id'] . "'");
+            $db->update_query("threads", ['poll' => $pid], "import_tid = '" . $poll['topic_id'] . "'");
         }
     }
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // phpBB 3 values
         $insert_data['import_tid'] = $data['topic_id'];
@@ -115,12 +115,12 @@ class PHPBB3_Converter_Module_Polls extends Converter_Module_Polls
         }
         $this->old_db->free_result($query);
 
-        $poll_choices = array(
+        $poll_choices = [
             'options' => $options,
             'votes' => $votes,
             'options_count' => $options_count,
             'vote_count' => $vote_count
-        );
+        ];
 
         $this->cache_poll_choices[$pid] = $poll_choices;
 

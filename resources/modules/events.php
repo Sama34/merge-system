@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Events extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'cid' => 0,
         'uid' => 0,
         'name' => '',
@@ -23,9 +23,9 @@ abstract class Converter_Module_Events extends Converter_Module
         'ignoretimezone' => 0,
         'usingtime' => 0,
         'repeats' => ''
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'cid',
         'uid',
         'visible',
@@ -35,7 +35,7 @@ abstract class Converter_Module_Events extends Converter_Module
         'endtime',
         'ignoretimezone',
         'usingtime',
-    );
+    ];
 
     /**
      * Insert an event into database

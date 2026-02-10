@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class FLUXBB_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'id',
         'default_per_screen' => 20,
-    );
+    ];
 
     function get_avatar_path()
     {
@@ -42,7 +42,7 @@ class FLUXBB_Converter_Module_Avatars extends Converter_Module_Avatars
             "users",
             "*",
             "username != 'Guest'",
-            array('limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen'])
+            ['limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen']]
         );
         while ($avatar = $this->old_db->fetch_array($query)) {
             $this->insert($avatar);
@@ -53,7 +53,7 @@ class FLUXBB_Converter_Module_Avatars extends Converter_Module_Avatars
     {
         global $import_session;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // MyBB 1.8 values
         $insert_data['uid'] = $this->get_import->uid($data['id']);
@@ -88,7 +88,7 @@ class FLUXBB_Converter_Module_Avatars extends Converter_Module_Avatars
     {
         global $import_session;
 
-        $filetypes = array('jpg', 'gif', 'png');
+        $filetypes = ['jpg', 'gif', 'png'];
 
         foreach ($filetypes as $cur_type) {
             $path = $import_session['avatarspath'] . $avatar['id'] . '.' . $cur_type;

@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class FLUXBB_Converter_Module_Categories extends Converter_Module_Categories
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'categories',
         'progress_column' => 'id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,22 +29,22 @@ class FLUXBB_Converter_Module_Categories extends Converter_Module_Categories
             "categories",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_categories'],
                 'limit' => $import_session['categories_per_screen']
-            )
+            ]
         );
         while ($category = $this->old_db->fetch_array($query)) {
             $fid = $this->insert($category);
 
             // Update parent list.
-            $db->update_query("forums", array('parentlist' => $fid), "fid = '{$fid}'");
+            $db->update_query("forums", ['parentlist' => $fid], "fid = '{$fid}'");
         }
     }
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // fluxBB values
         $insert_data['import_fid'] = intval($data['id']);

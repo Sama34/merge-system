@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN5_Converter_Module_Forums extends Converter_Module_Forums
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forums',
         'progress_column' => 'forumid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,26 +29,26 @@ class VBULLETIN5_Converter_Module_Forums extends Converter_Module_Forums
             "forum",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_forums'],
                 'limit' => $import_session['forums_per_screen'],
                 'order_by' => 'parentid',
                 'order_dir' => 'asc'
-            )
+            ]
         );
         while ($forum = $this->old_db->fetch_array($query)) {
             $fid = $this->insert($forum);
 
             // Update parent list.
             if ($forum['parentid'] == '-1') {
-                $db->update_query("forums", array('parentlist' => $fid), "fid = '{$fid}'");
+                $db->update_query("forums", ['parentlist' => $fid], "fid = '{$fid}'");
             }
         }
     }
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // vBulletin 5 values
         $insert_data['import_fid'] = $data['forumid'];
@@ -72,7 +72,7 @@ class VBULLETIN5_Converter_Module_Forums extends Converter_Module_Forums
             $insert_data['import_pid'] = $data['parentid'];
         }
 
-        $bitwise = array(
+        $bitwise = [
             'active' => 1,
             'open' => 2,
             'allowmycode' => 64,
@@ -84,7 +84,7 @@ class VBULLETIN5_Converter_Module_Forums extends Converter_Module_Forums
             'usepostcounts' => 4096,
             'overridestyle' => 32768,
             'showinjump' => 65536,
-        );
+        ];
 
         foreach ($bitwise as $column => $bit) {
             if ($data['options'] & $bit) {
@@ -130,7 +130,7 @@ class VBULLETIN5_Converter_Module_Forums extends Converter_Module_Forums
         while ($forum = $db->fetch_array($query)) {
             $db->update_query(
                 "forums",
-                array('pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])),
+                ['pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])],
                 "fid='{$forum['fid']}'",
                 1
             );

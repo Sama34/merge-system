@@ -17,7 +17,7 @@ abstract class Converter
     /**
      * An array of custom defined errors (i.e. attachments directory permission error)
      */
-    var $errors = array();
+    var $errors = [];
 
     /**
      * @var Debug
@@ -32,7 +32,7 @@ abstract class Converter
     /**
      * @var array
      */
-    var $trackers = array();
+    var $trackers = [];
 
     /**
      * @var Cache_Handler
@@ -48,7 +48,7 @@ abstract class Converter
      * An array of supported databases
      * defaulting to every databases if not set by the board itself
      */
-    var $supported_databases = array("mysql", "pgsql", "sqlite");
+    var $supported_databases = ["mysql", "pgsql", "sqlite"];
 
 
     /**
@@ -77,7 +77,7 @@ abstract class Converter
      *
      * @var array
      */
-    var $modules = array();
+    var $modules = [];
 
     /**
      * The table we check to verify it's "our" database
@@ -98,7 +98,7 @@ abstract class Converter
      *
      * @var array
      */
-    var $groups = array();
+    var $groups = [];
 
     /**
      * What BBCode Parser we're using
@@ -114,7 +114,7 @@ abstract class Converter
      *
      * @var array
      */
-    var $column_length_to_check = array();
+    var $column_length_to_check = [];
 
     /**
      * Class constructor
@@ -125,7 +125,7 @@ abstract class Converter
         // Set the module names here
         if (isset($this->modules)) {
             foreach ($this->modules as $key => &$module) {
-                $key = str_replace(array("import_", ".", ".."), "", $key);
+                $key = str_replace(["import_", ".", ".."], "", $key);
                 $lang_string = "module_{$key}";
                 if (isset($lang->$lang_string)) {
                     $module['name'] = $lang->$lang_string;
@@ -380,7 +380,7 @@ abstract class Converter
 
         // Structure for array is: array('old_table' => array('new_table' => array(array('old_column' => 'new_column2'))))
 
-        $invalid_columns = array();
+        $invalid_columns = [];
         foreach ($this->column_length_to_check as $old_table => $t1) {
             foreach ($t1 as $new_table => $columns) {
                 $columnLength = get_column_length_info($new_table, false, true);
@@ -483,11 +483,11 @@ abstract class Converter
 
         $this->debug->log->trace2("Checking to see if we have more importing to go: {$import_session['module']}");
 
-        $module_name = str_replace(array("import_", ".", ".."), "", $import_session['module']);
+        $module_name = str_replace(["import_", ".", ".."], "", $import_session['module']);
 
         $this->debug->log->datatrace(
             "total_{$module_name}, start_{$module_name}",
-            array($import_session['total_' . $module_name], $this->trackers['start_' . $module_name])
+            [$import_session['total_' . $module_name], $this->trackers['start_' . $module_name]]
         );
 
         // If there are more work to do, continue, or else, move onto next module
@@ -577,7 +577,7 @@ abstract class Converter
      * @param int|array $remove Either a single group id or an array of group ids which shouldn't be in the group array
      * @return string group id(s)
      */
-    function get_group_id($gids, $remove = array())
+    function get_group_id($gids, $remove = [])
     {
         if (empty($gids)) {
             return '';
@@ -589,7 +589,7 @@ abstract class Converter
         }
         $gids = array_map('trim', $gids);
 
-        $groups = array();
+        $groups = [];
 
         foreach ($gids as $gid) {
             $groups[] = $this->get_gid($gid);
@@ -599,7 +599,7 @@ abstract class Converter
 
         if (!empty($remove)) {
             if (!is_array($remove)) {
-                $remove = array($remove);
+                $remove = [$remove];
             }
 
             $groups = array_diff($groups, $remove);

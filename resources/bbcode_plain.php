@@ -35,8 +35,8 @@ class BBCode_Parser_Plain
         // Same save list items as "[*]Item[/*]" so we're removing the closing one
         $text = preg_replace("#\[\*\](.*?)\[/\*\]#i", "[*]$1", $text);
         // Wrong align codes
-        $text = str_ireplace(array("[center]", "[/center]", "[left]", "[/left]", "[right]", "[/right]"),
-            array("[align=center]", "[/align]", "[align=left]", "[/align]", "[align=right]", "[/align]"),
+        $text = str_ireplace(["[center]", "[/center]", "[left]", "[/left]", "[right]", "[/right]"],
+            ["[align=center]", "[/align]", "[align=left]", "[/align]", "[align=right]", "[/align]"],
             $text);
         // "[url='http://community.mybb.com']" is used by some boards...
         $text = preg_replace("#\[url='(.*?)'\](.*?)\[/url\]#i", "[url=$1]$2[/url]", $text);
@@ -75,7 +75,7 @@ class BBCode_Parser_Plain
         // So we allow the respective parser to add a callback
         // Using "o{id}" here to make sure we find this attachment later again
         if (method_exists($this, "attachment_callback")) {
-            return preg_replace_callback("#{$this->attachment}#i", array($this, "attachment_callback"), $text);
+            return preg_replace_callback("#{$this->attachment}#i", [$this, "attachment_callback"], $text);
         } else {
             return preg_replace("#{$this->attachment}#i", "[attachment=o$1]", $text);
         }
@@ -116,7 +116,7 @@ class BBCode_Parser_Plain
                 $replace = "[url={$mybb->settings['bburl']}/attachment.php?aid={$attachment['aid']}]{$text}[/url]";
             }
             $message = str_replace("[attachment=o{$attachment['import_aid']}]", $replace, $post['message']);
-            $db->update_query("posts", array("message" => $db->escape_string($message)), "pid={$post['pid']}");
+            $db->update_query("posts", ["message" => $db->escape_string($message)], "pid={$post['pid']}");
         }
     }
 }

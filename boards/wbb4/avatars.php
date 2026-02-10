@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class WBB4_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'userID',
         'default_per_screen' => 20,
-    );
+    ];
 
     function get_avatar_path()
     {
@@ -48,7 +48,7 @@ class WBB4_Converter_Module_Avatars extends Converter_Module_Avatars
     {
         global $mybb;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // MyBB 1.8 values
         $insert_data['uid'] = $this->get_import->uid($data['userID']);

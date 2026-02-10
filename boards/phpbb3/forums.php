@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Forums extends Converter_Module_Forums
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forums',
         'progress_column' => 'forum_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,21 +29,21 @@ class PHPBB3_Converter_Module_Forums extends Converter_Module_Forums
             "forums",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_forums'], 'limit' => $import_session['forums_per_screen'])
+            ['limit_start' => $this->trackers['start_forums'], 'limit' => $import_session['forums_per_screen']]
         );
         while ($forum = $this->old_db->fetch_array($query)) {
             $fid = $this->insert($forum);
 
             // Update parent list.
             if ($forum['forum_type'] == '0') {
-                $db->update_query("forums", array('parentlist' => $fid), "fid = '{$fid}'");
+                $db->update_query("forums", ['parentlist' => $fid], "fid = '{$fid}'");
             }
         }
     }
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // phpBB 3 Values
         $insert_data['import_fid'] = intval($data['forum_id']);
@@ -118,7 +118,7 @@ class PHPBB3_Converter_Module_Forums extends Converter_Module_Forums
         while ($forum = $db->fetch_array($query)) {
             $db->update_query(
                 "forums",
-                array('pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])),
+                ['pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])],
                 "fid='{$forum['fid']}'",
                 1
             );

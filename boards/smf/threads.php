@@ -16,13 +16,13 @@ if (!defined("IN_MYBB")) {
 class SMF_Converter_Module_Threads extends Converter_Module_Threads
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'ID_TOPIC',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $get_attachment_count_cache = array();
+    var $get_attachment_count_cache = [];
 
     function import()
     {
@@ -32,7 +32,7 @@ class SMF_Converter_Module_Threads extends Converter_Module_Threads
             "topics",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen'])
+            ['limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen']]
         );
         while ($thread = $this->old_db->fetch_array($query)) {
             $this->insert($thread);
@@ -41,7 +41,7 @@ class SMF_Converter_Module_Threads extends Converter_Module_Threads
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // SMF values
         $insert_data['import_tid'] = $data['ID_TOPIC'];

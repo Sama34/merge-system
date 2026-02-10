@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class XENFORO_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'poll votes',
         'progress_column' => 'poll_response_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $poll_response_cache = array();
+    var $poll_response_cache = [];
 
     function import()
     {
@@ -40,7 +40,7 @@ class XENFORO_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Xenforo 1 values
         $insert_data['uid'] = $this->get_import->uid($data['user_id']);

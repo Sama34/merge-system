@@ -23,8 +23,8 @@ class BBCode_Parser_HTML extends BBCode_Parser_Plain
      */
     function convert($text)
     {
-        $text = str_replace(array("<br>", "<br />"), "\n", $text);
-        $text = str_replace(array("<hr>", "<hr />"), "[hr]", $text);
+        $text = str_replace(["<br>", "<br />"], "\n", $text);
+        $text = str_replace(["<hr>", "<hr />"], "[hr]", $text);
         $text = preg_replace('#<em>(.*?)</em>#si', '[i]$1[/i]', $text);
         $text = preg_replace('#<u>(.*?)</u>#si', '[u]$1[/u]', $text);
         $text = preg_replace('#<strong>(.*?)</strong>#si', '[b]$1[/b]', $text);
@@ -56,7 +56,7 @@ class BBCode_Parser_HTML extends BBCode_Parser_Plain
             "[font=$1]$2[/font]\n",
             $text
         );
-        $text = str_replace(array('<p>', '</p>'), array('', "\n"), $text);
+        $text = str_replace(['<p>', '</p>'], ['', "\n"], $text);
 
         // Size code, we save it a bit different than actual used
         $text = preg_replace(
@@ -66,7 +66,7 @@ class BBCode_Parser_HTML extends BBCode_Parser_Plain
         );
         $text = preg_replace_callback(
             '#<span style="font-size: ?([0-9\+\-]+?)(px|pt);?">(.*?)</span>#si',
-            array($this, "handle_size"),
+            [$this, "handle_size"],
             $text
         );
 

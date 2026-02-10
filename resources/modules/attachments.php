@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Attachments extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'import_aid' => 0,
 
         'pid' => 0,
@@ -23,9 +23,9 @@ abstract class Converter_Module_Attachments extends Converter_Module
         'dateuploaded' => 0,
         'visible' => 1,
         'thumbnail' => ''
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'import_aid',
 
         'pid',
@@ -34,7 +34,7 @@ abstract class Converter_Module_Attachments extends Converter_Module
         'downloads',
         'dateuploaded',
         'visible',
-    );
+    ];
 
     /**
      * @var string
@@ -49,7 +49,7 @@ abstract class Converter_Module_Attachments extends Converter_Module
     /**
      * @var array
      */
-    private $thread_cache = array();
+    private $thread_cache = [];
 
     abstract function get_upload_path();
 
@@ -258,7 +258,7 @@ abstract class Converter_Module_Attachments extends Converter_Module
                         if ($thumbnail['code'] == 4) {
                             $thumbnail['filename'] = "SMALL";
                         }
-                        $db->update_query("attachments", array("thumbnail" => $thumbnail['filename']), "aid='{$aid}'");
+                        $db->update_query("attachments", ["thumbnail" => $thumbnail['filename']], "aid='{$aid}'");
                     }
                 }
             } else {

@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Forumperms extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'fid' => 0,
         'gid' => 0,
         'canview' => 1,
@@ -33,7 +33,7 @@ abstract class Converter_Module_Forumperms extends Converter_Module
         'canpostpolls' => 1,
         'canvotepolls' => 1,
         'cansearch' => 1,
-    );
+    ];
 
     // The forumpermissions table has ONLY integer fields - use the array above
     // As we can't call array_keys here we need the constructor

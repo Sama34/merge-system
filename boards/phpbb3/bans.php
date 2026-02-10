@@ -14,11 +14,11 @@ if (!defined('IN_MYBB')) {
 
 class PHPBB3_Converter_Module_Bans extends Converter_Module_Bans
 {
-    public $settings = array(
+    public $settings = [
         'friendly_name' => 'bans',
         'progress_column' => 'uid',
         'default_per_screen' => 1000
-    );
+    ];
 
     function import()
     {
@@ -27,7 +27,7 @@ class PHPBB3_Converter_Module_Bans extends Converter_Module_Bans
             'banlist',
             '*',
             '',
-            array('limit_start' => $this->trackers['start_bans'], 'limit' => $import_session['bans_per_screen'])
+            ['limit_start' => $this->trackers['start_bans'], 'limit' => $import_session['bans_per_screen']]
         );
 
         // Load normal bans
@@ -47,7 +47,7 @@ class PHPBB3_Converter_Module_Bans extends Converter_Module_Bans
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         $insert_data['uid'] = $this->get_import->uid($data['ban_userid']);
         $insert_data['gid'] = 7;

@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Usergroups extends Converter_Module_Usergroups
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'usergroups',
         'progress_column' => 'id_group',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $permissions = array();
+    var $permissions = [];
 
     function import()
     {
@@ -32,10 +32,10 @@ class SMF2_Converter_Module_Usergroups extends Converter_Module_Usergroups
             "membergroups",
             "*",
             "id_group > 3 AND min_posts = -1",
-            array(
+            [
                 'limit_start' => $this->trackers['start_usergroups'],
                 'limit' => $import_session['usergroups_per_screen']
-            )
+            ]
         );
         while ($group = $this->old_db->fetch_array($query)) {
             $this->insert($group);
@@ -49,7 +49,7 @@ class SMF2_Converter_Module_Usergroups extends Converter_Module_Usergroups
             $this->permissions = $this->get_group_permissions();
         }
 
-        $insert_data = array();
+        $insert_data = [];
 
         // SMF values
         $insert_data['import_gid'] = $data['id_group'];
@@ -101,7 +101,7 @@ class SMF2_Converter_Module_Usergroups extends Converter_Module_Usergroups
     function get_group_permissions()
     {
         $query = $this->old_db->simple_select("permissions", "*", "add_deny = 1");
-        $permissions = array();
+        $permissions = [];
         while ($permission = $this->old_db->fetch_array($query)) {
             $permissions[$permission['id_group']][$permission['permission']] = 1;
         }

@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class WBB3_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'pmID',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class WBB3_Converter_Module_Privatemessages extends Converter_Module_Privatemess
             WCF_PREFIX . "pm",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_privatemessages'],
                 'limit' => $import_session['privatemessages_per_screen']
-            )
+            ]
         );
         while ($privatemessage = $this->old_db->fetch_array($query)) {
             $this->insert($privatemessage);
@@ -43,7 +43,7 @@ class WBB3_Converter_Module_Privatemessages extends Converter_Module_Privatemess
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // WBB 3 values
         $insert_data['fromid'] = $this->get_import->uid($data['userID']);
@@ -59,7 +59,7 @@ class WBB3_Converter_Module_Privatemessages extends Converter_Module_Privatemess
 
         // Now build our recipients list
         $rec_query = $this->old_db->simple_select(WCF_PREFIX . "pm_to_user", "*", "pmID='{$data['pmID']}'");
-        $to_send = $recipients = array();
+        $to_send = $recipients = [];
         while ($rec = $this->old_db->fetch_array($rec_query)) {
             $rec['recipientID'] = $this->get_import->uid($rec['recipientID']);
 

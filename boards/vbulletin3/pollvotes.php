@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'poll votes',
         'progress_column' => 'pollvoteid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class VBULLETIN3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
             "pollvote",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_pollvotes'],
                 'limit' => $import_session['pollvotes_per_screen']
-            )
+            ]
         );
         while ($pollvote = $this->old_db->fetch_array($query)) {
             $this->insert($pollvote);
@@ -41,7 +41,7 @@ class VBULLETIN3_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // vBulletin 3 values
         $insert_data['uid'] = $this->get_import->uid($data['userid']);

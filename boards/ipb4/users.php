@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class IPB4_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => "users",
         'progress_column' => "member_id",
         'encode_table' => "core_members",
@@ -23,7 +23,7 @@ class IPB4_Converter_Module_Users extends Converter_Module_Users
         'username_column' => 'name',
         'email_column' => 'email',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -43,7 +43,7 @@ class IPB4_Converter_Module_Users extends Converter_Module_Users
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Invision Power Board 4 values
         $insert_data['usergroup'] = $this->board->get_gid($data['member_group_id']);

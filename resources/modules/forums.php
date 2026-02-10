@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Forums extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'import_fid' => 0,
         'import_pid' => 0,
 
@@ -53,9 +53,9 @@ abstract class Converter_Module_Forums extends Converter_Module
         'defaultdatecut' => 0,
         'defaultsortby' => '',
         'defaultsortorder' => '',
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'import_fid',
         'import_pid',
 
@@ -87,13 +87,13 @@ abstract class Converter_Module_Forums extends Converter_Module
         'deletedthreads',
         'deletedposts',
         'defaultdatecut',
-    );
+    ];
 
-    var $mark_as_run_modules = array(
+    var $mark_as_run_modules = [
         'forumperms',
         'threads',
         'moderators',
-    );
+    ];
 
     /**
      * Insert forum into database
@@ -146,7 +146,7 @@ abstract class Converter_Module_Forums extends Converter_Module
         $query = $db->simple_select('forums', '*', "type='f' AND pid=0 AND import_fid > 0");
 
         if ($db->num_rows($query) > 0) {
-            $cat = array(
+            $cat = [
                 "name" => "{$this->board->plain_bbname} imported forums",
                 "type" => "c",
                 "description" => "This forums were imported from your {$this->board->plain_bbname} installation",
@@ -155,17 +155,17 @@ abstract class Converter_Module_Forums extends Converter_Module
                 "rules" => "",
                 "active" => 1,
                 "open" => 1,
-            );
+            ];
             // No "input", so no need to escape
             $cid = $db->insert_query("forums", $cat);
-            $db->update_query("forums", array("parentlist" => $this->make_mybb_parent_list($cid)), "fid='{$cid}'");
+            $db->update_query("forums", ["parentlist" => $this->make_mybb_parent_list($cid)], "fid='{$cid}'");
 
             while ($forum = $db->fetch_array($query)) {
                 // Update the parentlists
-                $db->update_query("forums", array("pid" => $cid), "fid='{$forum['fid']}'");
+                $db->update_query("forums", ["pid" => $cid], "fid='{$forum['fid']}'");
                 $db->update_query(
                     "forums",
-                    array("parentlist" => $this->make_mybb_parent_list($forum['fid'], ",", true)),
+                    ["parentlist" => $this->make_mybb_parent_list($forum['fid'], ",", true)],
                     "fid='{$forum['fid']}'"
                 );
 
@@ -191,7 +191,7 @@ abstract class Converter_Module_Forums extends Converter_Module
                 while ($child = $db->fetch_array($query_child)) {
                     $db->update_query(
                         "forums",
-                        array("parentlist" => $this->make_mybb_parent_list($child['fid'])),
+                        ["parentlist" => $this->make_mybb_parent_list($child['fid'])],
                         "fid='{$child['fid']}'"
                     );
                 }
@@ -211,8 +211,8 @@ abstract class Converter_Module_Forums extends Converter_Module
         global $mypforumcache, $db;
 
         if (!$mypforumcache || $drop_cache) {
-            $mypforumcache = array();
-            $query = $db->simple_select("forums", "name, fid, pid", "", array("order_by" => "disporder, pid"));
+            $mypforumcache = [];
+            $query = $db->simple_select("forums", "name, fid, pid", "", ["order_by" => "disporder, pid"]);
             while ($forum = $db->fetch_array($query)) {
                 $mypforumcache[$forum['fid']][$forum['pid']] = $forum;
             }

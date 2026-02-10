@@ -14,7 +14,7 @@ if (!defined("IN_MYBB")) {
 
 class XENFORO2_Converter_Module_Users extends Converter_Module_Users
 {
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'user_id',
         'encode_table' => 'user',
@@ -22,7 +22,7 @@ class XENFORO2_Converter_Module_Users extends Converter_Module_Users
         'username_column' => 'username',
         'email_column' => 'email',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -43,7 +43,7 @@ class XENFORO2_Converter_Module_Users extends Converter_Module_Users
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Xenforo 2 values
         $insert_data['usergroup'] = $this->board->get_gid($data['user_group_id']);

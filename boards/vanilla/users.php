@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class VANILLA_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'UserID',
         'encode_table' => 'user',
@@ -23,9 +23,9 @@ class VANILLA_Converter_Module_Users extends Converter_Module_Users
         'username_column' => 'Name',
         'email_column' => 'Email',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $get_private_messages_cache = array();
+    var $get_private_messages_cache = [];
 
     function import()
     {
@@ -49,7 +49,7 @@ class VANILLA_Converter_Module_Users extends Converter_Module_Users
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Vanilla values
         // Vanilla doesn't have a primary usergroup - we're simply using the first and remove it from additionalgroups

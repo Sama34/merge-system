@@ -17,7 +17,7 @@ $plugins->add_hook("datahandler_login_validate_start", "loginconvert_convert", 1
 global $valid_login_types, $utf8_recheck;
 
 // Array of supported login types
-$valid_login_types = array(
+$valid_login_types = [
     "vb3" => "vb",
     // Module isn't supported anymore, but old merges may require it
     "vb4" => "vb",
@@ -44,21 +44,21 @@ $valid_login_types = array(
     "vanilla" => "vanilla",
     "fluxbb" => "punbb",
     // FluxBB is a fork of PunBB and they didn't change the hashing part
-);
+];
 
 // Array of login types for which we need to handle utf8 issues
-$utf8_recheck = array(
+$utf8_recheck = [
     'smf',
     'smf11',
     'smf2',
     'vb',
-);
+];
 
 function loginconvert_info()
 {
     global $db;
 
-    $info = array(
+    $info = [
         "name" => "Login Password Conversion",
         "description" => "Converts passwords to the correct type when logging in. To be used in conjunction with the MyBB Merge System.",
         "website" => "http://www.mybb.com",
@@ -67,7 +67,7 @@ function loginconvert_info()
         "version" => "1.4.2",
         "compatibility" => "18*",
         "codename" => "loginconvert",
-    );
+    ];
 
     if ($db->field_exists("passwordconvert", "users")) {
         // Checks whether the plugin is really needed
@@ -75,7 +75,7 @@ function loginconvert_info()
             "users",
             "uid",
             "passwordconvert IS NOT NULL AND passwordconvert!=''",
-            array("limit" => 1)
+            ["limit" => 1]
         );
         if ($db->num_rows($query) > 0) {
             $info['description'] .= "<br />This plugin should be activated as there are users with unconverted password.";
@@ -112,7 +112,7 @@ function loginconvert_deactivate()
         "users",
         "uid",
         "passwordconvert IS NOT NULL AND passwordconvert!=''",
-        array("limit" => 1)
+        ["limit" => 1]
     );
     if ($db->num_rows($query) == 0) {
         $db->drop_column("users", "passwordconvert");
@@ -128,8 +128,8 @@ function loginconvert_convert(&$login)
 {
     global $mybb, $valid_login_types, $utf8_recheck, $db, $settings;
 
-    $options = array(
-        "fields" => array(
+    $options = [
+        "fields" => [
             'username',
             "password",
             "salt",
@@ -139,9 +139,9 @@ function loginconvert_convert(&$login)
             "passwordconvert",
             "passwordconverttype",
             "passwordconvertsalt"
-        ),
+        ],
         "username_method" => (int)$settings['username_method']
-    );
+    ];
 
     if ($login->username_method !== null) {
         $options['username_method'] = (int)$login->username_method;
@@ -158,11 +158,11 @@ function loginconvert_convert(&$login)
     // This user has already a mybb generated hash, delete the merge system data
     // Happens eg after resetting password or getting a new one via the acp
     if (!empty($user['password'])) {
-        $update = array(
+        $update = [
             "passwordconvert" => "",
             "passwordconverttype" => "",
             "passwordconvertsalt" => ""
-        );
+        ];
         $db->update_query("users", $update, "uid={$user['uid']}");
         return;
     }
@@ -199,14 +199,14 @@ function loginconvert_convert(&$login)
         } else {
             // The password was correct, so use MyBB's method the next time (even if the captcha was wrong we can update the password)
             $salt = generate_salt();
-            $update = array(
+            $update = [
                 "salt" => $salt,
                 "password" => salt_password(md5($login->data['password']), $salt),
                 "loginkey" => generate_loginkey(),
                 "passwordconverttype" => "",
                 "passwordconvert" => "",
                 "passwordconvertsalt" => "",
-            );
+            ];
 
             $db->update_query("users", $update, "uid='{$user['uid']}'");
 

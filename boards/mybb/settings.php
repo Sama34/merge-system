@@ -15,12 +15,12 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Settings extends Converter_Module_Settings
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'settings',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $convert_ignore_settings = array(
+    var $convert_ignore_settings = [
         'bbname',
         'bburl',
         'homename',
@@ -29,7 +29,7 @@ class MYBB_Converter_Module_Settings extends Converter_Module_Settings
         'contactlink',
         'cookiedomain',
         'cookiepath'
-    );
+    ];
 
     function import()
     {
@@ -39,7 +39,7 @@ class MYBB_Converter_Module_Settings extends Converter_Module_Settings
             "settings",
             "name, value",
             "name NOT IN('" . implode("','", $this->convert_ignore_settings) . "') AND isdefault='1'",
-            array('limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen'])
+            ['limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen']]
         );
         while ($setting = $this->old_db->fetch_array($query)) {
             $this->update_setting($setting['name'], $setting['value']);

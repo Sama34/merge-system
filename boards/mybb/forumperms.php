@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Forumperms extends Converter_Module_Forumperms
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forum permissions',
         'progress_column' => 'pid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class MYBB_Converter_Module_Forumperms extends Converter_Module_Forumperms
             "forumpermissions",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_forumperms'],
                 'limit' => $import_session['forumperms_per_screen']
-            )
+            ]
         );
         while ($perm = $this->old_db->fetch_array($query)) {
             $this->insert($perm);
@@ -50,7 +50,7 @@ class MYBB_Converter_Module_Forumperms extends Converter_Module_Forumperms
             $field_info = $db->show_fields_from("forumpermissions");
         }
 
-        $insert_data = array();
+        $insert_data = [];
 
         foreach ($field_info as $key => $field) {
             if ($field['Extra'] == 'auto_increment') {

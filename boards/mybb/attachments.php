@@ -15,21 +15,21 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'aid',
         'default_per_screen' => 20,
-    );
+    ];
 
     public $path_column = "attachname";
 
     function get_upload_path()
     {
-        $query = $this->old_db->simple_select("settings", "value", "name = 'bburl'", array('limit' => 1));
+        $query = $this->old_db->simple_select("settings", "value", "name = 'bburl'", ['limit' => 1]);
         $bburl = $this->old_db->fetch_field($query, 'value');
         $this->old_db->free_result($query);
 
-        $query = $this->old_db->simple_select("settings", "value", "name = 'uploadspath'", array('limit' => 1));
+        $query = $this->old_db->simple_select("settings", "value", "name = 'uploadspath'", ['limit' => 1]);
         $uploadspath = str_replace('./', $bburl . '/', $this->old_db->fetch_field($query, 'value'));
         $this->old_db->free_result($query);
 
@@ -44,10 +44,10 @@ class MYBB_Converter_Module_Attachments extends Converter_Module_Attachments
             "attachments",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_attachments'],
                 'limit' => $import_session['attachments_per_screen']
-            )
+            ]
         );
         while ($attachment = $this->old_db->fetch_array($query)) {
             $this->insert($attachment);
@@ -65,7 +65,7 @@ class MYBB_Converter_Module_Attachments extends Converter_Module_Attachments
             $field_info = $db->show_fields_from("attachments");
         }
 
-        $insert_data = array();
+        $insert_data = [];
 
         foreach ($field_info as $key => $field) {
             if ($field['Extra'] == 'auto_increment') {

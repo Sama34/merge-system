@@ -18,7 +18,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
     function convert($message)
     {
         $message = str_ireplace(
-            array(
+            [
                 '[list type=decimal]',
                 '[right]',
                 '[/right]',
@@ -32,8 +32,8 @@ class BBCode_Parser extends BBCode_Parser_Plain
                 '<!-- m',
                 '<!-- s',
                 '-->'
-            ),
-            array(
+            ],
+            [
             '[list=1]',
             '[align=right]',
             '[/align]',
@@ -47,7 +47,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
             '',
             '',
             ''
-        ),
+            ],
             $message
         );
         $message = preg_replace("#\[size=([0-9\+\-]+?)p[tx]\](.*?)\[/size\]#si", "[size=$1]$2[/size]", $message);
@@ -55,7 +55,7 @@ class BBCode_Parser extends BBCode_Parser_Plain
         $message = preg_replace("#\[img width=([0-9\+\-]+?) height=([0-9\+\-]+?)\]#si", "[img=$1x$2]", $message);
         $message = preg_replace_callback(
             "#\[quote(.*?)\](.*?)\[\/quote\]#si",
-            array($this, "mycode_parse_post_quotes"),
+            [$this, "mycode_parse_post_quotes"],
             $message
         );
 

@@ -16,11 +16,11 @@ if (!defined("IN_MYBB")) {
 class IPB4_Converter_Module_Forums extends Converter_Module_Forums
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forums',
         'progress_column' => 'id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -30,26 +30,26 @@ class IPB4_Converter_Module_Forums extends Converter_Module_Forums
             "forums_forums",
             "*",
             "",
-            array(
+            [
                 'order_by' => 'parent_id',
                 'order_dir' => 'asc',
                 'limit_start' => $this->trackers['start_forums'],
                 'limit' => $import_session['forums_per_screen']
-            )
+            ]
         );
         while ($forum = $this->old_db->fetch_array($query)) {
             $fid = $this->insert($forum);
 
             // Update parent list.
             if ($forum['parent_id'] == '-1') {
-                $db->update_query("forums", array('parentlist' => $fid), "fid = '{$fid}'");
+                $db->update_query("forums", ['parentlist' => $fid], "fid = '{$fid}'");
             }
         }
     }
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Invision Power Board 4 values
         $insert_data['import_fid'] = $data['id'];
@@ -115,7 +115,7 @@ class IPB4_Converter_Module_Forums extends Converter_Module_Forums
         while ($forum = $db->fetch_array($query)) {
             $db->update_query(
                 "forums",
-                array('pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])),
+                ['pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])],
                 "fid='{$forum['fid']}'",
                 1
             );

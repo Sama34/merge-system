@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Users extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'import_usergroup' => 0,
         'import_additionalgroups' => '',
         'import_displaygroup' => 0,
@@ -101,14 +101,14 @@ abstract class Converter_Module_Users extends Converter_Module
         'passwordconvert' => '',
         'passwordconverttype' => '',
         'passwordconvertsalt' => '',
-    );
+    ];
 
-    public $binary_fields = array(
+    public $binary_fields = [
         'regip',
         'lastip',
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'import_usergroup',
         'import_displaygroup',
         'import_uid',
@@ -164,7 +164,7 @@ abstract class Converter_Module_Users extends Converter_Module
         'loginattempts',
         'loginlockoutexpiry',
         'sourceeditor',
-    );
+    ];
 
     /**
      * Total users queried from the MyBB Database used in the users module
@@ -241,7 +241,7 @@ abstract class Converter_Module_Users extends Converter_Module
         $where = "username='" . $db->escape_string($username) . "' OR username='" . $db->escape_string(
                 $encoded_username
             ) . "'";
-        $query = $db->simple_select("users", "username,email,uid,postnum", $where, array('limit' => 1));
+        $query = $db->simple_select("users", "username,email,uid,postnum", $where, ['limit' => 1]);
         $duplicate_user = $db->fetch_array($query);
         $db->free_result($query);
 
@@ -254,18 +254,18 @@ abstract class Converter_Module_Users extends Converter_Module
                 $output->print_progress("start");
                 $output->print_progress(
                     "merge_user",
-                    array(
+                    [
                         'import_uid' => $user[$this->settings['progress_column']],
                         'duplicate_uid' => $duplicate_user['uid']
-                    )
+                    ]
                 );
 
                 $db->update_query(
                     "users",
-                    array(
+                    [
                         'import_uid' => $user[$this->settings['progress_column']],
                         'postnum' => $duplicate_user['postnum'] + $user[$this->settings['postnum_column']]
-                    ),
+                    ],
                     "uid = '{$duplicate_user['uid']}'"
                 );
 

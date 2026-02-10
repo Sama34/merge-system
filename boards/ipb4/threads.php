@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class IPB4_Converter_Module_Threads extends Converter_Module_Threads
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'tid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,12 +29,12 @@ class IPB4_Converter_Module_Threads extends Converter_Module_Threads
             "forums_topics",
             "*",
             "state != 'link'",
-            array(
+            [
                 'order_by' => 'topic_firstpost',
                 'order_dir' => 'DESC',
                 'limit_start' => $this->trackers['start_threads'],
                 'limit' => $import_session['threads_per_screen']
-            )
+            ]
         );
         while ($thread = $this->old_db->fetch_array($query)) {
             $this->insert($thread);
@@ -43,7 +43,7 @@ class IPB4_Converter_Module_Threads extends Converter_Module_Threads
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Invision Power Board 4 values
         $insert_data['import_tid'] = $data['tid'];

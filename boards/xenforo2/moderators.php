@@ -14,11 +14,11 @@ if (!defined("IN_MYBB")) {
 
 class XENFORO2_Converter_Module_Moderators extends Converter_Module_Moderators
 {
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'moderators',
         'progress_column' => 'moderator_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -28,10 +28,10 @@ class XENFORO2_Converter_Module_Moderators extends Converter_Module_Moderators
             "moderator_content",
             "*",
             "content_type='node'",
-            array(
+            [
                 'limit_start' => $this->trackers['start_moderators'],
                 'limit' => $import_session['moderators_per_screen']
-            )
+            ]
         );
         while ($moderator = $this->old_db->fetch_array($query)) {
             // Not a standard forum.
@@ -45,7 +45,7 @@ class XENFORO2_Converter_Module_Moderators extends Converter_Module_Moderators
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Xenforo 2 values
         $insert_data['fid'] = $this->get_import->fid($data['content_id']);

@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class XENFORO_Converter_Module_Forums extends Converter_Module_Forums
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forums',
         'progress_column' => 'forumid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,12 +29,12 @@ class XENFORO_Converter_Module_Forums extends Converter_Module_Forums
             "node",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_forums'],
                 'limit' => $import_session['forums_per_screen'],
                 'order_by' => 'node_id',
                 'order_dir' => 'asc'
-            )
+            ]
         );
         while ($forum = $this->old_db->fetch_array($query)) {
             // TODO: fetch additional infos from xf_forum
@@ -42,14 +42,14 @@ class XENFORO_Converter_Module_Forums extends Converter_Module_Forums
 
             // Update parent list.
             if ($forum['parent_node_id'] == '0') {
-                $db->update_query("forums", array('parentlist' => $fid), "fid = '{$fid}'");
+                $db->update_query("forums", ['parentlist' => $fid], "fid = '{$fid}'");
             }
         }
     }
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Xenforo 1 values
         $insert_data['import_fid'] = $data['node_id'];
@@ -102,7 +102,7 @@ class XENFORO_Converter_Module_Forums extends Converter_Module_Forums
         while ($forum = $db->fetch_array($query)) {
             $db->update_query(
                 "forums",
-                array('pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])),
+                ['pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])],
                 "fid='{$forum['fid']}'",
                 1
             );

@@ -15,15 +15,15 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Polls extends Converter_Module_Polls
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'polls',
         'progress_column' => 'id_poll',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $cache_poll_choices = array();
+    var $cache_poll_choices = [];
 
-    var $cache_get_poll_thread = array();
+    var $cache_get_poll_thread = [];
 
     function import()
     {
@@ -33,19 +33,19 @@ class SMF2_Converter_Module_Polls extends Converter_Module_Polls
             "polls",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen'])
+            ['limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen']]
         );
         while ($poll = $this->old_db->fetch_array($query)) {
             $pid = $this->insert($poll);
 
             // Restore connections
-            $db->update_query("threads", array('poll' => $pid), "import_poll = '" . $poll['id_poll'] . "'");
+            $db->update_query("threads", ['poll' => $pid], "import_poll = '" . $poll['id_poll'] . "'");
         }
     }
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // SMF values
         $thread = $this->get_poll_thread($data['id_poll']);
@@ -105,12 +105,12 @@ class SMF2_Converter_Module_Polls extends Converter_Module_Polls
         }
         $this->old_db->free_result($query);
 
-        $poll_choices = array(
+        $poll_choices = [
             'options' => $options,
             'votes' => $votes,
             'options_count' => $options_count,
             'vote_count' => $vote_count
-        );
+        ];
 
         $this->cache_poll_choices[$pid] = $poll_choices;
 

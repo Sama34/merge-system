@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class VANILLA_Converter_Module_Usergroups extends Converter_Module_Usergroups
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'usergroups',
         'progress_column' => 'RoleID',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -30,10 +30,10 @@ class VANILLA_Converter_Module_Usergroups extends Converter_Module_Usergroups
             "role",
             "*",
             "RoleID NOT IN ('" . implode("','", array_keys($this->board->groups)) . "')",
-            array(
+            [
                 'limit_start' => $this->trackers['start_usergroups'],
                 'limit' => $import_session['usergroups_per_screen']
-            )
+            ]
         );
         while ($group = $this->old_db->fetch_array($query)) {
             $this->insert($group);
@@ -42,7 +42,7 @@ class VANILLA_Converter_Module_Usergroups extends Converter_Module_Usergroups
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // Vanilla values
         $insert_data['import_gid'] = $data['RoleID'];

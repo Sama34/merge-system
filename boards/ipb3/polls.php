@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Polls extends Converter_Module_Polls
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'polls',
         'progress_column' => 'pid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,13 +29,13 @@ class IPB3_Converter_Module_Polls extends Converter_Module_Polls
             "polls",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen'])
+            ['limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen']]
         );
         while ($poll = $this->old_db->fetch_array($query)) {
             $pid = $this->insert($poll);
 
             // Restore connections
-            $db->update_query("threads", array('poll' => $pid), "import_tid = '" . $poll['tid'] . "'");
+            $db->update_query("threads", ['poll' => $pid], "import_tid = '" . $poll['tid'] . "'");
         }
     }
 
@@ -43,7 +43,7 @@ class IPB3_Converter_Module_Polls extends Converter_Module_Polls
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         $insert_data['import_tid'] = $data['tid'];
         $insert_data['import_pid'] = $data['pid'];

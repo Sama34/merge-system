@@ -41,24 +41,24 @@ class IPB4_Converter extends Converter
      *
      * @var array
      */
-    var $modules = array(
-        "db_configuration" => array("name" => "Database Configuration", "dependencies" => ""),
-        "import_usergroups" => array("name" => "Usergroups", "dependencies" => "db_configuration"),
-        "import_users" => array("name" => "Users", "dependencies" => "db_configuration,import_usergroups"),
-        "import_forums" => array("name" => "Forums", "dependencies" => "db_configuration,import_users"),
-        "import_forumperms" => array("name" => "Forum Permissions", "dependencies" => "db_configuration,import_forums"),
-        "import_threads" => array("name" => "Threads", "dependencies" => "db_configuration,import_forums"),
-        "import_polls" => array("name" => "Polls", "dependencies" => "db_configuration,import_threads"),
-        "import_pollvotes" => array("name" => "Poll Votes", "dependencies" => "db_configuration,import_polls"),
-        "import_posts" => array("name" => "Posts", "dependencies" => "db_configuration,import_threads"),
-        "import_privatemessages" => array(
+    var $modules = [
+        "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
+        "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
+        "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
+        "import_forums" => ["name" => "Forums", "dependencies" => "db_configuration,import_users"],
+        "import_forumperms" => ["name" => "Forum Permissions", "dependencies" => "db_configuration,import_forums"],
+        "import_threads" => ["name" => "Threads", "dependencies" => "db_configuration,import_forums"],
+        "import_polls" => ["name" => "Polls", "dependencies" => "db_configuration,import_threads"],
+        "import_pollvotes" => ["name" => "Poll Votes", "dependencies" => "db_configuration,import_polls"],
+        "import_posts" => ["name" => "Posts", "dependencies" => "db_configuration,import_threads"],
+        "import_privatemessages" => [
             "name" => "Private Messages",
             "dependencies" => "db_configuration,import_users"
-        ),
-        "import_settings" => array("name" => "Settings", "dependencies" => "db_configuration"),
-        "import_avatars" => array("name" => "Avatars", "dependencies" => "db_configuration,import_users"),
-        "import_attachments" => array("name" => "Attachments", "dependencies" => "db_configuration,import_posts"),
-    );
+        ],
+        "import_settings" => ["name" => "Settings", "dependencies" => "db_configuration"],
+        "import_avatars" => ["name" => "Avatars", "dependencies" => "db_configuration,import_users"],
+        "import_attachments" => ["name" => "Attachments", "dependencies" => "db_configuration,import_posts"],
+    ];
 
     /**
      * The table we check to verify it's "our" database
@@ -79,18 +79,18 @@ class IPB4_Converter extends Converter
      *
      * @var array
      */
-    var $groups = array(
+    var $groups = [
         2 => MYBB_GUESTS, // Guests
         3 => MYBB_REGISTERED, // Registered
         4 => MYBB_ADMINS, // Administrators
         6 => MYBB_MODS, // Moderators
-    );
+    ];
 
     /**
      * An array of supported databases
      * IPB only supports MySQL
      */
-    var $supported_databases = array("mysql");
+    var $supported_databases = ["mysql"];
 
     private $defaultLanguage = null;
 

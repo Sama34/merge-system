@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Polls extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'import_pid' => 0,
         'import_tid' => 0,
 
@@ -25,9 +25,9 @@ abstract class Converter_Module_Polls extends Converter_Module
         'multiple' => 0,
         'public' => 0,
         'maxoptions' => 0,
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'import_pid',
         'import_tid',
 
@@ -40,11 +40,11 @@ abstract class Converter_Module_Polls extends Converter_Module
         'multiple',
         'public',
         'maxoptions',
-    );
+    ];
 
-    var $mark_as_run_modules = array(
+    var $mark_as_run_modules = [
         'pollvotes',
-    );
+    ];
 
     /**
      * Insert poll into database

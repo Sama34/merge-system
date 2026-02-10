@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'uid',
         'encode_table' => 'users',
@@ -23,7 +23,7 @@ class MYBB_Converter_Module_Users extends Converter_Module_Users
         'username_column' => 'username',
         'email_column' => 'email',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -34,12 +34,12 @@ class MYBB_Converter_Module_Users extends Converter_Module_Users
             "users",
             "*",
             "",
-            array(
+            [
                 'order_by' => 'uid',
                 'order_dir' => 'asc',
                 'limit_start' => $this->trackers['start_users'],
                 'limit' => $import_session['users_per_screen']
-            )
+            ]
         );
         while ($user = $this->old_db->fetch_array($query)) {
             $this->insert($user);
@@ -53,18 +53,18 @@ class MYBB_Converter_Module_Users extends Converter_Module_Users
         static $field_info;
 
         // Avatars have a special module
-        $ignore = array(
+        $ignore = [
             'avatar',
             'avatartype',
             'avatardimensions',
-        );
+        ];
 
         if (!isset($field_info)) {
             // Get columns so we avoid any 'unknown column' errors
             $field_info = $db->show_fields_from("users");
         }
 
-        $insert_data = array();
+        $insert_data = [];
 
         foreach ($field_info as $key => $field) {
             if (in_array($field['Field'], $ignore)) {

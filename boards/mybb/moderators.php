@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Moderators extends Converter_Module_Moderators
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'moderators',
         'progress_column' => 'mid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class MYBB_Converter_Module_Moderators extends Converter_Module_Moderators
             "moderators",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_moderators'],
                 'limit' => $import_session['moderators_per_screen']
-            )
+            ]
         );
         while ($moderator = $this->old_db->fetch_array($query)) {
             $this->insert($moderator);
@@ -50,7 +50,7 @@ class MYBB_Converter_Module_Moderators extends Converter_Module_Moderators
             $field_info = $db->show_fields_from("moderators");
         }
 
-        $insert_data = array();
+        $insert_data = [];
 
         foreach ($field_info as $key => $field) {
             if ($field['Extra'] == 'auto_increment') {

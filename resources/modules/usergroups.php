@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Usergroups extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'import_gid' => 0,
         'type' => 2,
         'title' => '',
@@ -102,9 +102,9 @@ abstract class Converter_Module_Usergroups extends Converter_Module
         'canbanusers' => 0,
         'canviewwarnlogs' => 0,
         'canuseipsearch' => 0,
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'import_gid',
         'type',
         'stars',
@@ -191,7 +191,7 @@ abstract class Converter_Module_Usergroups extends Converter_Module
         'canbanusers',
         'canviewwarnlogs',
         'canuseipsearch',
-    );
+    ];
 
     /**
      * Insert usergroup into database

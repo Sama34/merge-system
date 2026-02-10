@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class SMF_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'poll votes',
         'progress_column' => 'ID_POLL',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class SMF_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
             "log_polls",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_pollvotes'],
                 'limit' => $import_session['pollvotes_per_screen']
-            )
+            ]
         );
         while ($pollvote = $this->old_db->fetch_array($query)) {
             $this->insert($pollvote);
@@ -41,7 +41,7 @@ class SMF_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // SMF values
         $poll = $this->get_import->poll($data['ID_POLL']);

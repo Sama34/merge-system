@@ -20,19 +20,19 @@ class BBCode_Parser extends BBCode_Parser_Plain
 
     function convert($text)
     {
-        $find = array(
+        $find = [
             '#\[COLOR\="([a-zA-Z]*|\#?[\da-fA-F]{3}|\#?[\da-fA-F]{6})"\](.*?)\[/COLOR\]#i',
             '#\[QUOTE\=(.*?);([0-9]+?)\]#i',
             '#\[url\="(.*?)"](.*?)\[/url\]#i',
             '#\[email\="(.*?)"](.*?)\[/email\]#i',
-        );
+        ];
 
-        $replace = array(
+        $replace = [
             '[color=$1]$2[/color]',
             "[quote=$1]",
             '[url=$1]$2[/url]',
             '[email=$1]$2[/email]',
-        );
+        ];
 
         $text = preg_replace($find, $replace, $text);
 

@@ -19,11 +19,11 @@ const FORUM_AVATAR_PNG = 3;
 class PUNBB_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'id',
         'default_per_screen' => 20,
-    );
+    ];
 
     function get_avatar_path()
     {
@@ -42,7 +42,7 @@ class PUNBB_Converter_Module_Avatars extends Converter_Module_Avatars
             "users",
             "*",
             "username != 'Guest' AND avatar > 0",
-            array('limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen'])
+            ['limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen']]
         );
         while ($avatar = $this->old_db->fetch_array($query)) {
             $this->insert($avatar);
@@ -51,7 +51,7 @@ class PUNBB_Converter_Module_Avatars extends Converter_Module_Avatars
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // MyBB 1.8 values
         $insert_data['uid'] = $this->get_import->uid($data['id']);

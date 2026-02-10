@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'ID_MEMBER',
         'default_per_screen' => 20,
-    );
+    ];
 
     function get_avatar_path()
     {
@@ -27,7 +27,7 @@ class SMF2_Converter_Module_Avatars extends Converter_Module_Avatars
             "settings",
             "value",
             "variable = 'attachmentUploadDir'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath = $this->old_db->fetch_field($query, 'value');
         $this->old_db->free_result($query);
@@ -52,7 +52,7 @@ class SMF2_Converter_Module_Avatars extends Converter_Module_Avatars
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // MyBB 1.8 values
         $insert_data['uid'] = $this->get_import->uid($data['id_member']);

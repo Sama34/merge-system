@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class WBB3_Converter_Module_Usergroups extends Converter_Module_Usergroups
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'usergroups',
         'progress_column' => 'groupID',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $options = array(
+    var $options = [
         "admin.general.canUseAcp",
         "user.profile.canView",
         "user.profile.rank.canEditUserTitle",
@@ -36,7 +36,7 @@ class WBB3_Converter_Module_Usergroups extends Converter_Module_Usergroups
         "user.board.canVotePoll",
         "user.board.canStartPoll",
         "mod.board.isSuperMod",
-    );
+    ];
 
     var $nice_options;
 
@@ -79,10 +79,10 @@ class WBB3_Converter_Module_Usergroups extends Converter_Module_Usergroups
             WCF_PREFIX . "group",
             "*",
             "groupID > 6",
-            array(
+            [
                 'limit_start' => $this->trackers['start_usergroups'],
                 'limit' => $import_session['usergroups_per_screen']
-            )
+            ]
         );
         while ($group = $this->old_db->fetch_array($query)) {
             // Fetch the options for that group
@@ -115,7 +115,7 @@ class WBB3_Converter_Module_Usergroups extends Converter_Module_Usergroups
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // WBB 3 values
         $insert_data['import_gid'] = $data['groupID'];

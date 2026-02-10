@@ -10,17 +10,17 @@
 abstract class Converter_Module_Usertitles extends Converter_Module
 {
 
-    public $default_values = array(
+    public $default_values = [
         'posts' => 0,
         'title' => '',
         'stars' => 1,
         'starimage' => 'star.gif'
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'posts',
         'stars',
-    );
+    ];
 
     /**
      * Insert user titles into database

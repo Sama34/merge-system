@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class VBULLETIN4_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'userid',
         'encode_table' => 'user',
@@ -23,7 +23,7 @@ class VBULLETIN4_Converter_Module_Users extends Converter_Module_Users
         'username_column' => 'username',
         'email_column' => 'email',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -46,7 +46,7 @@ class VBULLETIN4_Converter_Module_Users extends Converter_Module_Users
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // vBulletin 4 values
         $insert_data['usergroup'] = $this->board->get_gid($data['usergroupid']);
@@ -72,7 +72,7 @@ class VBULLETIN4_Converter_Module_Users extends Converter_Module_Users
         }
         $insert_data['icq'] = $data['icq'];
         $insert_data['skype'] = $data['skype'];
-        $insert_data['timezone'] = str_replace(array('.0', '.00'), array('', ''), $insert_data['timezone']);
+        $insert_data['timezone'] = str_replace(['.0', '.00'], ['', ''], $insert_data['timezone']);
         $insert_data['style'] = 0;
         $insert_data['referrer'] = $data['referrerid'];
         $insert_data['regip'] = my_inet_pton($data['ipaddress']);

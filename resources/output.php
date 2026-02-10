@@ -43,7 +43,7 @@ class converterOutput
      *
      * @var array
      */
-    var $steps = array();
+    var $steps = [];
 
     /**
      * Title of the system
@@ -281,7 +281,7 @@ END;
 
         foreach ($board->modules as $key => $module) {
             ++$i;
-            $dependency_list = array();
+            $dependency_list = [];
             $awaiting_dependencies = 0;
 
             // Fetch dependent modules
@@ -385,56 +385,56 @@ END;
     {
         global $board, $dbengines, $mybb, $lang;
 
-        $dboptions = array();
+        $dboptions = [];
 
         if (function_exists('mysql_connect') && in_array("mysql", $board->supported_databases)) {
-            $dboptions['mysql'] = array(
+            $dboptions['mysql'] = [
                 'class' => 'DB_MySQL',
                 'title' => 'MySQL',
                 'short_title' => 'MySQL',
-            );
+            ];
         }
 
         if (function_exists('mysqli_connect') && in_array("mysql", $board->supported_databases)) {
-            $dboptions['mysqli'] = array(
+            $dboptions['mysqli'] = [
                 'class' => 'DB_MySQLi',
                 'title' => 'MySQL Improved',
                 'short_title' => 'MySQLi',
-            );
+            ];
         }
 
         if (function_exists('pg_connect') && in_array("pgsql", $board->supported_databases)) {
-            $dboptions['pgsql'] = array(
+            $dboptions['pgsql'] = [
                 'class' => 'DB_PgSQL',
                 'title' => 'PostgreSQL',
                 'short_title' => 'PostgreSQL',
-            );
+            ];
         }
 
         if (class_exists('PDO')) {
             $supported_dbs = PDO::getAvailableDrivers();
             if (in_array('sqlite', $supported_dbs) && in_array("sqlite", $board->supported_databases)) {
-                $dboptions['sqlite'] = array(
+                $dboptions['sqlite'] = [
                     'class' => 'DB_SQLite',
                     'title' => 'SQLite 3',
                     'short_title' => 'SQLite',
-                );
+                ];
             }
 
             if (in_array('pgsql', $supported_dbs) && in_array("pgsql", $board->supported_databases)) {
-                $dboptions['pgsql_pdo'] = array(
+                $dboptions['pgsql_pdo'] = [
                     'class' => 'PostgresPdoDbDriver',
                     'title' => 'PostgreSQL (PDO)',
                     'short_title' => 'PostgreSQL (PDO)',
-                );
+                ];
             }
 
             if (in_array('mysql', $supported_dbs) && in_array("mysql", $board->supported_databases)) {
-                $dboptions['mysql_pdo'] = array(
+                $dboptions['mysql_pdo'] = [
                     'class' => 'MysqlPdoDbDriver',
                     'title' => 'MySQL (PDO)',
                     'short_title' => 'MySQL (PDO)',
-                );
+                ];
             }
         }
 
@@ -475,7 +475,7 @@ END;
 		});
 		</script>";
 
-        $db_info = array();
+        $db_info = [];
         foreach ($dboptions as $dbfile => $dbtype) {
             require_once MYBB_ROOT . "inc/db_{$dbfile}.php";
             if (!class_exists($dbtype['class'])) {
@@ -794,7 +794,7 @@ END;
         }
 
         if (!is_array($errors)) {
-            $errors = array($errors);
+            $errors = [$errors];
         }
 
         $error_list = implode("</li>\n<li>", $errors);
@@ -820,15 +820,15 @@ END;
     {
         global $import_session, $mybb, $module, $db, $lang;
 
-        $module_name = str_replace(array("import_", ".", ".."), "", $import_session['module']);
+        $module_name = str_replace(["import_", ".", ".."], "", $import_session['module']);
 
         $module->trackers['start_' . $module_name] = 0;
 
         // TODO: $this->trackers is never defined and will always be 0 therefore
-        $replacements = array(
+        $replacements = [
             "count" => (int)$this->trackers['start_' . $module_name],
             "type" => $db->escape_string($module_name)
-        );
+        ];
         $db->replace_query("trackers", $replacements);
 
         $this->calculate_stats(false);
@@ -881,7 +881,7 @@ END;
     {
         global $import_session, $module, $lang;
 
-        $module_name = str_replace(array("import_", ".", ".."), "", $import_session['module']);
+        $module_name = str_replace(["import_", ".", ".."], "", $import_session['module']);
 
         $left = $import_session['total_' . $module_name] - $module->trackers['start_' . $module_name] - $import_session[$module_name . '_per_screen'];
 
@@ -979,7 +979,7 @@ END;
     {
         global $import_session, $module, $lang;
 
-        $module_name = str_replace(array("import_", ".", ".."), "", $import_session['module']);
+        $module_name = str_replace(["import_", ".", ".."], "", $import_session['module']);
 
         // Are we using the friendly progress bar or not?
         if ($position == "start") {

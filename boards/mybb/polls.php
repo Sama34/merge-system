@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Polls extends Converter_Module_Polls
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'polls',
         'progress_column' => 'pid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,13 +29,13 @@ class MYBB_Converter_Module_Polls extends Converter_Module_Polls
             "polls",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen'])
+            ['limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen']]
         );
         while ($poll = $this->old_db->fetch_array($query)) {
             $pid = $this->insert($poll);
 
             // Restore connections
-            $db->update_query("threads", array('poll' => $pid), "import_tid = '{$poll['tid']}'");
+            $db->update_query("threads", ['poll' => $pid], "import_tid = '{$poll['tid']}'");
         }
     }
 
@@ -50,7 +50,7 @@ class MYBB_Converter_Module_Polls extends Converter_Module_Polls
             $field_info = $db->show_fields_from("polls");
         }
 
-        $insert_data = array();
+        $insert_data = [];
 
         foreach ($field_info as $key => $field) {
             if ($field['Extra'] == 'auto_increment') {

@@ -22,7 +22,7 @@ abstract class Converter_Module
     /**
      * @var array
      */
-    var $default_values = array();
+    var $default_values = [];
 
     /**
      * @var DB_MySQL|DB_MySQLi|DB_PgSQL|DB_SQLite|PostgresPdoDbDriver|MysqlPdoDbDriver
@@ -52,7 +52,7 @@ abstract class Converter_Module
     /**
      * @var array
      */
-    var $errors = array();
+    var $errors = [];
 
     /**
      * @var bool
@@ -62,7 +62,7 @@ abstract class Converter_Module
     /**
      * @var array
      */
-    var $mark_as_run_modules = array();
+    var $mark_as_run_modules = [];
 
     /**
      * @param Converter $converter_class
@@ -111,7 +111,7 @@ abstract class Converter_Module
         }
 
         // Setup our trackers
-        $this->trackers = array();
+        $this->trackers = [];
         $query = $db->simple_select("trackers");
         while ($tracker = $db->fetch_array($query)) {
             $this->trackers['start_' . $tracker['type']] = $tracker['count'];
@@ -137,20 +137,20 @@ abstract class Converter_Module
     {
         global $import_session, $db, $lang;
 
-        $column_info = array();
+        $column_info = [];
         if (!empty($table)) {
             $column_info = get_column_length_info($table);
         }
 
         $data = array_merge($this->default_values, $values);
-        $insert_array = array();
+        $insert_array = [];
 
         foreach ($data as $key => $value) {
             $value_original = $value;
             if (!empty($column_info[$key]['type'])) {
                 $column = $column_info[$key];
             } else {
-                $column = array();
+                $column = [];
                 $this->board->set_column_warning_in_progress(
                     'column',
                     $table,
@@ -509,7 +509,7 @@ abstract class Converter_Module
         global $output, $lang;
 
         if (!is_array($tables)) {
-            $tables = array($tables);
+            $tables = [$tables];
         }
 
         if ($this->old_db->type == "mysqli" || $this->old_db->type == "mysql") {
@@ -533,10 +533,10 @@ abstract class Converter_Module
 
         $this->trackers['start_' . $type] += $amount;
 
-        $replacements = array(
+        $replacements = [
             "count" => (int)$this->trackers['start_' . $type],
             "type" => $db->escape_string($type)
-        );
+        ];
         $db->replace_query("trackers", $replacements);
     }
 
@@ -614,7 +614,7 @@ abstract class Converter_Module
     {
         global $import_session;
         foreach ($this->mark_as_run_modules as $module) {
-            $module_name = str_replace(array("import_", ".", ".."), "", $module);
+            $module_name = str_replace(["import_", ".", ".."], "", $module);
 
             // This board doesn't have that specific module so skip it
             if (!file_exists(MERGE_ROOT . "boards/{$import_session['board']}/{$module_name}.php")) {

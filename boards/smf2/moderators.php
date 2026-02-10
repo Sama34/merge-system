@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Moderators extends Converter_Module_Moderators
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'moderators',
         'progress_column' => 'id_member',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class SMF2_Converter_Module_Moderators extends Converter_Module_Moderators
             "moderators",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_moderators'],
                 'limit' => $import_session['moderators_per_screen']
-            )
+            ]
         );
         while ($moderator = $this->old_db->fetch_array($query)) {
             $this->insert($moderator);
@@ -41,7 +41,7 @@ class SMF2_Converter_Module_Moderators extends Converter_Module_Moderators
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // SMF values
         $insert_data['fid'] = $this->get_import->fid($data['id_board']);

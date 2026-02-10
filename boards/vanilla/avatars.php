@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class VANILLA_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'UserID',
         'default_per_screen' => 20,
-    );
+    ];
 
     function get_avatar_path()
     {
@@ -34,7 +34,7 @@ class VANILLA_Converter_Module_Avatars extends Converter_Module_Avatars
             "user",
             "*",
             "Photo != '' AND Name != 'System'",
-            array('limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen'])
+            ['limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen']]
         );
         while ($avatar = $this->old_db->fetch_array($query)) {
             $this->insert($avatar);
@@ -45,7 +45,7 @@ class VANILLA_Converter_Module_Avatars extends Converter_Module_Avatars
     {
         global $mybb, $import_session;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // MyBB 1.8 values
         $insert_data['uid'] = $this->get_import->uid($data['UserID']);

@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'pmid',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class MYBB_Converter_Module_Privatemessages extends Converter_Module_Privatemess
             "privatemessages",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_privatemessages'],
                 'limit' => $import_session['privatemessages_per_screen']
-            )
+            ]
         );
         while ($pm = $this->old_db->fetch_array($query)) {
             $this->insert($pm);
@@ -50,7 +50,7 @@ class MYBB_Converter_Module_Privatemessages extends Converter_Module_Privatemess
             $field_info = $db->show_fields_from("privatemessages");
         }
 
-        $insert_data = array();
+        $insert_data = [];
 
         foreach ($field_info as $key => $field) {
             if ($field['Extra'] == 'auto_increment') {
@@ -74,7 +74,7 @@ class MYBB_Converter_Module_Privatemessages extends Converter_Module_Privatemess
         $touserarray = unserialize($data['recipients']);
 
         // Rebuild the recipients array
-        $recipients = array();
+        $recipients = [];
         if (is_array($touserarray['to'])) {
             foreach ($touserarray['to'] as $key => $uid) {
                 $recipients['to'][] = $this->get_import->uid($uid);

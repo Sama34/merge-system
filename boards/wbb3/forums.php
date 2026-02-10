@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class WBB3_Converter_Module_Forums extends Converter_Module_Forums
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forums',
         'progress_column' => 'boardID',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -38,7 +38,7 @@ class WBB3_Converter_Module_Forums extends Converter_Module_Forums
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // WBB 3 Values
         $insert_data['import_fid'] = $data['boardID'];
@@ -99,7 +99,7 @@ class WBB3_Converter_Module_Forums extends Converter_Module_Forums
         while ($forum = $db->fetch_array($query)) {
             $db->update_query(
                 "forums",
-                array('pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])),
+                ['pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])],
                 "fid='{$forum['fid']}'",
                 1
             );

@@ -14,11 +14,11 @@ if (!defined("IN_MYBB")) {
 
 class XENFORO2_Converter_Module_Attachments extends Converter_Module_Attachments
 {
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'attachment_id',
         'default_per_screen' => 20,
-    );
+    ];
 
     public $path_column = "attachment_id, data_id";
 
@@ -52,7 +52,7 @@ class XENFORO2_Converter_Module_Attachments extends Converter_Module_Attachments
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // Xenforo 2 values
         $insert_data['import_aid'] = $data['attachment_id'];

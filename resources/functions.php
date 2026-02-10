@@ -21,10 +21,10 @@ function update_import_session()
     global $import_session, $cache, $board, $db;
 
     if (!$import_session['completed']) {
-        $import_session['completed'] = array();
+        $import_session['completed'] = [];
     }
     if (!$import_session['disabled']) {
-        $import_session['disabled'] = array();
+        $import_session['disabled'] = [];
     }
 
     // Stats
@@ -174,15 +174,15 @@ function delete_import_fields($text = true)
     }
     $db->drop_table("trackers");
 
-    $drop_list = array(
-        "users" => array('import_uid', 'import_usergroup', 'import_additionalgroups', 'import_displaygroup'),
-        "forums" => array('import_fid', 'import_pid'),
-        "threads" => array('import_tid', 'import_uid', 'import_poll', 'import_firstpost'),
-        "posts" => array('import_pid', 'import_uid'),
-        "polls" => array('import_pid', 'import_tid'),
-        "usergroups" => array('import_gid'),
-        "attachments" => array('import_aid'),
-    );
+    $drop_list = [
+        "users" => ['import_uid', 'import_usergroup', 'import_additionalgroups', 'import_displaygroup'],
+        "forums" => ['import_fid', 'import_pid'],
+        "threads" => ['import_tid', 'import_uid', 'import_poll', 'import_firstpost'],
+        "posts" => ['import_pid', 'import_uid'],
+        "polls" => ['import_pid', 'import_tid'],
+        "usergroups" => ['import_gid'],
+        "attachments" => ['import_aid'],
+    ];
 
     $increment = 200 / (count($drop_list, COUNT_RECURSIVE) - count($drop_list));
     $progress = 0;
@@ -196,7 +196,7 @@ function delete_import_fields($text = true)
             $progress += $increment;
         }
 
-        $columns_to_drop = array();
+        $columns_to_drop = [];
         foreach ($columns as $column) {
             if ($db->field_exists($column, $table)) {
                 $columns_to_drop[] = $column;
@@ -254,25 +254,25 @@ function create_import_fields($text = true)
 
     $db->write_query($createtable_trackers_sql);
 
-    $add_list = array(
-        "int" => array(
-            "users" => array('import_uid', 'import_usergroup', 'import_displaygroup'),
-            "forums" => array('import_fid', 'import_pid'),
-            "threads" => array('import_tid', 'import_uid', 'import_poll', 'import_firstpost'),
-            "posts" => array('import_pid', 'import_uid'),
-            "polls" => array('import_pid', 'import_tid'),
-            "usergroups" => array('import_gid'),
-            "attachments" => array('import_aid'),
-        ),
-        "text" => array(
-            "users" => array(
+    $add_list = [
+        "int" => [
+            "users" => ['import_uid', 'import_usergroup', 'import_displaygroup'],
+            "forums" => ['import_fid', 'import_pid'],
+            "threads" => ['import_tid', 'import_uid', 'import_poll', 'import_firstpost'],
+            "posts" => ['import_pid', 'import_uid'],
+            "polls" => ['import_pid', 'import_tid'],
+            "usergroups" => ['import_gid'],
+            "attachments" => ['import_aid'],
+        ],
+        "text" => [
+            "users" => [
                 'passwordconvert',
                 'passwordconverttype',
                 'passwordconvertsalt',
                 'import_additionalgroups'
-            ),
-        ),
-    );
+            ],
+        ],
+    ];
 
     $increment = 0;
     foreach ($add_list as $array) {
@@ -291,7 +291,7 @@ function create_import_fields($text = true)
             $progress += $increment;
         }
 
-        $columns_to_add = array();
+        $columns_to_add = [];
         foreach ($columns as $column) {
             if (!$db->field_exists($column, $table)) {
                 $columns_to_add[] = $column;
@@ -330,7 +330,7 @@ function create_import_fields($text = true)
             $progress += $increment;
         }
 
-        $columns_to_add = array();
+        $columns_to_add = [];
         foreach ($columns as $column) {
             if (!$db->field_exists($column, $table)) {
                 $columns_to_add[] = $column;
@@ -484,13 +484,13 @@ function make_parent_list($fid, $navsep = ",", $parent_list = "")
             "forums",
             "fid, import_fid, import_pid",
             "import_fid > 0",
-            array("order_by" => "import_pid")
+            ["order_by" => "import_pid"]
         );
         while ($forum = $db->fetch_array($query)) {
-            $pforumcache[$forum['import_fid']] = array(
+            $pforumcache[$forum['import_fid']] = [
                 "fid" => $forum['fid'],
                 "import_pid" => $forum['import_pid'],
-            );
+            ];
         }
     }
 
@@ -522,12 +522,12 @@ function make_parent_list_pid($fid, $navsep = ",", $parent_list = "")
     global $pforumcache, $db;
 
     if (!$pforumcache) {
-        $query = $db->simple_select("forums", "fid, pid", "import_fid > 0", array("order_by" => "pid"));
+        $query = $db->simple_select("forums", "fid, pid", "import_fid > 0", ["order_by" => "pid"]);
         while ($forum = $db->fetch_array($query)) {
-            $pforumcache[$forum['fid']] = array(
+            $pforumcache[$forum['fid']] = [
                 "fid" => $forum['fid'],
                 "pid" => $forum['pid']
-            );
+            ];
         }
     }
 
@@ -592,7 +592,7 @@ function check_url_exists($url)
  * @param array $post_data
  * @return string The remote file contents.
  */
-function merge_fetch_remote_file($url, $post_data = array())
+function merge_fetch_remote_file($url, $post_data = [])
 {
     $post_body = '';
     if (!empty($post_data)) {
@@ -651,7 +651,7 @@ function merge_fetch_remote_file($url, $post_data = array())
             if (!$fp) {
                 return false;
             }
-            $headers = array();
+            $headers = [];
             if (!empty($post_body)) {
                 $headers[] = "POST {$url['path']} HTTP/1.0";
                 $headers[] = "Content-Length: " . strlen($post_body);
@@ -995,7 +995,7 @@ function get_length_info($table, $cache = true)
         return $import_session['column_length'][$table];
     }
 
-    $lengthinfo = array();
+    $lengthinfo = [];
     $fieldinfo = $db->show_fields_from($table);
 
     foreach ($fieldinfo as $field) {
@@ -1039,17 +1039,17 @@ function get_column_length_info($table, $cache = true, $hard = false)
         return $import_session['column_length'][$table];
     }
 
-    $table_columninfo = array();
+    $table_columninfo = [];
 
     $columns = $db->show_fields_from($table);
 
     foreach ($columns as $column) {
-        $columninfo = array(
+        $columninfo = [
             // (default) The data type can't be parsed by the Merge System.
             'type' => MERGE_DATATYPE_UNKNOWN,
             // The data type from the table definition.
             'def_type' => $column['Type'],
-        );
+        ];
         $column_type = strtolower($column['Type']);
 
         // Follow SQLite's type affinity to figure out our data types.

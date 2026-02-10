@@ -15,7 +15,7 @@ if (!defined("IN_MYBB")) {
 class FLUXBB_Converter_Module_Users extends Converter_Module_Users
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'users',
         'progress_column' => 'id',
         'encode_table' => 'users',
@@ -23,7 +23,7 @@ class FLUXBB_Converter_Module_Users extends Converter_Module_Users
         'username_column' => 'username',
         'email_column' => 'email',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -34,12 +34,12 @@ class FLUXBB_Converter_Module_Users extends Converter_Module_Users
             "users",
             "*",
             "username != 'Guest'",
-            array(
+            [
                 'order_by' => 'id',
                 'order_dir' => 'asc',
                 'limit_start' => $this->trackers['start_users'],
                 'limit' => $import_session['users_per_screen']
-            )
+            ]
         );
         while ($user = $this->old_db->fetch_array($query)) {
             $this->insert($user);
@@ -48,7 +48,7 @@ class FLUXBB_Converter_Module_Users extends Converter_Module_Users
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // fluxBB values
         $insert_data['usergroup'] = $this->board->get_gid($data['group_id']);
@@ -63,7 +63,7 @@ class FLUXBB_Converter_Module_Users extends Converter_Module_Users
         $insert_data['showsigs'] = $data['show_sig'];
         $insert_data['signature'] = encode_to_utf8($this->bbcode_parser->convert($data['signature']), "users", "users");
         $insert_data['showavatars'] = $data['show_avatars'];
-        $insert_data['timezone'] = str_replace(array('.0', '.00'), array('', ''), $data['timezone']);
+        $insert_data['timezone'] = str_replace(['.0', '.00'], ['', ''], $data['timezone']);
 
         $insert_data['lastpost'] = (int)$data['last_post'];
         $insert_data['icq'] = $data['icq'];

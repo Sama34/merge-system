@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'forum permissions',
         'progress_column' => 'perm_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class IPB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
             "permission_index",
             "*",
             "app='forums' AND perm_type='forum'",
-            array(
+            [
                 'limit_start' => $this->trackers['start_forumperms'],
                 'limit' => $import_session['forumperms_per_screen']
-            )
+            ]
         );
         while ($perm = $this->old_db->fetch_array($query)) {
             $this->process_permission($perm);
@@ -43,7 +43,7 @@ class IPB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
     {
         $fid = $this->get_import->fid($data['perm_type_id']);
 
-        $perms = array(
+        $perms = [
             "perm_view" => "canview",
             "perm_2" => "canviewthreads",
             "perm_3" => "canpostreplys",
@@ -51,16 +51,16 @@ class IPB3_Converter_Module_Forumperms extends Converter_Module_Forumperms
             "perm_5" => "canpostattachments",
             "perm_6" => "candlattachments"
             // perm_7	=> ?
-        );
+        ];
 
-        $groups = array();
+        $groups = [];
         $query = $this->old_db->simple_select("groups", "g_id");
         while ($gid = $this->old_db->fetch_field($query, "g_id")) {
             $groups[$gid] = $this->board->get_gid($gid);
         }
 
         foreach ($perms as $perm => $operm) {
-            $perm_split = array();
+            $perm_split = [];
             if ($data[$perm] != '*') {
                 $perm_split = explode(',', trim($data[$perm], ","));
             }

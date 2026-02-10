@@ -14,13 +14,13 @@ if (!defined("IN_MYBB")) {
 
 class XENFORO2_Converter_Module_Settings extends Converter_Module_Settings
 {
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'settings',
         'default_per_screen' => 1000,
-    );
+    ];
 
     // What settings do we need to get and what is their MyBB equivalent?
-    var $convert_settings = array(
+    var $convert_settings = [
         /* Options - Board active */
         "boardActive" => "boardclosed",    // Inverted
         "boardInactiveMessage" => "boardclosed_reason",
@@ -37,7 +37,7 @@ class XENFORO2_Converter_Module_Settings extends Converter_Module_Settings
         "floodCheckLengthDiscussion" => "postfloodsecs",    // Seconds
 
         /* Options - Email options */
-        "emailTransport" => array(
+        "emailTransport" => [
             "emailTransport" => "mail_handler",
             "smtpHost" => "smtp_host",
             "smtpPort" => "smtp_port",
@@ -45,18 +45,18 @@ class XENFORO2_Converter_Module_Settings extends Converter_Module_Settings
             "smtpLoginUsername" => "smtp_user",
             "smtpLoginPassword" => "smtp_pass",
             "smtpEncrypt" => "secure_smtp",
-        ),
+        ],
 
         /* Options - User registration */
-        "registrationSetup" => array(
+        "registrationSetup" => [
             "enabled" => "disableregs",    // Inverted
             "emailConfirmation" => "regtype",
             "moderation" => "regtype",
-        ),
-        "usernameLength" => array(
+        ],
+        "usernameLength" => [
             "min" => "minnamelength",
             "max" => "maxnamelength",
-        ),
+        ],
         "registrationTimer" => "regtime",    // Seconds
 
         /* Options - User options */
@@ -77,32 +77,32 @@ class XENFORO2_Converter_Module_Settings extends Converter_Module_Settings
         "attachmentMaxPerMessage" => "maxattachments",
         //"attachmentExtensions" => "",	// By line
         "attachmentThumbnailDimensions" => "attachthumbw|attachthumbh",
-    );
+    ];
 
     function import()
     {
         global $import_session;
 
         // TODO: utf8 conversion? Should be checked but xf 2 only uses utf8mb4. Other board converters can check this.
-        $utf8_encode_field = array(
+        $utf8_encode_field = [
             "boardInactiveMessage",
             "boardTitle",
             "homePageUrl",
-        );
+        ];
 
         // Use MyBB's option name.
-        $int_to_yes_no = array(
+        $int_to_yes_no = [
             "boardclosed" => 0,
             "disableregs" => 0,
             "enablememberlist" => 1,
-        );
+        ];
 
         // xf's options that may be imported.
         $query = $this->old_db->simple_select(
             "option",
             "option_id, option_value, data_type",
             "option_id IN('" . implode("','", array_keys($this->convert_settings)) . "')",
-            array('limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen'])
+            ['limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen']]
         );
         while ($option = $this->old_db->fetch_array($query)) {
             $xf_option_name = $option['option_id'];
@@ -236,9 +236,9 @@ class XENFORO2_Converter_Module_Settings extends Converter_Module_Settings
         $this->debug->log->trace0("Updating setting {$name}");
         $output->print_progress("start", $lang->sprintf($lang->module_settings_updating, htmlspecialchars_uni($name)));
 
-        $modify = array(
+        $modify = [
             'value' => $db->escape_string($value)
-        );
+        ];
         $this->debug->log->datatrace('$value', $value);
         $db->update_query("settings", $modify, "name='{$name}'");
         // Increase the tracker manually.

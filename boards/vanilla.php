@@ -41,19 +41,19 @@ class VANILLA_Converter extends Converter
      *
      * @var array
      */
-    var $modules = array(
-        "db_configuration" => array("name" => "Database Configuration", "dependencies" => ""),
-        "import_usergroups" => array("name" => "Usergroups", "dependencies" => "db_configuration"),
-        "import_users" => array("name" => "Users", "dependencies" => "db_configuration,import_usergroups"),
-        "import_forums" => array("name" => "Forums", "dependencies" => "db_configuration,import_users"),
-        "import_threads" => array("name" => "Threads", "dependencies" => "db_configuration,import_forums"),
-        "import_posts" => array("name" => "Posts", "dependencies" => "db_configuration,import_threads"),
-        "import_privatemessages" => array(
+    var $modules = [
+        "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
+        "import_usergroups" => ["name" => "Usergroups", "dependencies" => "db_configuration"],
+        "import_users" => ["name" => "Users", "dependencies" => "db_configuration,import_usergroups"],
+        "import_forums" => ["name" => "Forums", "dependencies" => "db_configuration,import_users"],
+        "import_threads" => ["name" => "Threads", "dependencies" => "db_configuration,import_forums"],
+        "import_posts" => ["name" => "Posts", "dependencies" => "db_configuration,import_threads"],
+        "import_privatemessages" => [
             "name" => "Private Messages",
             "dependencies" => "db_configuration,import_users"
-        ),
-        "import_avatars" => array("name" => "Avatars", "dependencies" => "db_configuration,import_users"),
-    );
+        ],
+        "import_avatars" => ["name" => "Avatars", "dependencies" => "db_configuration,import_users"],
+    ];
 
     /**
      * The table we check to verify it's "our" database
@@ -74,14 +74,14 @@ class VANILLA_Converter extends Converter
      *
      * @var array
      */
-    var $groups = array(
+    var $groups = [
         2 => MYBB_GUESTS, // Guests
         3 => MYBB_AWAITING, // Unconfirmed
         4 => MYBB_AWAITING, // Applicant
         8 => MYBB_REGISTERED, // Member
         16 => MYBB_ADMINS, // Administrators
         32 => MYBB_MODS, // Moderator
-    );
+    ];
 
     /**
      * What BBCode Parser we're using
@@ -94,6 +94,6 @@ class VANILLA_Converter extends Converter
      * An array of supported databases
      * Vanilla only supports MySQL
      */
-    var $supported_databases = array("mysql");
+    var $supported_databases = ["mysql"];
 }
 

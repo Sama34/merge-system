@@ -19,11 +19,11 @@ const ATTACH_AS_FILES_NEW = 2;
 class VBULLETIN4_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'attachmentid',
         'default_per_screen' => 20,
-    );
+    ];
 
     public $test_table = "attachment";
 
@@ -74,7 +74,7 @@ class VBULLETIN4_Converter_Module_Attachments extends Converter_Module_Attachmen
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // vBulletin 4 values
         $insert_data['import_aid'] = $data['attachmentid'];

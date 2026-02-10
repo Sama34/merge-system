@@ -15,14 +15,14 @@ if (!defined("IN_MYBB")) {
 class WBB4_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'poll votes',
         'progress_column' => 'topic_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $cache_poll_details = array();
-    var $pid_cache = array();
+    var $cache_poll_details = [];
+    var $pid_cache = [];
 
     function pre_setup()
     {
@@ -30,7 +30,7 @@ class WBB4_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 
         $query = $db->simple_select("polls", "pid, import_pid, dateline", "import_pid!='0'");
         while ($poll = $db->fetch_array($query)) {
-            $this->pid_cache[$poll['import_pid']] = array("pid" => $poll['pid'], "dateline" => $poll['dateline']);
+            $this->pid_cache[$poll['import_pid']] = ["pid" => $poll['pid'], "dateline" => $poll['dateline']];
         }
     }
 
@@ -53,7 +53,7 @@ class WBB4_Converter_Module_Pollvotes extends Converter_Module_Pollvotes
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // WBB 4 values
         $insert_data['pid'] = $this->pid_cache[$data['pollID']]['pid'];

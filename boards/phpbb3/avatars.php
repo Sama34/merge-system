@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Avatars extends Converter_Module_Avatars
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'avatars',
         'progress_column' => 'user_id',
         'default_per_screen' => 20,
-    );
+    ];
 
     var $avatar_salt;
 
@@ -29,7 +29,7 @@ class PHPBB3_Converter_Module_Avatars extends Converter_Module_Avatars
             "config",
             "config_value",
             "config_name = 'server_protocol'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath = $this->old_db->fetch_field($query, 'config_value');
         $this->old_db->free_result($query);
@@ -38,7 +38,7 @@ class PHPBB3_Converter_Module_Avatars extends Converter_Module_Avatars
             "config",
             "config_value",
             "config_name = 'server_name'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath .= $this->old_db->fetch_field($query, 'config_value');
         $this->old_db->free_result($query);
@@ -47,7 +47,7 @@ class PHPBB3_Converter_Module_Avatars extends Converter_Module_Avatars
             "config",
             "config_value",
             "config_name = 'script_path'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath .= $this->old_db->fetch_field($query, 'config_value') . '/';
         $this->old_db->free_result($query);
@@ -56,7 +56,7 @@ class PHPBB3_Converter_Module_Avatars extends Converter_Module_Avatars
             "config",
             "config_value",
             "config_name = 'avatar_path'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath .= $this->old_db->fetch_field($query, 'config_value');
         $this->old_db->free_result($query);
@@ -72,7 +72,7 @@ class PHPBB3_Converter_Module_Avatars extends Converter_Module_Avatars
             "users",
             "*",
             "user_id > 0 AND username != 'Anonymous' AND group_id != 6",
-            array('limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen'])
+            ['limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen']]
         );
         while ($avatar = $this->old_db->fetch_array($query)) {
             $this->insert($avatar);
@@ -83,7 +83,7 @@ class PHPBB3_Converter_Module_Avatars extends Converter_Module_Avatars
     {
         global $mybb;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // MyBB 1.8 values
         $insert_data['uid'] = $this->get_import->uid($data['user_id']);
@@ -138,7 +138,7 @@ class PHPBB3_Converter_Module_Avatars extends Converter_Module_Avatars
                 "config",
                 "config_value",
                 "config_name = 'avatar_salt'",
-                array('limit' => 1)
+                ['limit' => 1]
             );
             $this->avatar_salt = $this->old_db->fetch_field($query, 'config_value');
             $this->old_db->free_result($query);

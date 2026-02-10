@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class WBB3_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'attachments',
         'progress_column' => 'attachmentID',
         'default_per_screen' => 20,
-    );
+    ];
 
     public $path_column = "attachmentID";
 
@@ -50,10 +50,10 @@ class WBB3_Converter_Module_Attachments extends Converter_Module_Attachments
             WCF_PREFIX . "attachment",
             "*",
             "containerType='post'",
-            array(
+            [
                 'limit_start' => $this->trackers['start_attachments'],
                 'limit' => $import_session['attachments_per_screen']
-            )
+            ]
         );
         while ($attachment = $this->old_db->fetch_array($query)) {
             $this->insert($attachment);
@@ -64,7 +64,7 @@ class WBB3_Converter_Module_Attachments extends Converter_Module_Attachments
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // WBB 3 values
         $insert_data['import_aid'] = $data['attachmentID'];

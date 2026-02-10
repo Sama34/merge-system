@@ -24,9 +24,9 @@ abstract class Converter_Module_Settings extends Converter_Module
 
         $output->print_progress("start", $lang->sprintf($lang->module_settings_updating, htmlspecialchars_uni($name)));
 
-        $modify = array(
+        $modify = [
             'value' => $db->escape_string($value)
-        );
+        ];
 
         $this->debug->log->datatrace('$value', $value);
 

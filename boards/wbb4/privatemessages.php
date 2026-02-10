@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class WBB4_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'pmID',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -40,7 +40,7 @@ class WBB4_Converter_Module_Privatemessages extends Converter_Module_Privatemess
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // WBB 4 values
         $insert_data['fromid'] = $this->get_import->uid($data['userID']);
@@ -55,7 +55,7 @@ class WBB4_Converter_Module_Privatemessages extends Converter_Module_Privatemess
         $insert_data['smilieoff'] = int_to_01($data['enableSmilies']);
 
         // Now build our recipients list
-        $to_send = $recipients = array();
+        $to_send = $recipients = [];
         if ($data['isDraft']) {
             // Draft handles the recipients in a special array so figure them out
             $draftData = unserialize($data['draftData']);

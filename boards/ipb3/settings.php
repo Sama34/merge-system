@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Settings extends Converter_Module_Settings
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'settings',
         'default_per_screen' => 1000,
-    );
+    ];
 
     // What settings do we need to get and what is their MyBB equivalent?
-    var $convert_settings = array(
+    var $convert_settings = [
         "board_offline" => "boardclosed",
         "offline_msg" => "boardclosed_reason",
         "au_cutoff" => "wolcutoffmins",
@@ -62,7 +62,7 @@ class IPB3_Converter_Module_Settings extends Converter_Module_Settings
         "no_reg" => "disableregs",
         "flood_control" => "postfloodsecs",
         "ipb_display_version" => "showvernum",
-    );
+    ];
 
     function import()
     {
@@ -72,7 +72,7 @@ class IPB3_Converter_Module_Settings extends Converter_Module_Settings
             "core_sys_conf_settings",
             "conf_key, conf_value, conf_default",
             "conf_key IN('" . implode("','", array_keys($this->convert_settings)) . "')",
-            array('limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen'])
+            ['limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen']]
         );
         while ($setting = $this->old_db->fetch_array($query)) {
             // Invision Power Board 3 values

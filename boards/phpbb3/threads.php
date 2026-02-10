@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Threads extends Converter_Module_Threads
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'topic_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $get_poll_pid_cache = array();
+    var $get_poll_pid_cache = [];
 
     function import()
     {
@@ -31,12 +31,12 @@ class PHPBB3_Converter_Module_Threads extends Converter_Module_Threads
             "topics",
             "*",
             "",
-            array(
+            [
                 'order_by' => 'topic_first_post_id',
                 'order_dir' => 'ASC',
                 'limit_start' => $this->trackers['start_threads'],
                 'limit' => $import_session['threads_per_screen']
-            )
+            ]
         );
         while ($thread = $this->old_db->fetch_array($query)) {
             $this->insert($thread);
@@ -45,7 +45,7 @@ class PHPBB3_Converter_Module_Threads extends Converter_Module_Threads
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // phpBB 3 values
         $insert_data['import_tid'] = $data['topic_id'];
@@ -97,7 +97,7 @@ class PHPBB3_Converter_Module_Threads extends Converter_Module_Threads
             "poll_options",
             "poll_option_id",
             "topic_id = '{$tid}'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $results = $this->old_db->fetch_field($query, "poll_option_id");
         $this->old_db->free_result($query);

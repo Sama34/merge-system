@@ -39,19 +39,19 @@ class BBCode_Parser extends BBCode_Parser_Plain
 
     function convert_bbcode($text)
     {
-        $convert_standards = array(
+        $convert_standards = [
             // xf 2.1, [URL unfurl="true"]...[/URL]
-            array(
+            [
                 'find' => "#\[url\s+(.*?)\](.*?)\[/url\]#i",
                 'replacement' => "[url]$2[/url]",
-            ),
-        );
+            ],
+        ];
 
         foreach ($convert_standards as $convert) {
             $text = preg_replace($convert['find'], $convert['replacement'], $text);
         }
 
-        $convert_nestables = array();
+        $convert_nestables = [];
 
         foreach ($convert_nestables as $convert) {
             while (preg_match($convert['find'], $text)) {
@@ -64,34 +64,34 @@ class BBCode_Parser extends BBCode_Parser_Plain
 
     function convert_bbcode_callback($text)
     {
-        $convert_standards = array(
+        $convert_standards = [
             // [MEDIA=abc]xyz[/MEDIA]
-            array(
+            [
                 'find' => "#\[media=([\w,]+)\]\s*([^\[\<\r\n]+?)\s*\[\/media\]#i",
                 'callback' => "handle_media",
-            ),
-        );
+            ],
+        ];
 
         foreach ($convert_standards as $convert) {
-            $text = preg_replace_callback($convert['find'], array($this, $convert['callback']), $text);
+            $text = preg_replace_callback($convert['find'], [$this, $convert['callback']], $text);
         }
 
-        $convert_nestables = array(
+        $convert_nestables = [
             // [COLOR=rgb(r, g, b)]...[/COLOR]
-            array(
+            [
                 'find' => "#\[color=(rgb\([\d\s,]+?\))\](.*?)\[/color\]#si",
                 'callback' => 'handle_color_rgb',
-            ),
+            ],
             // [size=X]...[/size]
-            array(
+            [
                 'find' => "#\[size=(\d{1,2}?)\](.*?)\[/size\]#i",
                 'callback' => 'handle_size_value',
-            ),
-        );
+            ],
+        ];
 
         foreach ($convert_nestables as $convert) {
             while (preg_match($convert['find'], $text)) {
-                $text = preg_replace_callback($convert['find'], array($this, $convert['callback']), $text);
+                $text = preg_replace_callback($convert['find'], [$this, $convert['callback']], $text);
             }
         }
 
@@ -109,36 +109,36 @@ class BBCode_Parser extends BBCode_Parser_Plain
     {
         // array( $provider_xf => array( 'provider_mybb' => $provider_mybb, 'provider_url' => $provider_url ), );
         // TODO: Only handle videos supported by MyBB 1.8? Or return formal URL?
-        $supported_media = array(
-            "youtube" => array(
+        $supported_media = [
+            "youtube" => [
                 "provider_mybb" => "youtube",
                 "provider_url" => "https://www.youtube.com/watch?v=$1",
-            ),
-            "dailymotion" => array(
+            ],
+            "dailymotion" => [
                 "provider_mybb" => "dailymotion",
                 "provider_url" => "https://www.dailymotion.com/video/$1",
-            ),
-            "liveleak" => array(
+            ],
+            "liveleak" => [
                 "provider_mybb" => "liveleak",
                 "provider_url" => "https://www.liveleak.com/view?t=$1",
-            ),
-            "facebook" => array(
+            ],
+            "facebook" => [
                 "provider_mybb" => "facebook",
                 "provider_url" => "http://www.facebook.com/video/video.php?v=$1",
-            ),
-            "metacafe" => array(
+            ],
+            "metacafe" => [
                 "provider_mybb" => "metacafe",
                 "provider_url" => "https://www.metacafe.com/watch/$1/",
-            ),
-            "vimeo" => array(
+            ],
+            "vimeo" => [
                 "provider_mybb" => "vimeo",
                 "provider_url" => "https://vimeo.com/$1",
-            ),
-            "twitch" => array(
+            ],
+            "twitch" => [
                 "provider_mybb" => "twitch",
                 "provider_url" => "https://www.twitch.tv/$1",
-            ),
-        );
+            ],
+        ];
 
         if (array_key_exists($matches[1], $supported_media)) {
             if (!empty($supported_media[$matches[1]]['provider_mybb'])) {

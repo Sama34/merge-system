@@ -41,14 +41,14 @@ class BBPRESS_Converter extends Converter
      *
      * @var array
      */
-    var $modules = array(
-        "db_configuration" => array("name" => "Database Configuration", "dependencies" => ""),
-        "import_users" => array("name" => "Users", "dependencies" => "db_configuration"),
-        "import_forums" => array("name" => "Forums", "dependencies" => "db_configuration,import_users"),
-        "import_threads" => array("name" => "Threads", "dependencies" => "db_configuration,import_forums"),
-        "import_posts" => array("name" => "Posts", "dependencies" => "db_configuration,import_threads"),
-        "import_avatars" => array("name" => "Avatars", "dependencies" => "db_configuration,import_users"),
-    );
+    var $modules = [
+        "db_configuration" => ["name" => "Database Configuration", "dependencies" => ""],
+        "import_users" => ["name" => "Users", "dependencies" => "db_configuration"],
+        "import_forums" => ["name" => "Forums", "dependencies" => "db_configuration,import_users"],
+        "import_threads" => ["name" => "Threads", "dependencies" => "db_configuration,import_forums"],
+        "import_posts" => ["name" => "Posts", "dependencies" => "db_configuration,import_threads"],
+        "import_avatars" => ["name" => "Avatars", "dependencies" => "db_configuration,import_users"],
+    ];
 
     /**
      * The table we check to verify it's "our" database
@@ -70,13 +70,13 @@ class BBPRESS_Converter extends Converter
      *
      * @var array
      */
-    var $groups = array(
+    var $groups = [
         "bbp_blocked" => MYBB_BANNED, // Banned
         "bbp_spectator" => MYBB_REGISTERED, // Registered
         "bbp_participant" => MYBB_REGISTERED, // Registered
         "bbp_moderator" => MYBB_SMODS, // Super Moderators
         "bbp_keymaster" => MYBB_ADMINS, // Administrators
-    );
+    ];
 
     /**
      * What BBCode Parser we're using
@@ -89,7 +89,7 @@ class BBPRESS_Converter extends Converter
      * An array of supported databases
      * WordPress (and therefor bbPress) only support MySQL
      */
-    var $supported_databases = array("mysql");
+    var $supported_databases = ["mysql"];
 
     /**
      * Convert a serialized list of original roes in one of mybb

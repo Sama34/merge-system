@@ -31,17 +31,17 @@ class BBCode_Parser extends BBCode_Parser_Plain
 
         // FluxBB has some special bbcodes which we need to solve:
         // Thread/Topic:
-        $text = preg_replace_callback("#\[topic=([0-9]+)\](.*?)\[/topic\]#i", array($this, "topic_callback"), $text);
-        $text = preg_replace_callback("#\[topic\]([0-9]+)\[/topic\]#i", array($this, "topic_callback"), $text);
+        $text = preg_replace_callback("#\[topic=([0-9]+)\](.*?)\[/topic\]#i", [$this, "topic_callback"], $text);
+        $text = preg_replace_callback("#\[topic\]([0-9]+)\[/topic\]#i", [$this, "topic_callback"], $text);
         // Post:
-        $text = preg_replace_callback("#\[post=([0-9]+)\](.*?)\[/post\]#i", array($this, "post_callback"), $text);
-        $text = preg_replace_callback("#\[post\]([0-9]+)\[/post\]#i", array($this, "post_callback"), $text);
+        $text = preg_replace_callback("#\[post=([0-9]+)\](.*?)\[/post\]#i", [$this, "post_callback"], $text);
+        $text = preg_replace_callback("#\[post\]([0-9]+)\[/post\]#i", [$this, "post_callback"], $text);
         // Forum:
-        $text = preg_replace_callback("#\[forum=([0-9]+)\](.*?)\[/forum\]#i", array($this, "forum_callback"), $text);
-        $text = preg_replace_callback("#\[forum\]([0-9]+)\[/forum\]#i", array($this, "forum_callback"), $text);
+        $text = preg_replace_callback("#\[forum=([0-9]+)\](.*?)\[/forum\]#i", [$this, "forum_callback"], $text);
+        $text = preg_replace_callback("#\[forum\]([0-9]+)\[/forum\]#i", [$this, "forum_callback"], $text);
         // User:
-        $text = preg_replace_callback("#\[user=([0-9]+)\](.*?)\[/user\]#i", array($this, "user_callback"), $text);
-        $text = preg_replace_callback("#\[user\]([0-9]+)\[/user\]#i", array($this, "user_callback"), $text);
+        $text = preg_replace_callback("#\[user=([0-9]+)\](.*?)\[/user\]#i", [$this, "user_callback"], $text);
+        $text = preg_replace_callback("#\[user\]([0-9]+)\[/user\]#i", [$this, "user_callback"], $text);
 
         return $text;
     }

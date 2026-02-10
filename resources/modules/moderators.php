@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Moderators extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'fid' => 0,
         'id' => 0,
         'isgroup' => 0,
@@ -36,7 +36,7 @@ abstract class Converter_Module_Moderators extends Converter_Module
         'canmanageannouncements' => 1,
         'canmanagereportedposts' => 1,
         'canviewmodlog' => 1,
-    );
+    ];
 
     // The moderators table has ONLY integer fields - use the array above
     // As we can't call array_keys here we need the constructor

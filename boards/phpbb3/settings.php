@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Settings extends Converter_Module_Settings
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'settings',
         'default_per_screen' => 1000,
-    );
+    ];
 
     // What settings do we need to get and what is their MyBB equivalent?
-    var $convert_settings = array(
+    var $convert_settings = [
         "avatar_max_height" => "maxavatardims",
         "avatar_max_width" => "maxavatardims",
         "avatar_gallery_path" => "avatardir",
@@ -45,20 +45,20 @@ class PHPBB3_Converter_Module_Settings extends Converter_Module_Settings
         "smtp_port" => "smtp_port",
         "smtp_username" => "smtp_user",
         "smtp_delivery" => "mail_handler"
-    );
+    ];
 
     function import()
     {
         global $import_session;
 
-        $int_to_yes_no = array(
+        $int_to_yes_no = [
             "allow_privmsg" => 1,
             "gzip_compress" => 1
-        );
+        ];
 
-        $int_to_on_off = array(
+        $int_to_on_off = [
             "enable_confirm" => 1
-        );
+        ];
 
         // TODO: Avatar setting needs to be researched
         $avatar_setting = '';
@@ -66,7 +66,7 @@ class PHPBB3_Converter_Module_Settings extends Converter_Module_Settings
             "config",
             "config_name, config_value",
             "config_name IN('" . implode("','", array_keys($this->convert_settings)) . "')",
-            array('limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen'])
+            ['limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen']]
         );
         while ($setting = $this->old_db->fetch_array($query)) {
             // phpBB 3 values

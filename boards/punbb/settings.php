@@ -15,13 +15,13 @@ if (!defined("IN_MYBB")) {
 class PUNBB_Converter_Module_Settings extends Converter_Module_Settings
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'settings',
         'default_per_screen' => 1000,
-    );
+    ];
 
     // What settings do we need to get and what is their MyBB equivalent?
-    var $convert_settings = array(
+    var $convert_settings = [
         "o_server_timezone" => "timezoneoffset",
         "o_time_format" => "timeformat",
         "o_date_format" => "dateformat",
@@ -47,13 +47,13 @@ class PUNBB_Converter_Module_Settings extends Converter_Module_Settings
         "p_sig_bbcode" => "sigmycode",
         "p_sig_img_tag" => "sigimgcode",
         "p_sig_length" => "siglength"
-    );
+    ];
 
     function import()
     {
         global $import_session;
 
-        $int_to_yes_no = array(
+        $int_to_yes_no = [
             "o_show_version" => 1,
             "o_smilies_sig" => 1,
             "o_quickpost" => 1,
@@ -64,7 +64,7 @@ class PUNBB_Converter_Module_Settings extends Converter_Module_Settings
             "o_maintenance" => 1,
             "p_sig_bbcode" => 1,
             "p_sig_img_tag" => 1
-        );
+        ];
 
         // TODO: Avatar setting needs to be researched
         $avatar_setting = '';
@@ -72,7 +72,7 @@ class PUNBB_Converter_Module_Settings extends Converter_Module_Settings
             "config",
             "conf_name, conf_value",
             "conf_name IN('" . implode("','", array_keys($this->convert_settings)) . "')",
-            array('limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen'])
+            ['limit_start' => $this->trackers['start_settings'], 'limit' => $import_session['settings_per_screen']]
         );
         while ($setting = $this->old_db->fetch_array($query)) {
             // punBB 1 values

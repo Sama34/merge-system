@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class IPB3_Converter_Module_Attachments extends Converter_Module_Attachments
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => "attachments",
         'progress_column' => "attach_id",
         'default_per_screen' => 20,
-    );
+    ];
 
     public $path_column = "attach_location";
 
@@ -29,7 +29,7 @@ class IPB3_Converter_Module_Attachments extends Converter_Module_Attachments
             "core_sys_conf_settings",
             "conf_value",
             "conf_key = 'upload_url'",
-            array('limit' => 1)
+            ['limit' => 1]
         );
         $uploadspath = $this->old_db->fetch_field($query, 'conf_value');
         $this->old_db->free_result($query);
@@ -44,10 +44,10 @@ class IPB3_Converter_Module_Attachments extends Converter_Module_Attachments
             "attachments",
             "*",
             "attach_rel_module='post'",
-            array(
+            [
                 'limit_start' => $this->trackers['start_attachments'],
                 'limit' => $import_session['attachments_per_screen']
-            )
+            ]
         );
         while ($attachment = $this->old_db->fetch_array($query)) {
             $this->insert($attachment);
@@ -60,7 +60,7 @@ class IPB3_Converter_Module_Attachments extends Converter_Module_Attachments
 
         $error_notice = "";
 
-        $insert_data = array();
+        $insert_data = [];
 
         // Invision Power Board 3 values
         $insert_data['import_aid'] = $data['attach_id'];

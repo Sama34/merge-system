@@ -16,13 +16,13 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Events extends Converter_Module_Events
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'events',
         'progress_column' => 'id_event',
         'default_per_screen' => 1000,
-    );
+    ];
 
-    var $threads_cache = array();
+    var $threads_cache = [];
 
     function import()
     {
@@ -32,7 +32,7 @@ class SMF2_Converter_Module_Events extends Converter_Module_Events
             "calendar",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_events'], 'limit' => $import_session['events_per_screen'])
+            ['limit_start' => $this->trackers['start_events'], 'limit' => $import_session['events_per_screen']]
         );
         while ($event = $this->old_db->fetch_array($query)) {
             $this->insert($event);
@@ -41,7 +41,7 @@ class SMF2_Converter_Module_Events extends Converter_Module_Events
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // SMF values
         $insert_data['uid'] = $this->get_import->uid($data['id_member']);
@@ -73,7 +73,7 @@ class SMF2_Converter_Module_Events extends Converter_Module_Events
             return $this->threads_cache[$tid];
         }
         $tid = intval($tid);
-        $query = $this->old_db->simple_select("topics", "id_first_msg", "id_topic = '{$tid}'", array('limit' => 1));
+        $query = $this->old_db->simple_select("topics", "id_first_msg", "id_topic = '{$tid}'", ['limit' => 1]);
         $firstpost = $this->board->get_post($this->old_db->fetch_field($query, "id_first_msg"));
 
         $this->old_db->free_result($query);

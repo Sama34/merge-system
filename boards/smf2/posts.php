@@ -15,14 +15,14 @@ if (!defined("IN_MYBB")) {
 class SMF2_Converter_Module_Posts extends Converter_Module_Posts
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'posts',
         'progress_column' => 'id_msg',
         'default_per_screen' => 1000,
         'check_table_type' => 'messages',
-    );
+    ];
 
-    var $cache_first_posts = array();
+    var $cache_first_posts = [];
 
     function import()
     {
@@ -32,12 +32,12 @@ class SMF2_Converter_Module_Posts extends Converter_Module_Posts
             "messages",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_posts'], 'limit' => $import_session['posts_per_screen'])
+            ['limit_start' => $this->trackers['start_posts'], 'limit' => $import_session['posts_per_screen']]
         );
         while ($post = $this->old_db->fetch_array($query)) {
             $pid = $this->insert($post);
 
-            $db->update_query("threads", array("firstpost" => $pid), "import_firstpost = '" . $post['id_msg'] . "'");
+            $db->update_query("threads", ["firstpost" => $pid], "import_firstpost = '" . $post['id_msg'] . "'");
         }
     }
 
@@ -45,7 +45,7 @@ class SMF2_Converter_Module_Posts extends Converter_Module_Posts
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // SMF values
         $insert_data['import_pid'] = $data['id_msg'];
@@ -107,7 +107,7 @@ class SMF2_Converter_Module_Posts extends Converter_Module_Posts
         if ($insert_data['replyto'] != 0) {
             $db->update_query(
                 "threads",
-                array('firstpost' => $this->get_import->pid($data['id_msg'])),
+                ['firstpost' => $this->get_import->pid($data['id_msg'])],
                 "tid='{$insert_data['tid']}'"
             );
         }
@@ -119,7 +119,7 @@ class SMF2_Converter_Module_Posts extends Converter_Module_Posts
             return $this->cache_first_posts[$tid];
         }
 
-        $query = $this->old_db->simple_select("topics", "id_first_msg", "id_topic = '{$tid}'", array('limit' => 1));
+        $query = $this->old_db->simple_select("topics", "id_first_msg", "id_topic = '{$tid}'", ['limit' => 1]);
         $first_post = $this->old_db->fetch_field($query, "id_first_msg");
         $this->old_db->free_result($query);
 

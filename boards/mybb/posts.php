@@ -15,12 +15,12 @@ if (!defined("IN_MYBB")) {
 class MYBB_Converter_Module_Posts extends Converter_Module_Posts
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'posts',
         'progress_column' => 'pid',
         'default_per_screen' => 1000,
         'check_table_type' => 'posts',
-    );
+    ];
 
     function import()
     {
@@ -30,13 +30,13 @@ class MYBB_Converter_Module_Posts extends Converter_Module_Posts
             "posts",
             "*",
             "",
-            array('limit_start' => $this->trackers['start_posts'], 'limit' => $import_session['posts_per_screen'])
+            ['limit_start' => $this->trackers['start_posts'], 'limit' => $import_session['posts_per_screen']]
         );
         while ($post = $this->old_db->fetch_array($query)) {
             $pid = $this->insert($post);
 
             // Restore firstpost connections
-            $db->update_query("threads", array('firstpost' => $pid), "import_firstpost = '{$post['pid']}'");
+            $db->update_query("threads", ['firstpost' => $pid], "import_firstpost = '{$post['pid']}'");
         }
     }
 
@@ -51,7 +51,7 @@ class MYBB_Converter_Module_Posts extends Converter_Module_Posts
             $field_info = $db->show_fields_from("posts");
         }
 
-        $insert_data = array();
+        $insert_data = [];
 
         foreach ($field_info as $key => $field) {
             if ($field['Extra'] == 'auto_increment') {

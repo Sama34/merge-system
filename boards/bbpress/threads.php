@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class BBPRESS_Converter_Module_Threads extends Converter_Module_Threads
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'threads',
         'progress_column' => 'ID',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,12 +29,12 @@ class BBPRESS_Converter_Module_Threads extends Converter_Module_Threads
             "posts",
             "*",
             "post_type='topic'",
-            array(
+            [
                 'order_by' => 'ID',
                 'order_dir' => 'ASC',
                 'limit_start' => $this->trackers['start_threads'],
                 'limit' => $import_session['threads_per_screen']
-            )
+            ]
         );
         while ($thread = $this->old_db->fetch_array($query)) {
             $ipquery = $this->old_db->simple_select(
@@ -46,7 +46,7 @@ class BBPRESS_Converter_Module_Threads extends Converter_Module_Threads
             $tid = $this->insert($thread);
 
             // The thread is the firstpost and isn't saved as extra post - but we do that so create it here
-            $post = array(
+            $post = [
                 "tid" => (int)$tid,
                 "fid" => (int)$this->get_import->fid($thread['post_parent']),
                 "subject" => $db->escape_string(
@@ -61,7 +61,7 @@ class BBPRESS_Converter_Module_Threads extends Converter_Module_Threads
                 "ipaddress" => $db->escape_binary(my_inet_pton($thread['ip'])),
                 "includesig" => 1,
                 "visible" => 1
-            );
+            ];
             $this->debug->log->datatrace('$post', $post);
             $db->insert_query("posts", $post);
         }
@@ -69,7 +69,7 @@ class BBPRESS_Converter_Module_Threads extends Converter_Module_Threads
 
     function convert_data($data)
     {
-        $insert_data = array();
+        $insert_data = [];
 
         // bbPress values
         $insert_data['import_tid'] = $data['ID'];

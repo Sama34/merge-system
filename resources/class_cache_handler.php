@@ -57,12 +57,12 @@ class Cache_Handler
     /**
      * Cache for poll information
      */
-    var $cache_polls = array();
+    var $cache_polls = [];
 
     /**
      * Cache for post attachment information
      */
-    var $cache_post_attachment_details = array();
+    var $cache_post_attachment_details = [];
 
     /**
      * Cache for poll ids
@@ -112,7 +112,7 @@ class Cache_Handler
         global $db;
 
         $query = $db->simple_select("polls", "pid, import_pid", "import_pid>0");
-        $polls = array();
+        $polls = [];
         while ($poll = $db->fetch_array($query)) {
             $polls[$poll['import_pid']] = $poll['pid'];
         }
@@ -174,7 +174,7 @@ class Cache_Handler
         global $db;
 
         $query = $db->simple_select("pollvotes", "vid, import_vid", "import_vid>0");
-        $pollvotes = array();
+        $pollvotes = [];
         while ($pollvote = $db->fetch_array($query)) {
             $pollvotes[$pollvote['import_vid']] = $pollvote['vid'];
         }
@@ -213,7 +213,7 @@ class Cache_Handler
         global $db;
 
         $query = $db->simple_select("users", "uid, import_uid", "import_uid>0");
-        $users = array();
+        $users = [];
         while ($user = $db->fetch_array($query)) {
             $users[$user['import_uid']] = $user['uid'];
         }
@@ -252,7 +252,7 @@ class Cache_Handler
         global $db;
 
         $query = $db->simple_select("users", "username, import_uid", "import_uid>0");
-        $users = array();
+        $users = [];
         while ($user = $db->fetch_array($query)) {
             $users[$user['import_uid']] = $user['username'];
         }
@@ -296,7 +296,7 @@ class Cache_Handler
         global $db;
 
         $query = $db->simple_select("forums", "fid, import_fid", "import_fid>0");
-        $forums = array();
+        $forums = [];
         while ($forum = $db->fetch_array($query)) {
             $forums[$forum['import_fid']] = $forum['fid'];
         }
@@ -331,7 +331,7 @@ class Cache_Handler
         global $db;
 
         $query = $db->simple_select("forums", "fid, import_fid", "import_fid>0 AND type='f'");
-        $forums = array();
+        $forums = [];
         while ($forum = $db->fetch_array($query)) {
             $forums[$forum['import_fid']] = $forum['fid'];
         }
@@ -366,7 +366,7 @@ class Cache_Handler
         global $db;
 
         $query = $db->simple_select("forums", "fid, import_fid", "import_fid>0 AND type='c'");
-        $forums = array();
+        $forums = [];
         while ($forum = $db->fetch_array($query)) {
             $forums[$forum['import_fid']] = $forum['fid'];
         }
@@ -401,7 +401,7 @@ class Cache_Handler
         global $db;
 
         $query = $db->simple_select("threads", "tid, import_tid", "import_tid>0");
-        $threads = array();
+        $threads = [];
         while ($thread = $db->fetch_array($query)) {
             $threads[$thread['import_tid']] = $thread['tid'];
         }
@@ -436,7 +436,7 @@ class Cache_Handler
         global $db;
 
         $query = $db->simple_select("usergroups", "gid, import_gid", "import_gid>0");
-        $usergroups = array();
+        $usergroups = [];
         while ($usergroup = $db->fetch_array($query)) {
             $usergroups[$usergroup['import_gid']] = $usergroup['gid'];
         }
@@ -471,7 +471,7 @@ class Cache_Handler
         global $db;
 
         $query = $db->simple_select("attachments", "aid, import_aid", "import_aid>0");
-        $attachments = array();
+        $attachments = [];
         while ($attachment = $db->fetch_array($query)) {
             $attachments[$attachment['import_aid']] = $attachment['aid'];
         }
@@ -506,7 +506,7 @@ class Cache_Handler
         global $db;
 
         $query = $db->simple_select("posts", "pid, import_pid", 'import_pid>0');
-        $posts = array();
+        $posts = [];
         while ($post = $db->fetch_array($query)) {
             $posts[$post['import_pid']] = $post['pid'];
         }

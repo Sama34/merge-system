@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class SMF_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'ID_PM',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -40,7 +40,7 @@ class SMF_Converter_Module_Privatemessages extends Converter_Module_Privatemessa
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // SMF values
         $insert_data['fromid'] = $this->get_import->uid($data['ID_MEMBER_FROM']);
@@ -53,7 +53,7 @@ class SMF_Converter_Module_Privatemessages extends Converter_Module_Privatemessa
         );
 
         // Now figure out who is participating
-        $to_send = $recipients = array();
+        $to_send = $recipients = [];
         $rec_query = $this->old_db->simple_select('pm_recipients', '*', "ID_PM={$data['ID_PM']}");
         while ($rec = $this->old_db->fetch_array($rec_query)) {
             $rec['ID_MEMBER'] = $this->get_import->uid($rec['ID_MEMBER']);

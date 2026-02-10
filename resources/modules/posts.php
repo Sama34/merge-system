@@ -9,7 +9,7 @@
 
 abstract class Converter_Module_Posts extends Converter_Module
 {
-    public $default_values = array(
+    public $default_values = [
         'import_pid' => 0,
         'import_uid' => 0,
 
@@ -29,13 +29,13 @@ abstract class Converter_Module_Posts extends Converter_Module
         'edittime' => 0,
         'editreason' => '',
         'visible' => 1,
-    );
+    ];
 
-    public $binary_fields = array(
+    public $binary_fields = [
         'ipaddress',
-    );
+    ];
 
-    public $integer_fields = array(
+    public $integer_fields = [
         'import_pid',
         'import_uid',
 
@@ -50,11 +50,11 @@ abstract class Converter_Module_Posts extends Converter_Module
         'edituid',
         'edittime',
         'visible',
-    );
+    ];
 
-    var $mark_as_run_modules = array(
+    var $mark_as_run_modules = [
         'attachments',
-    );
+    ];
 
     /**
      * Insert post into database
@@ -164,12 +164,12 @@ abstract class Converter_Module_Posts extends Converter_Module
             "threads",
             "tid",
             "import_tid > 0",
-            array(
+            [
                 'order_by' => 'tid',
                 'order_dir' => 'asc',
                 'limit_start' => (int)$import_session['counters_threads_start'],
                 'limit' => 1000
-            )
+            ]
         );
         while ($thread = $db->fetch_array($query)) {
             // Updates "replies", "unapprovedposts", "deletedposts" and firstpost/lastpost data
@@ -294,7 +294,7 @@ abstract class Converter_Module_Posts extends Converter_Module
 
             $num_posts = $db->fetch_field($query2, "post_count");
             $db->free_result($query2);
-            $db->update_query("users", array("postnum" => (int)$num_posts), "uid='{$user['uid']}'");
+            $db->update_query("users", ["postnum" => (int)$num_posts], "uid='{$user['uid']}'");
 
             ++$progress;
             // 200 is maximum and not 100
@@ -354,7 +354,7 @@ abstract class Converter_Module_Posts extends Converter_Module
             );
             $num_threads = $db->fetch_field($query2, "thread_count");
             $db->free_result($query2);
-            $db->update_query("users", array("threadnum" => (int)$num_threads), "uid='{$user['uid']}'");
+            $db->update_query("users", ["threadnum" => (int)$num_threads], "uid='{$user['uid']}'");
 
 
             ++$progress;

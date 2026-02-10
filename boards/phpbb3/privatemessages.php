@@ -15,11 +15,11 @@ if (!defined("IN_MYBB")) {
 class PHPBB3_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
 {
 
-    var $settings = array(
+    var $settings = [
         'friendly_name' => 'private messages',
         'progress_column' => 'msg_id',
         'default_per_screen' => 1000,
-    );
+    ];
 
     function import()
     {
@@ -29,10 +29,10 @@ class PHPBB3_Converter_Module_Privatemessages extends Converter_Module_Privateme
             "privmsgs",
             "*",
             "",
-            array(
+            [
                 'limit_start' => $this->trackers['start_privatemessages'],
                 'limit' => $import_session['privatemessages_per_screen']
-            )
+            ]
         );
         while ($privatemessage = $this->old_db->fetch_array($query)) {
             $this->insert($privatemessage);
@@ -43,7 +43,7 @@ class PHPBB3_Converter_Module_Privatemessages extends Converter_Module_Privateme
     {
         global $db;
 
-        $insert_data = array();
+        $insert_data = [];
 
         // phpBB 3 values
         $insert_data['fromid'] = $this->get_import->uid($data['author_id']);
@@ -81,7 +81,7 @@ class PHPBB3_Converter_Module_Privatemessages extends Converter_Module_Privateme
             $bcc[$key] = $this->get_import->uid(str_replace('u_', '', $uid));
         }
 
-        $recipients = array();
+        $recipients = [];
 
         if (!empty($to)) {
             $recipients['to'] = $to;
