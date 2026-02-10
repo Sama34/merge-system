@@ -22,6 +22,8 @@ class XENFORO2_Converter_Module_Avatars extends Converter_Module_Avatars
         'default_per_screen' => 20,
     ];
 
+    var string $dimension = '';
+
     function get_avatar_path(): string
     {
         $query = $this->old_db->simple_select("option", "option_value", "option_id='boardUrl'");
