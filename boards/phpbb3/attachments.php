@@ -90,7 +90,7 @@ class PHPBB3_Converter_Module_Attachments extends Converter_Module_Attachments
         $insert_data['import_aid'] = $data['attach_id'];
         $insert_data['uid'] = $this->get_import->uid($data['poster_id']);
         $insert_data['filename'] = $data['real_filename'];
-        $insert_data['attachname'] = "post_" . $insert_data['uid'] . "_" . $data['filetime'] . ".attach";;
+        $insert_data['attachname'] = "post_" . $insert_data['uid'] . "_" . $data['filetime'] . ".attach";
         $insert_data['filetype'] = $data['mimetype'];
         $insert_data['filesize'] = $data['filesize'];
         $insert_data['downloads'] = $data['download_count'];

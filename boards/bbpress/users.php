@@ -53,7 +53,7 @@ class BBPRESS_Converter_Module_Users extends Converter_Module_Users
         $insert_data['regdate'] = strtotime($data['user_registered']);
         $insert_data['website'] = $data['user_url'];
 
-        $insert_data['lastpost'] = $this->get_user_lastpost($data['ID']);;
+        $insert_data['lastpost'] = $this->get_user_lastpost($data['ID']);
 
         $insert_data['passwordconvert'] = $data['user_pass'];
         $insert_data['passwordconverttype'] = 'bbpress';

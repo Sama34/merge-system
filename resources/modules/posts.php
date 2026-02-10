@@ -391,7 +391,7 @@ abstract class Converter_Module_Posts extends Converter_Module
         if (!headers_sent()) {
             header("Location: index.php");
         } else {
-            echo "<meta http-equiv=\"refresh\" content=\"0; url=index.php\">";;
+            echo "<meta http-equiv=\"refresh\" content=\"0; url=index.php\">";
         }
 
         // Stop here!

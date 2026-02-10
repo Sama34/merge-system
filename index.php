@@ -965,7 +965,7 @@ elseif ($import_session['module'] && $mybb->input['action'] != 'module_list') {
         if (!headers_sent()) {
             header("Location: index.php");
         } else {
-            echo "<meta http-equiv=\"refresh\" content=\"0; url=index.php\">";;
+            echo "<meta http-equiv=\"refresh\" content=\"0; url=index.php\">";
         }
         exit;
     }
