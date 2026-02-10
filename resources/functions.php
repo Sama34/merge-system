@@ -973,10 +973,10 @@ function get_timezone($zone)
     return $h;
 }
 
-define('SQL_TINYTEXT', 255);
-define('SQL_TEXT', 65535);
-define('SQL_MEDIUMTEXT', 16777215);
-define('SQL_LONGTEXT', 4294967295);
+const SQL_TINYTEXT = 255;
+const SQL_TEXT = 65535;
+const SQL_MEDIUMTEXT = 16777215;
+const SQL_LONGTEXT = 4294967295;
 
 /**
  * @param string $table Which table should be checked

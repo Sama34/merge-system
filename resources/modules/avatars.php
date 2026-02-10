@@ -7,10 +7,10 @@
  * License: http://www.mybb.com/download/merge-system/license/
  */
 
-define('AVATAR_TYPE_NONE', '');
-define('AVATAR_TYPE_UPLOAD', 'upload');
-define('AVATAR_TYPE_URL', 'remote');
-define('AVATAR_TYPE_GRAVATAR', 'gravatar');
+const AVATAR_TYPE_NONE = '';
+const AVATAR_TYPE_UPLOAD = 'upload';
+const AVATAR_TYPE_URL = 'remote';
+const AVATAR_TYPE_GRAVATAR = 'gravatar';
 
 abstract class Converter_Module_Avatars extends Converter_Module
 {

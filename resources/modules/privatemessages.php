@@ -7,15 +7,15 @@
  * License: http://www.mybb.com/download/merge-system/license/
  */
 
-define('PM_FOLDER_INBOX', 1);
-define('PM_FOLDER_OUTBOX', 2);
-define('PM_FOLDER_DRAFTS', 3);
-define('PM_FOLDER_TRASH', 4);
+const PM_FOLDER_INBOX = 1;
+const PM_FOLDER_OUTBOX = 2;
+const PM_FOLDER_DRAFTS = 3;
+const PM_FOLDER_TRASH = 4;
 
-define('PM_STATUS_UNREAD', 0);
-define('PM_STATUS_READ', 1);
-define('PM_STATUS_REPLIED', 3);
-define('PM_STATUS_FORWARDED', 4);
+const PM_STATUS_UNREAD = 0;
+const PM_STATUS_READ = 1;
+const PM_STATUS_REPLIED = 3;
+const PM_STATUS_FORWARDED = 4;
 
 
 abstract class Converter_Module_Privatemessages extends Converter_Module

@@ -12,9 +12,9 @@ if (!defined("IN_MYBB")) {
     die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
-define('FORUM_AVATAR_GIF', 1);
-define('FORUM_AVATAR_JPG', 2);
-define('FORUM_AVATAR_PNG', 3);
+const FORUM_AVATAR_GIF = 1;
+const FORUM_AVATAR_JPG = 2;
+const FORUM_AVATAR_PNG = 3;
 
 class PUNBB_Converter_Module_Avatars extends Converter_Module_Avatars
 {

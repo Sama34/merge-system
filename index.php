@@ -20,17 +20,17 @@ header('Content-type: text/html; charset=utf-8');
 
 // Whether or not we write data in the log table
 // On some boards it may happen that the log throws errors, but until then you can keep this enabled
-define("WRITE_LOGS", 1);
+const WRITE_LOGS = 1;
 // The encoding detection can cause timeout errors and is automatically skipped for larger strings
 // However this may also happen on smaller strings - set this to 1 if you have that problem
-define("SKIP_ENCODING_DETECTION", 0);
+const SKIP_ENCODING_DETECTION = 0;
 // Normally there isn't a need to turn this off but just in case you can disable the admin checks here
-define("SKIP_ADMIN_CHECK", 0);
+const SKIP_ADMIN_CHECK = 0;
 // Only used in debug to reduce the time waiting for the attachment module
-define("SKIP_ATTACHMENT_FILES", 0);
-define("SKIP_AVATAR_FILES", SKIP_ATTACHMENT_FILES);
+const SKIP_ATTACHMENT_FILES = 0;
+const SKIP_AVATAR_FILES = SKIP_ATTACHMENT_FILES;
 // Also used in debug to avoid waiting for the recount functions
-define("SKIP_RECOUNTS", 0);
+const SKIP_RECOUNTS = 0;
 
 /******************************************************
  *********** DON'T TOUCH ANYTHING ELSE HERE ***********
@@ -41,18 +41,18 @@ $version_code = 1823;
 
 // MyBB Group constants. Used for better readability
 // We need them here to make 100% sure they're defined when creating our classes
-define("MYBB_GUESTS", 1);
-define("MYBB_REGISTERED", 2);
-define("MYBB_SMODS", 3);
-define("MYBB_ADMINS", 4);
-define("MYBB_AWAITING", 5);
-define("MYBB_MODS", 6);
-define("MYBB_BANNED", 7);
+const MYBB_GUESTS = 1;
+const MYBB_REGISTERED = 2;
+const MYBB_SMODS = 3;
+const MYBB_ADMINS = 4;
+const MYBB_AWAITING = 5;
+const MYBB_MODS = 6;
+const MYBB_BANNED = 7;
 
 // Load core files
 define("MYBB_ROOT", dirname(dirname(__FILE__)) . '/');
 define("MERGE_ROOT", dirname(__FILE__) . '/');
-define("IN_MYBB", 1);
+const IN_MYBB = 1;
 define("TIME_NOW", time());
 
 require_once MERGE_ROOT . "resources/constants.php";

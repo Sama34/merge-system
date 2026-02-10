@@ -12,9 +12,9 @@ if (!defined("IN_MYBB")) {
     die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
-define('ATTACH_AS_DB', 0);
-define('ATTACH_AS_FILES_OLD', 1);
-define('ATTACH_AS_FILES_NEW', 2);
+const ATTACH_AS_DB = 0;
+const ATTACH_AS_FILES_OLD = 1;
+const ATTACH_AS_FILES_NEW = 2;
 
 class VBULLETIN3_Converter_Module_Attachments extends Converter_Module_Attachments
 {
