@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MyBB 1.8 Merge System
  * Copyright 2014 MyBB Group, All Rights Reserved
@@ -8,6 +9,8 @@
  *
  * Many thanks to Dylan Myers and MaFeSa for helping develop and test this converter.
  */
+
+declare(strict_types=1);
 
 // Disallow direct access to this file for security reasons
 if (!defined("IN_MYBB")) {

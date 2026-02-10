@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MyBB 1.8 Merge System
  * Copyright 2014 MyBB Group, All Rights Reserved
@@ -6,6 +7,8 @@
  * Website: http://www.mybb.com
  * License: http://www.mybb.com/download/merge-system/license/
  */
+
+declare(strict_types=1);
 
 $load_timer = microtime(true);
 

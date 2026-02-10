@@ -7,6 +7,8 @@
  * License: http://www.mybb.com/download/merge-system/license/
  */
 
+declare(strict_types=1);
+
 class debugErrorHandler extends errorHandler
 {
     private Debug $debug;

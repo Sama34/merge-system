@@ -7,6 +7,8 @@
  * License: http://www.mybb.com/download/merge-system/license/
  */
 
+declare(strict_types=1);
+
 abstract class Converter_Module_Attachments extends Converter_Module
 {
     public array $default_values = [

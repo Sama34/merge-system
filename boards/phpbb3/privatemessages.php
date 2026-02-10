@@ -7,6 +7,8 @@
  * License: http://www.mybb.com/download/merge-system/license/
  */
 
+declare(strict_types=1);
+
 // Disallow direct access to this file for security reasons
 if (!defined("IN_MYBB")) {
     die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
@@ -39,7 +41,7 @@ class PHPBB3_Converter_Module_Privatemessages extends Converter_Module_Privateme
         }
     }
 
-    function convert_data(array$data):array
+    function convert_data(array $data): array
     {
         global $db;
 

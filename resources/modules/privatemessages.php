@@ -7,6 +7,8 @@
  * License: http://www.mybb.com/download/merge-system/license/
  */
 
+declare(strict_types=1);
+
 const PM_FOLDER_INBOX = 1;
 const PM_FOLDER_OUTBOX = 2;
 const PM_FOLDER_DRAFTS = 3;

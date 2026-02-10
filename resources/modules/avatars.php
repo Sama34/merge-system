@@ -7,6 +7,8 @@
  * License: http://www.mybb.com/download/merge-system/license/
  */
 
+declare(strict_types=1);
+
 const AVATAR_TYPE_NONE = '';
 const AVATAR_TYPE_UPLOAD = 'upload';
 const AVATAR_TYPE_URL = 'remote';
