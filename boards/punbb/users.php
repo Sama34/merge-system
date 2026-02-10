@@ -8,98 +8,106 @@
  */
 
 // Disallow direct access to this file for security reasons
-if(!defined("IN_MYBB"))
-{
-	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
+if (!defined("IN_MYBB")) {
+    die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
-class PUNBB_Converter_Module_Users extends Converter_Module_Users {
+class PUNBB_Converter_Module_Users extends Converter_Module_Users
+{
 
-	var $settings = array(
-		'friendly_name' => 'users',
-		'progress_column' => 'id',
-		'encode_table' => 'users',
-		'postnum_column' => 'num_posts',
-		'username_column' => 'username',
-		'email_column' => 'email',
-		'default_per_screen' => 1000,
-	);
+    var $settings = array(
+        'friendly_name' => 'users',
+        'progress_column' => 'id',
+        'encode_table' => 'users',
+        'postnum_column' => 'num_posts',
+        'username_column' => 'username',
+        'email_column' => 'email',
+        'default_per_screen' => 1000,
+    );
 
-	function pre_setup()
-	{
-		global $import_session;
+    function pre_setup()
+    {
+        global $import_session;
 
-		if(!isset($import_session['avatar_directory']))
-		{
-			$query = $this->old_db->simple_select("config", "conf_value, conf_name", "conf_name = 'o_avatars_dir' OR conf_name = 'o_base_url'");
-			if($this->old_db->fetch_field($query, 'conf_name') == 'o_avatar_dir')
-			{
-				$import_session['avatar_directory'] = $this->old_db->fetch_field($query, 'conf_value');
-			}
-			else
-			{
-				$import_session['main_directory'] = $this->old_db->fetch_field($query, 'conf_value');
-			}
-			$this->old_db->free_result($query);
-		}
-	}
+        if (!isset($import_session['avatar_directory'])) {
+            $query = $this->old_db->simple_select(
+                "config",
+                "conf_value, conf_name",
+                "conf_name = 'o_avatars_dir' OR conf_name = 'o_base_url'"
+            );
+            if ($this->old_db->fetch_field($query, 'conf_name') == 'o_avatar_dir') {
+                $import_session['avatar_directory'] = $this->old_db->fetch_field($query, 'conf_value');
+            } else {
+                $import_session['main_directory'] = $this->old_db->fetch_field($query, 'conf_value');
+            }
+            $this->old_db->free_result($query);
+        }
+    }
 
-	function import()
-	{
-		global $import_session;
+    function import()
+    {
+        global $import_session;
 
-		// Get members
-		$query = $this->old_db->simple_select("users", "*", "username != 'Guest'", array('order_by' => 'id', 'order_dir' => 'asc', 'limit_start' => $this->trackers['start_users'], 'limit' => $import_session['users_per_screen']));
-		while($user = $this->old_db->fetch_array($query))
-		{
-			$this->insert($user);
-		}
-	}
+        // Get members
+        $query = $this->old_db->simple_select(
+            "users",
+            "*",
+            "username != 'Guest'",
+            array(
+                'order_by' => 'id',
+                'order_dir' => 'asc',
+                'limit_start' => $this->trackers['start_users'],
+                'limit' => $import_session['users_per_screen']
+            )
+        );
+        while ($user = $this->old_db->fetch_array($query)) {
+            $this->insert($user);
+        }
+    }
 
-	function convert_data($data)
-	{
-		$insert_data = array();
+    function convert_data($data)
+    {
+        $insert_data = array();
 
-		// punBB values
-		$insert_data['usergroup'] = $this->board->get_gid($data['group_id']);
-		$insert_data['import_usergroup'] = $data['group_id'];
-		$insert_data['import_uid'] = $data['id'];
-		$insert_data['username'] = encode_to_utf8($data['username'], "users", "users");
-		$insert_data['email'] = $data['email'];
-		$insert_data['regdate'] = $data['registered'];
-		$insert_data['lastactive'] = $data['last_visit'];
-		$insert_data['lastvisit'] = $data['last_visit'];
-		$insert_data['website'] = $data['url'];
-		$insert_data['showsigs'] = $data['show_sig'];
-		$insert_data['signature'] = encode_to_utf8($this->bbcode_parser->convert($data['signature']), "users", "users");
-		$insert_data['showavatars'] = $data['show_avatars'];
-		$insert_data['timezone'] = str_replace(array('.0', '.00'), array('', ''), $data['timezone']);
+        // punBB values
+        $insert_data['usergroup'] = $this->board->get_gid($data['group_id']);
+        $insert_data['import_usergroup'] = $data['group_id'];
+        $insert_data['import_uid'] = $data['id'];
+        $insert_data['username'] = encode_to_utf8($data['username'], "users", "users");
+        $insert_data['email'] = $data['email'];
+        $insert_data['regdate'] = $data['registered'];
+        $insert_data['lastactive'] = $data['last_visit'];
+        $insert_data['lastvisit'] = $data['last_visit'];
+        $insert_data['website'] = $data['url'];
+        $insert_data['showsigs'] = $data['show_sig'];
+        $insert_data['signature'] = encode_to_utf8($this->bbcode_parser->convert($data['signature']), "users", "users");
+        $insert_data['showavatars'] = $data['show_avatars'];
+        $insert_data['timezone'] = str_replace(array('.0', '.00'), array('', ''), $data['timezone']);
 
-		$insert_data['lastpost'] = $data['last_post'];
-		$insert_data['icq'] = $data['icq'];
-		$insert_data['hideemail'] = $data['email_setting'];
-		$insert_data['allownotices'] = $data['notify_with_post'];
-		$insert_data['regip'] = my_inet_pton($data['registration_ip']);
-		$insert_data['passwordconvertsalt'] = $data['salt'];
-		$insert_data['passwordconvert'] = $data['password'];
-		$insert_data['passwordconverttype'] = 'punbb';
+        $insert_data['lastpost'] = $data['last_post'];
+        $insert_data['icq'] = $data['icq'];
+        $insert_data['hideemail'] = $data['email_setting'];
+        $insert_data['allownotices'] = $data['notify_with_post'];
+        $insert_data['regip'] = my_inet_pton($data['registration_ip']);
+        $insert_data['passwordconvertsalt'] = $data['salt'];
+        $insert_data['passwordconvert'] = $data['password'];
+        $insert_data['passwordconverttype'] = 'punbb';
 
-		return $insert_data;
-	}
+        return $insert_data;
+    }
 
-	function fetch_total()
-	{
-		global $import_session;
+    function fetch_total()
+    {
+        global $import_session;
 
-		// Get number of members
-		if(!isset($import_session['total_users']))
-		{
-			$query = $this->old_db->simple_select("users", "COUNT(*) as count", "username != 'Guest'");
-			$import_session['total_users'] = $this->old_db->fetch_field($query, 'count');
-			$this->old_db->free_result($query);
-		}
+        // Get number of members
+        if (!isset($import_session['total_users'])) {
+            $query = $this->old_db->simple_select("users", "COUNT(*) as count", "username != 'Guest'");
+            $import_session['total_users'] = $this->old_db->fetch_field($query, 'count');
+            $this->old_db->free_result($query);
+        }
 
-		return $import_session['total_users'];
-	}
+        return $import_session['total_users'];
+    }
 }
 

@@ -9,227 +9,232 @@
 
 abstract class Converter_Module_Forums extends Converter_Module
 {
-	public $default_values = array(
-		'import_fid' => 0,
-		'import_pid' => 0,
+    public $default_values = array(
+        'import_fid' => 0,
+        'import_pid' => 0,
 
-		'name' => '',
-		'description' => '',
-		'linkto' => '',
-		'type' => 'f',
-		'pid' => 0,
-		'parentlist' => '',
-		'disporder' => 0,
-		'active' => 1,
-		'open' => 1,
-		'threads' => 0,
-		'posts' => 0,
-		'lastpost' => 0,
-		'lastposter' => '',
-		'lastposteruid' => 0,
-		'lastposttid' => 0,
-		'lastpostsubject' => '',
-		'allowhtml' => 0,
-		'allowmycode' => 1,
-		'allowsmilies' => 1,
-		'allowimgcode' => 1,
-		'allowvideocode' => 1,
-		'allowpicons' => 1,
-		'allowtratings' => 1,
-		'usepostcounts' => 1,
-		'usethreadcounts' => 1,
-		'requireprefix' => 0,
-		'password' => '',
-		'showinjump' => 1,
-		'style' => 0,
-		'overridestyle' => 0,
-		'rulestype' => 0,
-		'rulestitle' => '',
-		'rules' => '',
-		'unapprovedthreads' => 0,
-		'unapprovedposts' => 0,
-		'deletedthreads' => 0,
-		'deletedposts' => 0,
-		'defaultdatecut' => 0,
-		'defaultsortby' => '',
-		'defaultsortorder' => '',
-	);
+        'name' => '',
+        'description' => '',
+        'linkto' => '',
+        'type' => 'f',
+        'pid' => 0,
+        'parentlist' => '',
+        'disporder' => 0,
+        'active' => 1,
+        'open' => 1,
+        'threads' => 0,
+        'posts' => 0,
+        'lastpost' => 0,
+        'lastposter' => '',
+        'lastposteruid' => 0,
+        'lastposttid' => 0,
+        'lastpostsubject' => '',
+        'allowhtml' => 0,
+        'allowmycode' => 1,
+        'allowsmilies' => 1,
+        'allowimgcode' => 1,
+        'allowvideocode' => 1,
+        'allowpicons' => 1,
+        'allowtratings' => 1,
+        'usepostcounts' => 1,
+        'usethreadcounts' => 1,
+        'requireprefix' => 0,
+        'password' => '',
+        'showinjump' => 1,
+        'style' => 0,
+        'overridestyle' => 0,
+        'rulestype' => 0,
+        'rulestitle' => '',
+        'rules' => '',
+        'unapprovedthreads' => 0,
+        'unapprovedposts' => 0,
+        'deletedthreads' => 0,
+        'deletedposts' => 0,
+        'defaultdatecut' => 0,
+        'defaultsortby' => '',
+        'defaultsortorder' => '',
+    );
 
-	public $integer_fields = array(
-		'import_fid',
-		'import_pid',
+    public $integer_fields = array(
+        'import_fid',
+        'import_pid',
 
-		'pid',
-		'disporder',
-		'active',
-		'open',
-		'threads',
-		'posts',
-		'lastpost',
-		'lastposteruid',
-		'lastposttid',
-		'allowhtml',
-		'allowmycode',
-		'allowsmilies',
-		'allowimgcode',
-		'allowvideocode',
-		'allowpicons',
-		'allowtratings',
-		'usepostcounts',
-		'usethreadcounts',
-		'requireprefix',
-		'showinjump',
-		'style',
-		'overridestyle',
-		'rulestype',
-		'unapprovedthreads',
-		'unapprovedposts',
-		'deletedthreads',
-		'deletedposts',
-		'defaultdatecut',
-	);
+        'pid',
+        'disporder',
+        'active',
+        'open',
+        'threads',
+        'posts',
+        'lastpost',
+        'lastposteruid',
+        'lastposttid',
+        'allowhtml',
+        'allowmycode',
+        'allowsmilies',
+        'allowimgcode',
+        'allowvideocode',
+        'allowpicons',
+        'allowtratings',
+        'usepostcounts',
+        'usethreadcounts',
+        'requireprefix',
+        'showinjump',
+        'style',
+        'overridestyle',
+        'rulestype',
+        'unapprovedthreads',
+        'unapprovedposts',
+        'deletedthreads',
+        'deletedposts',
+        'defaultdatecut',
+    );
 
-	var $mark_as_run_modules = array(
-		'forumperms',
-		'threads',
-		'moderators',
-	);
+    var $mark_as_run_modules = array(
+        'forumperms',
+        'threads',
+        'moderators',
+    );
 
-	/**
-	 * Insert forum into database
-	 *
-	 * @param array $data The insert array going into the MyBB database
-	 * @return int The new id
-	 */
-	public function insert($data)
-	{
-		global $db, $output;
+    /**
+     * Insert forum into database
+     *
+     * @param array $data The insert array going into the MyBB database
+     * @return int The new id
+     */
+    public function insert($data)
+    {
+        global $db, $output;
 
-		$this->debug->log->datatrace('$data', $data);
+        $this->debug->log->datatrace('$data', $data);
 
-		$output->print_progress("start", $data[$this->settings['progress_column']]);
+        $output->print_progress("start", $data[$this->settings['progress_column']]);
 
-		// Call our currently module's process function
-		$data = $this->convert_data($data);
+        // Call our currently module's process function
+        $data = $this->convert_data($data);
 
-		// Should loop through and fill in any values that aren't set based on the MyBB db schema or other standard default values and escape them properly
-		$insert_array = $this->prepare_insert_array($data, 'forums');
+        // Should loop through and fill in any values that aren't set based on the MyBB db schema or other standard default values and escape them properly
+        $insert_array = $this->prepare_insert_array($data, 'forums');
 
-		$this->debug->log->datatrace('$insert_array', $insert_array);
+        $this->debug->log->datatrace('$insert_array', $insert_array);
 
-		$db->insert_query("forums", $insert_array);
-		$fid = $db->insert_id();
+        $db->insert_query("forums", $insert_array);
+        $fid = $db->insert_id();
 
-		// Update internal array caches
-		$this->get_import->cache_fids[$insert_array['import_fid']] = $fid; // TODO: Fix?
+        // Update internal array caches
+        $this->get_import->cache_fids[$insert_array['import_fid']] = $fid; // TODO: Fix?
 
-		if($insert_array['type'] == "f")
-		{
-			$this->get_import->cache_fids_f[$insert_array['import_fid']] = $fid; // TODO: Fix?
-		}
+        if ($insert_array['type'] == "f") {
+            $this->get_import->cache_fids_f[$insert_array['import_fid']] = $fid; // TODO: Fix?
+        }
 
-		$this->increment_tracker('forums');
+        $this->increment_tracker('forums');
 
-		$output->print_progress("end");
+        $output->print_progress("end");
 
-		return $fid;
-	}
+        return $fid;
+    }
 
-	function fix_ampersand($text)
-	{
-		return str_replace('&amp;', '&', $text);
-	}
+    function fix_ampersand($text)
+    {
+        return str_replace('&amp;', '&', $text);
+    }
 
-	function cleanup()
-	{
-		global $db;
+    function cleanup()
+    {
+        global $db;
 
-		$query = $db->simple_select('forums', '*', "type='f' AND pid=0 AND import_fid > 0");
+        $query = $db->simple_select('forums', '*', "type='f' AND pid=0 AND import_fid > 0");
 
-		if($db->num_rows($query) > 0)
-		{
-			$cat = array(
-				"name"			=> "{$this->board->plain_bbname} imported forums",
-				"type"			=> "c",
-				"description"	=> "This forums were imported from your {$this->board->plain_bbname} installation",
-				"pid"			=> 0,
-				"parentlist"	=> "1",
-				"rules"			=> "",
-				"active"		=> 1,
-				"open"			=> 1,
-			);
-			// No "input", so no need to escape
-			$cid = $db->insert_query("forums", $cat);
-			$db->update_query("forums", array("parentlist" => $this->make_mybb_parent_list($cid)), "fid='{$cid}'");
+        if ($db->num_rows($query) > 0) {
+            $cat = array(
+                "name" => "{$this->board->plain_bbname} imported forums",
+                "type" => "c",
+                "description" => "This forums were imported from your {$this->board->plain_bbname} installation",
+                "pid" => 0,
+                "parentlist" => "1",
+                "rules" => "",
+                "active" => 1,
+                "open" => 1,
+            );
+            // No "input", so no need to escape
+            $cid = $db->insert_query("forums", $cat);
+            $db->update_query("forums", array("parentlist" => $this->make_mybb_parent_list($cid)), "fid='{$cid}'");
 
-			while($forum = $db->fetch_array($query))
-			{
-				// Update the parentlists
-				$db->update_query("forums", array("pid" => $cid), "fid='{$forum['fid']}'");
-				$db->update_query("forums", array("parentlist" => $this->make_mybb_parent_list($forum['fid'], ",", true)), "fid='{$forum['fid']}'");
+            while ($forum = $db->fetch_array($query)) {
+                // Update the parentlists
+                $db->update_query("forums", array("pid" => $cid), "fid='{$forum['fid']}'");
+                $db->update_query(
+                    "forums",
+                    array("parentlist" => $this->make_mybb_parent_list($forum['fid'], ",", true)),
+                    "fid='{$forum['fid']}'"
+                );
 
-				// Rebuild the parentlist of all of the subforums of this forum
-				switch($db->type)
-				{
-					case "sqlite":
-					case "pgsql":
-					case "pgsql_pdo":
-						$query_child = $db->simple_select("forums", "fid", "','||parentlist||',' LIKE '%,{$forum['fid']},%'");
-						break;
-					default:
-						$query_child = $db->simple_select("forums", "fid", "CONCAT(',',parentlist,',') LIKE '%,{$forum['fid']},%'");
-				}
+                // Rebuild the parentlist of all of the subforums of this forum
+                switch ($db->type) {
+                    case "sqlite":
+                    case "pgsql":
+                    case "pgsql_pdo":
+                        $query_child = $db->simple_select(
+                            "forums",
+                            "fid",
+                            "','||parentlist||',' LIKE '%,{$forum['fid']},%'"
+                        );
+                        break;
+                    default:
+                        $query_child = $db->simple_select(
+                            "forums",
+                            "fid",
+                            "CONCAT(',',parentlist,',') LIKE '%,{$forum['fid']},%'"
+                        );
+                }
 
-				while($child = $db->fetch_array($query_child))
-				{
-					$db->update_query("forums", array("parentlist" => $this->make_mybb_parent_list($child['fid'])), "fid='{$child['fid']}'");
-				}
-			}
-		}
-	}
+                while ($child = $db->fetch_array($query_child)) {
+                    $db->update_query(
+                        "forums",
+                        array("parentlist" => $this->make_mybb_parent_list($child['fid'])),
+                        "fid='{$child['fid']}'"
+                    );
+                }
+            }
+        }
+    }
 
-	/**
-	 * Builds a CSV parent list for a particular forum.
-	 *
-	 * @param int $fid The forum ID
-	 * @param string $navsep Optional separator - defaults to comma for CSV list
-	 * @return string The built parent list
-	 */
-	function make_mybb_parent_list($fid, $navsep=",", $drop_cache=false)
-	{
-		global $mypforumcache, $db;
+    /**
+     * Builds a CSV parent list for a particular forum.
+     *
+     * @param int $fid The forum ID
+     * @param string $navsep Optional separator - defaults to comma for CSV list
+     * @return string The built parent list
+     */
+    function make_mybb_parent_list($fid, $navsep = ",", $drop_cache = false)
+    {
+        global $mypforumcache, $db;
 
-		if(!$mypforumcache || $drop_cache)
-		{
-			$mypforumcache = array();
-			$query = $db->simple_select("forums", "name, fid, pid", "", array("order_by" => "disporder, pid"));
-			while($forum = $db->fetch_array($query))
-			{
-				$mypforumcache[$forum['fid']][$forum['pid']] = $forum;
-			}
-		}
+        if (!$mypforumcache || $drop_cache) {
+            $mypforumcache = array();
+            $query = $db->simple_select("forums", "name, fid, pid", "", array("order_by" => "disporder, pid"));
+            while ($forum = $db->fetch_array($query)) {
+                $mypforumcache[$forum['fid']][$forum['pid']] = $forum;
+            }
+        }
 
-		reset($mypforumcache);
-		reset($mypforumcache[$fid]);
-		$navigation = '';
+        reset($mypforumcache);
+        reset($mypforumcache[$fid]);
+        $navigation = '';
 
-		foreach($mypforumcache[$fid] as $key => $forum)
-		{
-			if($fid == $forum['fid'])
-			{
-				if($mypforumcache[$forum['pid']])
-				{
-					$navigation = $this->make_mybb_parent_list($forum['pid'], $navsep).$navigation;
-				}
+        foreach ($mypforumcache[$fid] as $key => $forum) {
+            if ($fid == $forum['fid']) {
+                if ($mypforumcache[$forum['pid']]) {
+                    $navigation = $this->make_mybb_parent_list($forum['pid'], $navsep) . $navigation;
+                }
 
-				if($navigation)
-				{
-					$navigation .= $navsep;
-				}
-				$navigation .= $forum['fid'];
-			}
-		}
-		return $navigation;
-	}
+                if ($navigation) {
+                    $navigation .= $navsep;
+                }
+                $navigation .= $forum['fid'];
+            }
+        }
+        return $navigation;
+    }
 
 }

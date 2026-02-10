@@ -9,400 +9,394 @@
 
 abstract class Converter_Module_Posts extends Converter_Module
 {
-	public $default_values = array(
-		'import_pid' => 0,
-		'import_uid' => 0,
+    public $default_values = array(
+        'import_pid' => 0,
+        'import_uid' => 0,
 
-		'tid' => 0,
-		'replyto' => 0,
-		'fid' => 0,
-		'subject' => '',
-		'icon' => 0,
-		'uid' => 0,
-		'username' => '',
-		'dateline' => 0,
-		'message' => '',
-		'ipaddress' => '',
-		'includesig' => 1,
-		'smilieoff' => 0,
-		'edituid' => 0,
-		'edittime' => 0,
-		'editreason' => '',
-		'visible' => 1,
-	);
-	
-	public $binary_fields = array(
-		'ipaddress',
-	);
+        'tid' => 0,
+        'replyto' => 0,
+        'fid' => 0,
+        'subject' => '',
+        'icon' => 0,
+        'uid' => 0,
+        'username' => '',
+        'dateline' => 0,
+        'message' => '',
+        'ipaddress' => '',
+        'includesig' => 1,
+        'smilieoff' => 0,
+        'edituid' => 0,
+        'edittime' => 0,
+        'editreason' => '',
+        'visible' => 1,
+    );
 
-	public $integer_fields = array(
-		'import_pid',
-		'import_uid',
+    public $binary_fields = array(
+        'ipaddress',
+    );
 
-		'tid',
-		'replyto',
-		'fid',
-		'icon',
-		'uid',
-		'dateline',
-		'includesig',
-		'smilieoff',
-		'edituid',
-		'edittime',
-		'visible',
-	);
+    public $integer_fields = array(
+        'import_pid',
+        'import_uid',
 
-	var $mark_as_run_modules = array(
-		'attachments',
-	);
+        'tid',
+        'replyto',
+        'fid',
+        'icon',
+        'uid',
+        'dateline',
+        'includesig',
+        'smilieoff',
+        'edituid',
+        'edittime',
+        'visible',
+    );
 
-	/**
-	 * Insert post into database
-	 *
-	 * @param array $data The insert array going into the MyBB database
-	 * @return int The new id
-	 */
-	public function insert($data)
-	{
-		global $db, $output;
+    var $mark_as_run_modules = array(
+        'attachments',
+    );
 
-		$this->debug->log->datatrace('$data', $data);
+    /**
+     * Insert post into database
+     *
+     * @param array $data The insert array going into the MyBB database
+     * @return int The new id
+     */
+    public function insert($data)
+    {
+        global $db, $output;
 
-		$output->print_progress("start", $data[$this->settings['progress_column']]);
+        $this->debug->log->datatrace('$data', $data);
 
-		$unconverted_values = $data;
+        $output->print_progress("start", $data[$this->settings['progress_column']]);
 
-		// Call our currently module's process function
-		$data = $converted_values = $this->convert_data($data);
+        $unconverted_values = $data;
 
-		// Should loop through and fill in any values that aren't set based on the MyBB db schema or other standard default values and escape them properly
-		$insert_array = $this->prepare_insert_array($data, 'posts');
+        // Call our currently module's process function
+        $data = $converted_values = $this->convert_data($data);
 
-		$this->debug->log->datatrace('$insert_array', $insert_array);
+        // Should loop through and fill in any values that aren't set based on the MyBB db schema or other standard default values and escape them properly
+        $insert_array = $this->prepare_insert_array($data, 'posts');
 
-		// An orphaned post which isn't associated with any thread. We can't handle those for several reasons so trick them
-		if($insert_array['tid'] < 1)
-		{
-			$this->increment_tracker('posts');
-			$output->print_progress('end');
-			return 0;
-		}
+        $this->debug->log->datatrace('$insert_array', $insert_array);
 
-		$db->insert_query("posts", $insert_array);
-		$pid = $db->insert_id();
+        // An orphaned post which isn't associated with any thread. We can't handle those for several reasons so trick them
+        if ($insert_array['tid'] < 1) {
+            $this->increment_tracker('posts');
+            $output->print_progress('end');
+            return 0;
+        }
 
-		$this->get_import->cache_posts[$data['import_pid']] = $pid;
+        $db->insert_query("posts", $insert_array);
+        $pid = $db->insert_id();
 
-		$this->after_insert($unconverted_values, $converted_values, $pid);
+        $this->get_import->cache_posts[$data['import_pid']] = $pid;
 
-		$this->increment_tracker('posts');
+        $this->after_insert($unconverted_values, $converted_values, $pid);
 
-		$output->print_progress("end");
+        $this->increment_tracker('posts');
 
-		return $pid;
-	}
+        $output->print_progress("end");
 
-	/**
-	 * Rebuild counters, and lastpost information right after importing posts
-	 *
-	 */
-	public function cleanup()
-	{
-		global $output, $lang;
+        return $pid;
+    }
 
-		if(SKIP_RECOUNTS)
-		{
-			return;
-		}
+    /**
+     * Rebuild counters, and lastpost information right after importing posts
+     *
+     */
+    public function cleanup()
+    {
+        global $output, $lang;
 
-		// General output and our progress bar can be constructed here
-		if(!$output->doneheader)
-		{
-			$output->print_header($lang->module_post_rebuilding);
-		}
+        if (SKIP_RECOUNTS) {
+            return;
+        }
 
-		$this->debug->log->trace0("Rebuilding thread, forum, and statistic counters");
+        // General output and our progress bar can be constructed here
+        if (!$output->doneheader) {
+            $output->print_header($lang->module_post_rebuilding);
+        }
 
-		$output->construct_progress_bar();
+        $this->debug->log->trace0("Rebuilding thread, forum, and statistic counters");
 
-		echo $lang->module_post_rebuild_counters;
+        $output->construct_progress_bar();
 
-		flush();
+        echo $lang->module_post_rebuild_counters;
 
-		// Rebuild thread counters, forum counters, user post counters, last post* and thread username
-		$this->rebuild_thread_counters();
-		$this->rebuild_forum_counters();
-		$this->rebuild_user_post_counters();
-		$this->rebuild_user_thread_counters();
-	}
+        flush();
 
-	/**
-	 * Rebuild all thread counters
-	 */
-	private function rebuild_thread_counters()
-	{
-		global $db, $output, $import_session, $lang;
+        // Rebuild thread counters, forum counters, user post counters, last post* and thread username
+        $this->rebuild_thread_counters();
+        $this->rebuild_forum_counters();
+        $this->rebuild_user_post_counters();
+        $this->rebuild_user_thread_counters();
+    }
 
-		// Total number of imported threads is needed for percentage
-		$query = $db->simple_select("threads", "COUNT(*) as count", "import_tid > 0");
-		$num_imported_threads = $db->fetch_field($query, "count");
-		$last_percent = 0;
+    /**
+     * Rebuild all thread counters
+     */
+    private function rebuild_thread_counters()
+    {
+        global $db, $output, $import_session, $lang;
 
-		if(!isset($import_session['counters_threads_start']))
-		{
-			$import_session['counters_threads_start'] = 0;
-		}
-		// Have we finished already (redirects...)?
-		if($import_session['counters_threads_start'] >= $num_imported_threads) {
-			return;
-		}
+        // Total number of imported threads is needed for percentage
+        $query = $db->simple_select("threads", "COUNT(*) as count", "import_tid > 0");
+        $num_imported_threads = $db->fetch_field($query, "count");
+        $last_percent = 0;
 
-		$this->debug->log->trace1("Rebuilding thread counters");
-		echo $lang->module_post_rebuilding_thread;
-		flush();
+        if (!isset($import_session['counters_threads_start'])) {
+            $import_session['counters_threads_start'] = 0;
+        }
+        // Have we finished already (redirects...)?
+        if ($import_session['counters_threads_start'] >= $num_imported_threads) {
+            return;
+        }
 
-		// Get all threads for this page (1000 per page)
-		$progress = 0;
-		$progress_total = $import_session['counters_threads_start'];
-		$query = $db->simple_select("threads", "tid", "import_tid > 0", array('order_by' => 'tid', 'order_dir' => 'asc', 'limit_start' => (int)$import_session['counters_threads_start'], 'limit' => 1000));
-		while($thread = $db->fetch_array($query))
-		{
-			// Updates "replies", "unapprovedposts", "deletedposts" and firstpost/lastpost data
-			rebuild_thread_counters($thread['tid']);
+        $this->debug->log->trace1("Rebuilding thread counters");
+        echo $lang->module_post_rebuilding_thread;
+        flush();
 
-			// Now inform the user
-			++$progress;
-			++$progress_total;
-			
-			// Code comes from Dylan, probably has a reason, simply leave it there
-			if(($progress_total % 5) == 0)
-			{
-				if(($progress_total % 100) == 0)
-				{
-					check_memory();
-				}
+        // Get all threads for this page (1000 per page)
+        $progress = 0;
+        $progress_total = $import_session['counters_threads_start'];
+        $query = $db->simple_select(
+            "threads",
+            "tid",
+            "import_tid > 0",
+            array(
+                'order_by' => 'tid',
+                'order_dir' => 'asc',
+                'limit_start' => (int)$import_session['counters_threads_start'],
+                'limit' => 1000
+            )
+        );
+        while ($thread = $db->fetch_array($query)) {
+            // Updates "replies", "unapprovedposts", "deletedposts" and firstpost/lastpost data
+            rebuild_thread_counters($thread['tid']);
 
-				// 200 is maximum for the progress bar so *200 and not *100
-				$percent = round(($progress_total/$num_imported_threads)*200, 1);
-				if($percent != $last_percent)
-				{
-					$output->update_progress_bar($percent, $lang->sprintf($lang->module_post_thread_counter, $thread['tid']));
-				}
-				$last_percent = $percent;
-			}
-		}
+            // Now inform the user
+            ++$progress;
+            ++$progress_total;
 
-		// Add progress to internal counter and display a notice if we've finished
-		$import_session['counters_threads_start'] += $progress;
+            // Code comes from Dylan, probably has a reason, simply leave it there
+            if (($progress_total % 5) == 0) {
+                if (($progress_total % 100) == 0) {
+                    check_memory();
+                }
 
-		if($import_session['counters_threads_start'] >= $num_imported_threads)
-		{
-			$this->debug->log->trace1("Finished rebuilding thread counters");
-			echo $lang->done;
-			flush();
-		}
+                // 200 is maximum for the progress bar so *200 and not *100
+                $percent = round(($progress_total / $num_imported_threads) * 200, 1);
+                if ($percent != $last_percent) {
+                    $output->update_progress_bar(
+                        $percent,
+                        $lang->sprintf($lang->module_post_thread_counter, $thread['tid'])
+                    );
+                }
+                $last_percent = $percent;
+            }
+        }
 
-		// Always redirect back to this page
-		$this->redirect();
-	}
+        // Add progress to internal counter and display a notice if we've finished
+        $import_session['counters_threads_start'] += $progress;
 
-	/**
-	 * Rebuild forum counters
-	 */
-	private function rebuild_forum_counters()
-	{
-		global $db, $output, $lang, $import_session;
+        if ($import_session['counters_threads_start'] >= $num_imported_threads) {
+            $this->debug->log->trace1("Finished rebuilding thread counters");
+            echo $lang->done;
+            flush();
+        }
 
-		// We've already finished this (redirects...)
-		if(isset($import_session['counters_forum'])) {
-			return;
-		}
+        // Always redirect back to this page
+        $this->redirect();
+    }
 
-		$this->debug->log->trace1("Rebuilding forum counters");
-		echo $lang->module_post_rebuilding_forum;
-		flush();
+    /**
+     * Rebuild forum counters
+     */
+    private function rebuild_forum_counters()
+    {
+        global $db, $output, $lang, $import_session;
 
-		// Only update imported forums
-		$query = $db->simple_select("forums", "fid", "import_fid > 0");
-		$num_imported_forums = $db->num_rows($query);
-		$progress = 0;
+        // We've already finished this (redirects...)
+        if (isset($import_session['counters_forum'])) {
+            return;
+        }
 
-		while ($forum = $db->fetch_array($query)) {
-			rebuild_forum_counters($forum['fid']);
-			++$progress;
-			// 200 is maximum and not 100
-			$output->update_progress_bar(round(($progress / $num_imported_forums) * 200, 1), $lang->sprintf($lang->module_post_forum_counter, $forum['fid']));
-		}
+        $this->debug->log->trace1("Rebuilding forum counters");
+        echo $lang->module_post_rebuilding_forum;
+        flush();
 
-		echo $lang->done;
+        // Only update imported forums
+        $query = $db->simple_select("forums", "fid", "import_fid > 0");
+        $num_imported_forums = $db->num_rows($query);
+        $progress = 0;
 
-		// Redirect back to this page but remember that this function has been called
-		$this->redirect('counters_forum');
-	}
+        while ($forum = $db->fetch_array($query)) {
+            rebuild_forum_counters($forum['fid']);
+            ++$progress;
+            // 200 is maximum and not 100
+            $output->update_progress_bar(
+                round(($progress / $num_imported_forums) * 200, 1),
+                $lang->sprintf($lang->module_post_forum_counter, $forum['fid'])
+            );
+        }
 
-	private function rebuild_user_post_counters()
-	{
-		global $db, $output, $lang, $import_session;
+        echo $lang->done;
 
-		// We've already finished this (redirects...)
-		if(isset($import_session['counters_user_posts'])) {
-			return;
-		}
+        // Redirect back to this page but remember that this function has been called
+        $this->redirect('counters_forum');
+    }
 
-		// Building the usepostcount part of the query
-		$query = $db->simple_select("forums", "fid", "usepostcounts = 0");
-		while($forum = $db->fetch_array($query))
-		{
-			$fids[] = $forum['fid'];
-		}
+    private function rebuild_user_post_counters()
+    {
+        global $db, $output, $lang, $import_session;
 
-		if(isset($fids) && is_array($fids))
-		{
-			$fids = implode(',', $fids);
-		}
+        // We've already finished this (redirects...)
+        if (isset($import_session['counters_user_posts'])) {
+            return;
+        }
 
-		if(!empty($fids))
-		{
-			$fids = " AND p.fid NOT IN($fids)";
-		}
-		else
-		{
-			$fids = "";
-		}
+        // Building the usepostcount part of the query
+        $query = $db->simple_select("forums", "fid", "usepostcounts = 0");
+        while ($forum = $db->fetch_array($query)) {
+            $fids[] = $forum['fid'];
+        }
 
-		$this->debug->log->trace1("Rebuilding user counters");
-		echo $lang->module_post_rebuilding_user_post;
-		flush();
+        if (isset($fids) && is_array($fids)) {
+            $fids = implode(',', $fids);
+        }
 
-		// Only update imported users
-		$query = $db->simple_select("users", "uid", "import_uid > 0");
-		$num_imported_users = $db->num_rows($query);
-		$progress = $last_percent = 0;
+        if (!empty($fids)) {
+            $fids = " AND p.fid NOT IN($fids)";
+        } else {
+            $fids = "";
+        }
 
-		while($user = $db->fetch_array($query))
-		{
-			// This query is from the ACP
-			$query2 = $db->query("
+        $this->debug->log->trace1("Rebuilding user counters");
+        echo $lang->module_post_rebuilding_user_post;
+        flush();
+
+        // Only update imported users
+        $query = $db->simple_select("users", "uid", "import_uid > 0");
+        $num_imported_users = $db->num_rows($query);
+        $progress = $last_percent = 0;
+
+        while ($user = $db->fetch_array($query)) {
+            // This query is from the ACP
+            $query2 = $db->query(
+                "
 				SELECT COUNT(p.pid) AS post_count
-				FROM ".TABLE_PREFIX."posts p
-				LEFT JOIN ".TABLE_PREFIX."threads t ON (t.tid=p.tid)
+				FROM " . TABLE_PREFIX . "posts p
+				LEFT JOIN " . TABLE_PREFIX . "threads t ON (t.tid=p.tid)
 				WHERE p.uid='{$user['uid']}' AND t.visible > 0 AND p.visible > 0{$fids}
-			");
+			"
+            );
 
-			$num_posts = $db->fetch_field($query2, "post_count");
-			$db->free_result($query2);
-			$db->update_query("users", array("postnum" => (int)$num_posts), "uid='{$user['uid']}'");
+            $num_posts = $db->fetch_field($query2, "post_count");
+            $db->free_result($query2);
+            $db->update_query("users", array("postnum" => (int)$num_posts), "uid='{$user['uid']}'");
 
-			++$progress;
-			// 200 is maximum and not 100
-			$percent = round(($progress/$num_imported_users)*200, 1);
-			if($percent != $last_percent)
-			{
-				$output->update_progress_bar($percent, $lang->sprintf($lang->module_post_user_counter, $user['uid']));
-			}
-			$last_percent = $percent;
-		}
+            ++$progress;
+            // 200 is maximum and not 100
+            $percent = round(($progress / $num_imported_users) * 200, 1);
+            if ($percent != $last_percent) {
+                $output->update_progress_bar($percent, $lang->sprintf($lang->module_post_user_counter, $user['uid']));
+            }
+            $last_percent = $percent;
+        }
 
-		$output->update_progress_bar(200, $lang->please_wait);
+        $output->update_progress_bar(200, $lang->please_wait);
 
-		echo $lang->done;
-		flush();
+        echo $lang->done;
+        flush();
 
-		// Redirect back to this page but remember that this function has been called
-		$this->redirect('counters_user_posts');
-	}
+        // Redirect back to this page but remember that this function has been called
+        $this->redirect('counters_user_posts');
+    }
 
-	private function rebuild_user_thread_counters()
-	{
-		global $db, $output, $lang;
+    private function rebuild_user_thread_counters()
+    {
+        global $db, $output, $lang;
 
-		// Building the usepostcount part of the query
-		$query = $db->simple_select("forums", "fid", "usepostcounts = 0");
-		while($forum = $db->fetch_array($query))
-		{
-			$fids[] = $forum['fid'];
-		}
+        // Building the usepostcount part of the query
+        $query = $db->simple_select("forums", "fid", "usepostcounts = 0");
+        while ($forum = $db->fetch_array($query)) {
+            $fids[] = $forum['fid'];
+        }
 
-		if(isset($fids) && is_array($fids))
-		{
-			$fids = implode(',', $fids);
-		}
+        if (isset($fids) && is_array($fids)) {
+            $fids = implode(',', $fids);
+        }
 
-		if(!empty($fids))
-		{
-			$fids = " AND t.fid NOT IN($fids)";
-		}
-		else
-		{
-			$fids = "";
-		}
+        if (!empty($fids)) {
+            $fids = " AND t.fid NOT IN($fids)";
+        } else {
+            $fids = "";
+        }
 
-		$this->debug->log->trace1("Rebuilding user thread counters");
-		echo $lang->module_post_rebuilding_user_thread;
-		flush();
+        $this->debug->log->trace1("Rebuilding user thread counters");
+        echo $lang->module_post_rebuilding_user_thread;
+        flush();
 
-		// Only update the imported users
-		$query = $db->simple_select("users", "uid", "import_uid > 0");
-		$num_imported_users = $db->num_rows($query);
-		$progress = $last_percent = 0;
+        // Only update the imported users
+        $query = $db->simple_select("users", "uid", "import_uid > 0");
+        $num_imported_users = $db->num_rows($query);
+        $progress = $last_percent = 0;
 
-		while($user = $db->fetch_array($query))
-		{
-			// Query from the acp
-			$query2 = $db->query("
+        while ($user = $db->fetch_array($query)) {
+            // Query from the acp
+            $query2 = $db->query(
+                "
 				SELECT COUNT(t.tid) AS thread_count
-				FROM ".TABLE_PREFIX."threads t
+				FROM " . TABLE_PREFIX . "threads t
 				WHERE t.uid='{$user['uid']}' AND t.visible > 0 AND t.closed NOT LIKE 'moved|%'{$fids}
-			");
-			$num_threads = $db->fetch_field($query2, "thread_count");
-			$db->free_result($query2);
-			$db->update_query("users", array("threadnum" => (int)$num_threads), "uid='{$user['uid']}'");
+			"
+            );
+            $num_threads = $db->fetch_field($query2, "thread_count");
+            $db->free_result($query2);
+            $db->update_query("users", array("threadnum" => (int)$num_threads), "uid='{$user['uid']}'");
 
 
-			++$progress;
-			// 200 is maximum and not 100
-			$percent = round(($progress/$num_imported_users)*200, 1);
-			if($percent != $last_percent)
-			{
-				$output->update_progress_bar($percent, $lang->sprintf($lang->module_post_user_counter, $user['uid']));
-			}
-			$last_percent = $percent;
-		}
+            ++$progress;
+            // 200 is maximum and not 100
+            $percent = round(($progress / $num_imported_users) * 200, 1);
+            if ($percent != $last_percent) {
+                $output->update_progress_bar($percent, $lang->sprintf($lang->module_post_user_counter, $user['uid']));
+            }
+            $last_percent = $percent;
+        }
 
-		$output->update_progress_bar(200, $lang->please_wait);
+        $output->update_progress_bar(200, $lang->please_wait);
 
-		echo $lang->done;
-		flush();
+        echo $lang->done;
+        flush();
 
-		// Not needed as this is the latest rebuilding so we need to continue the normal code
-		// If a new counter function is called after this we'd need to uncomment this
+        // Not needed as this is the latest rebuilding so we need to continue the normal code
+        // If a new counter function is called after this we'd need to uncomment this
 //		$this->redirect('counters_users_threads');
-	}
+    }
 
-	private function redirect($finished = "")
-	{
-		// Do we want to save that we've finished function?
-		if(!empty($finished)) {
-			global $import_session;
-			$import_session[$finished] = 1;
-		}
+    private function redirect($finished = "")
+    {
+        // Do we want to save that we've finished function?
+        if (!empty($finished)) {
+            global $import_session;
+            $import_session[$finished] = 1;
+        }
 
-		// Make sure we save changed imports
-		update_import_session();
+        // Make sure we save changed imports
+        update_import_session();
 
-		// Redirect back here - parameters are saved in the session
-		if(!headers_sent())
-		{
-			header("Location: index.php");
-		}
-		else
-		{
-			echo "<meta http-equiv=\"refresh\" content=\"0; url=index.php\">";;
-		}
+        // Redirect back here - parameters are saved in the session
+        if (!headers_sent()) {
+            header("Location: index.php");
+        } else {
+            echo "<meta http-equiv=\"refresh\" content=\"0; url=index.php\">";;
+        }
 
-		// Stop here!
-		exit;
-	}
+        // Stop here!
+        exit;
+    }
 }
 
 

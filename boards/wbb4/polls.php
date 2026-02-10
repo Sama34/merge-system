@@ -8,143 +8,151 @@
  */
 
 // Disallow direct access to this file for security reasons
-if(!defined("IN_MYBB"))
-{
-	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
+if (!defined("IN_MYBB")) {
+    die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
-class WBB4_Converter_Module_Polls extends Converter_Module_Polls {
+class WBB4_Converter_Module_Polls extends Converter_Module_Polls
+{
 
-	var $settings = array(
-		'friendly_name' => 'polls',
-		'progress_column' => 'pollID',
-		'default_per_screen' => 1000,
-	);
+    var $settings = array(
+        'friendly_name' => 'polls',
+        'progress_column' => 'pollID',
+        'default_per_screen' => 1000,
+    );
 
-	var $cache_poll_choices = array();
+    var $cache_poll_choices = array();
 
-	var $cache_get_poll_thread = array();
+    var $cache_get_poll_thread = array();
 
-	var $objectID;
-	
-	function pre_setup()
-	{
-		// Don't ask - wbb...
-		$class = $this->old_db->escape_string("wbb\system\poll\PostPollHandler");
-		$query = $this->old_db->simple_select(WCF_PREFIX."object_type", "objectTypeID", "className='{$class}'");
-		$this->objectID = $this->old_db->fetch_field($query, "objectTypeID");
-		$this->old_db->free_result($query);
-	}
+    var $objectID;
 
-	function import()
-	{
-		global $import_session, $db;
+    function pre_setup()
+    {
+        // Don't ask - wbb...
+        $class = $this->old_db->escape_string("wbb\system\poll\PostPollHandler");
+        $query = $this->old_db->simple_select(WCF_PREFIX . "object_type", "objectTypeID", "className='{$class}'");
+        $this->objectID = $this->old_db->fetch_field($query, "objectTypeID");
+        $this->old_db->free_result($query);
+    }
 
-		$query = $this->old_db->simple_select(WCF_PREFIX."poll", "*", "objectTypeID='{$this->objectID}'", array('limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen']));
-		while($poll = $this->old_db->fetch_array($query))
-		{
-			// WBB allows multiple polls per thread (only one per post)
-			// As we only allow one per thread we simply copy all polls which were addeed to a first post
-			$tquery = $db->simple_select("threads", "tid,import_tid", "import_firstpost='{$poll['objectID']}'");
-			if($db->num_rows($tquery) == 0)
-			{
-				// This poll isn't in a first post
-				$this->increment_tracker("polls");
-				continue;
-			}
-			$thread = $db->fetch_array($tquery);
-			$db->free_result($tquery);
+    function import()
+    {
+        global $import_session, $db;
 
-			$poll = array_merge($poll, $thread);
+        $query = $this->old_db->simple_select(
+            WCF_PREFIX . "poll",
+            "*",
+            "objectTypeID='{$this->objectID}'",
+            array('limit_start' => $this->trackers['start_polls'], 'limit' => $import_session['polls_per_screen'])
+        );
+        while ($poll = $this->old_db->fetch_array($query)) {
+            // WBB allows multiple polls per thread (only one per post)
+            // As we only allow one per thread we simply copy all polls which were addeed to a first post
+            $tquery = $db->simple_select("threads", "tid,import_tid", "import_firstpost='{$poll['objectID']}'");
+            if ($db->num_rows($tquery) == 0) {
+                // This poll isn't in a first post
+                $this->increment_tracker("polls");
+                continue;
+            }
+            $thread = $db->fetch_array($tquery);
+            $db->free_result($tquery);
 
-			$pid = $this->insert($poll);
+            $poll = array_merge($poll, $thread);
 
-			// Restore connections
-			$db->update_query("threads", array('poll' => $pid), "import_tid = '{$poll['import_tid']}'");
-		}
-	}
+            $pid = $this->insert($poll);
 
-	function convert_data($data)
-	{
-		$insert_data = array();
+            // Restore connections
+            $db->update_query("threads", array('poll' => $pid), "import_tid = '{$poll['import_tid']}'");
+        }
+    }
 
-		// WBB 4 values
-		$insert_data['import_tid'] = $data['import_tid'];
-		$insert_data['import_pid'] = $data['pollID'];
-		$insert_data['tid'] = $data['tid'];
+    function convert_data($data)
+    {
+        $insert_data = array();
 
-		$insert_data['question'] = $data['question'];
-		$insert_data['dateline'] = $data['time'];
+        // WBB 4 values
+        $insert_data['import_tid'] = $data['import_tid'];
+        $insert_data['import_pid'] = $data['pollID'];
+        $insert_data['tid'] = $data['tid'];
 
-		$poll_choices = $this->get_poll_choices($data['pollID']);
-		$insert_data['options'] = $poll_choices['options'];
-		$insert_data['votes'] = $poll_choices['votes'];
-		$insert_data['numoptions'] = $poll_choices['options_count'];
-		$insert_data['numvotes'] = $poll_choices['vote_count'];
+        $insert_data['question'] = $data['question'];
+        $insert_data['dateline'] = $data['time'];
 
-		// WBB saves the end timestamp, time for some math
-		if($data['endTime'] != 0)
-		{
-			$period = $data['endTime'] - $data['time']; // Timeout in seconds
-			$insert_data['timeout'] = (int)($period / (24*3600));
-		}
+        $poll_choices = $this->get_poll_choices($data['pollID']);
+        $insert_data['options'] = $poll_choices['options'];
+        $insert_data['votes'] = $poll_choices['votes'];
+        $insert_data['numoptions'] = $poll_choices['options_count'];
+        $insert_data['numvotes'] = $poll_choices['vote_count'];
 
-		return $insert_data;
-	}
+        // WBB saves the end timestamp, time for some math
+        if ($data['endTime'] != 0) {
+            $period = $data['endTime'] - $data['time']; // Timeout in seconds
+            $insert_data['timeout'] = (int)($period / (24 * 3600));
+        }
 
-	function get_poll_choices($pid)
-	{
-		if(array_key_exists($pid, $this->cache_poll_choices))
-		{
-			return $this->cache_poll_choices[$pid];
-		}
+        return $insert_data;
+    }
 
-		$seperator = '';
-		$options = '';
-		$votes = '';
-		$vote_count = 0;
-		$options_count = 0;
+    function get_poll_choices($pid)
+    {
+        if (array_key_exists($pid, $this->cache_poll_choices)) {
+            return $this->cache_poll_choices[$pid];
+        }
 
-		$query = $this->old_db->simple_select(WCF_PREFIX."poll_option", "*", "pollID='{$pid}'", array("order_by" => "showOrder"));
-		while($vote_result = $this->old_db->fetch_array($query))
-		{
-			$options .= $seperator.$vote_result['optionValue'];
-			$votes .= $seperator.$vote_result['votes'];
-			++$options_count;
-			$vote_count += $vote_result['votes'];
-			$seperator = '||~|~||';
-		}
-		$this->old_db->free_result($query);
+        $seperator = '';
+        $options = '';
+        $votes = '';
+        $vote_count = 0;
+        $options_count = 0;
 
-		$poll_choices = array(
-			'options' => $options,
-			'votes' => $votes,
-			'options_count' => $options_count,
-			'vote_count' => $vote_count
-		);
+        $query = $this->old_db->simple_select(
+            WCF_PREFIX . "poll_option",
+            "*",
+            "pollID='{$pid}'",
+            array("order_by" => "showOrder")
+        );
+        while ($vote_result = $this->old_db->fetch_array($query)) {
+            $options .= $seperator . $vote_result['optionValue'];
+            $votes .= $seperator . $vote_result['votes'];
+            ++$options_count;
+            $vote_count += $vote_result['votes'];
+            $seperator = '||~|~||';
+        }
+        $this->old_db->free_result($query);
 
-		$this->cache_poll_choices[$pid] = $poll_choices;
+        $poll_choices = array(
+            'options' => $options,
+            'votes' => $votes,
+            'options_count' => $options_count,
+            'vote_count' => $vote_count
+        );
 
-		return $poll_choices;
-	}
+        $this->cache_poll_choices[$pid] = $poll_choices;
 
-	function fetch_total()
-	{
-		global $import_session;
+        return $poll_choices;
+    }
 
-		// Get number of polls
-		if(!isset($import_session['total_polls']))
-		{
-			// We need the ID...
-			$this->pre_setup();
+    function fetch_total()
+    {
+        global $import_session;
 
-			$query = $this->old_db->simple_select(WCF_PREFIX."poll", "COUNT(*) as count", "objectTypeID='{$this->objectID}'");
-			$import_session['total_polls'] = $this->old_db->fetch_field($query, 'count');
-			$this->old_db->free_result($query);
-		}
+        // Get number of polls
+        if (!isset($import_session['total_polls'])) {
+            // We need the ID...
+            $this->pre_setup();
 
-		return $import_session['total_polls'];
-	}
+            $query = $this->old_db->simple_select(
+                WCF_PREFIX . "poll",
+                "COUNT(*) as count",
+                "objectTypeID='{$this->objectID}'"
+            );
+            $import_session['total_polls'] = $this->old_db->fetch_field($query, 'count');
+            $this->old_db->free_result($query);
+        }
+
+        return $import_session['total_polls'];
+    }
 }
 
 

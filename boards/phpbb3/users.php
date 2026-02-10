@@ -8,173 +8,172 @@
  */
 
 // Disallow direct access to this file for security reasons
-if(!defined("IN_MYBB"))
-{
-	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
+if (!defined("IN_MYBB")) {
+    die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
-class PHPBB3_Converter_Module_Users extends Converter_Module_Users {
+class PHPBB3_Converter_Module_Users extends Converter_Module_Users
+{
 
-	var $settings = array(
-		'friendly_name' => 'users',
-		'progress_column' => 'user_id',
-		'encode_table' => 'users',
-		'postnum_column' => 'user_posts',
-		'username_column' => 'username',
-		'email_column' => 'user_email',
-		'default_per_screen' => 1000,
-	);
+    var $settings = array(
+        'friendly_name' => 'users',
+        'progress_column' => 'user_id',
+        'encode_table' => 'users',
+        'postnum_column' => 'user_posts',
+        'username_column' => 'username',
+        'email_column' => 'user_email',
+        'default_per_screen' => 1000,
+    );
 
-	var $get_private_messages_cache = array();
+    var $get_private_messages_cache = array();
 
-	function import()
-	{
-		global $import_session;
+    function import()
+    {
+        global $import_session;
 
-		// Get members
-		$query = $this->old_db->query("
+        // Get members
+        $query = $this->old_db->query(
+            "
 			SELECT u.*, GROUP_CONCAT(g.group_id) as usergroups
-			FROM ".OLD_TABLE_PREFIX."users u
-			LEFT JOIN ".OLD_TABLE_PREFIX."user_group g ON(g.user_id=u.user_id AND g.user_pending=0)
+			FROM " . OLD_TABLE_PREFIX . "users u
+			LEFT JOIN " . OLD_TABLE_PREFIX . "user_group g ON(g.user_id=u.user_id AND g.user_pending=0)
 			WHERE u.user_id > 0 AND u.username != 'Anonymous' AND u.group_id != 6
 			GROUP BY u.user_id
 			LIMIT {$this->trackers['start_users']}, {$import_session['users_per_screen']}
-		");
-		while($user = $this->old_db->fetch_array($query))
-		{
-			$this->insert($user);
-		}
-	}
+		"
+        );
+        while ($user = $this->old_db->fetch_array($query)) {
+            $this->insert($user);
+        }
+    }
 
-	function convert_data($data)
-	{
-		$insert_data = array();
+    function convert_data($data)
+    {
+        $insert_data = array();
 
-		// phpBB 3 values
-		$insert_data['usergroup'] = $this->board->get_gid($data['group_id']);
-		$insert_data['additionalgroups'] = $this->board->get_group_id($data['usergroups'], $insert_data['usergroup']);
+        // phpBB 3 values
+        $insert_data['usergroup'] = $this->board->get_gid($data['group_id']);
+        $insert_data['additionalgroups'] = $this->board->get_group_id($data['usergroups'], $insert_data['usergroup']);
 
-		//phpBB3 inactive for user registration (not yet activated) force awaiting and remove possible registered group from additionalgroups
-		if($data['user_inactive_reason'] == '1' && $data['user_type'] == '1')
-		{
-			$insert_data['usergroup'] = MYBB_AWAITING;
-			$groups = array_flip(explode(',', $insert_data['additionalgroups']));
-			unset($groups[MYBB_REGISTERED]);
-			$insert_data['additionalgroups'] = implode(',', array_keys($groups));
-		}
+        //phpBB3 inactive for user registration (not yet activated) force awaiting and remove possible registered group from additionalgroups
+        if ($data['user_inactive_reason'] == '1' && $data['user_type'] == '1') {
+            $insert_data['usergroup'] = MYBB_AWAITING;
+            $groups = array_flip(explode(',', $insert_data['additionalgroups']));
+            unset($groups[MYBB_REGISTERED]);
+            $insert_data['additionalgroups'] = implode(',', array_keys($groups));
+        }
 
-		$insert_data['import_usergroup'] = $data['group_id'];
-		$insert_data['import_additionalgroups'] = $data['usergroups'];
-		$insert_data['import_uid'] = $data['user_id'];
-		$insert_data['username'] = encode_to_utf8($data['username'], "users", "users");
-		$insert_data['email'] = $data['user_email'];
-		$insert_data['regdate'] = $data['user_regdate'];
-		$insert_data['lastactive'] = $data['user_lastvisit'];
-		$insert_data['lastvisit'] = $data['user_lastvisit'];
-		$insert_data['website'] = $data['user_website'];
-		$insert_data['lastpost'] = $data['user_lastpost_time'];
+        $insert_data['import_usergroup'] = $data['group_id'];
+        $insert_data['import_additionalgroups'] = $data['usergroups'];
+        $insert_data['import_uid'] = $data['user_id'];
+        $insert_data['username'] = encode_to_utf8($data['username'], "users", "users");
+        $insert_data['email'] = $data['user_email'];
+        $insert_data['regdate'] = $data['user_regdate'];
+        $insert_data['lastactive'] = $data['user_lastvisit'];
+        $insert_data['lastvisit'] = $data['user_lastvisit'];
+        $insert_data['website'] = $data['user_website'];
+        $insert_data['lastpost'] = $data['user_lastpost_time'];
 
-		$birthday = '';
-		$data['user_birthday'] = trim($data['user_birthday']);
-		if(!empty($data['user_birthday']))
-		{
-			$birthday_arr = explode('-', $data['user_birthday']);
+        $birthday = '';
+        $data['user_birthday'] = trim($data['user_birthday']);
+        if (!empty($data['user_birthday'])) {
+            $birthday_arr = explode('-', $data['user_birthday']);
 
-			foreach($birthday_arr as $bday_part)
-			{
-				if(substr($bday_part, 0, 1) == "0")
-				{
-					$birthday .= substr($bday_part, 1);
-				}
-				else
-				{
-					$birthday .= $bday_part;
-				}
+            foreach ($birthday_arr as $bday_part) {
+                if (substr($bday_part, 0, 1) == "0") {
+                    $birthday .= substr($bday_part, 1);
+                } else {
+                    $birthday .= $bday_part;
+                }
 
-				$birthday .= "-";
-			}
-		}
+                $birthday .= "-";
+            }
+        }
 
-		$insert_data['birthday'] = $birthday;
-		$insert_data['icq'] = $data['user_icq'];
-		$insert_data['hideemail'] = $data['user_allow_viewemail'];
-		$insert_data['invisible'] = int_to_01($data['user_allow_viewonline']);
-		$insert_data['allownotices'] = $data['user_notify'];
-		if($data['user_notify'] == 1)
-		{
-			$insert_data['subscriptionmethod'] = 2;
-		}
-		else
-		{
-			$insert_data['subscriptionmethod'] = 0;
-		}
-		$insert_data['receivepms'] = $data['user_allow_pm'];
-		$insert_data['pmnotice'] = $data['user_notify_pm'];
-		$insert_data['pmnotify'] = $data['user_notify_pm'];
+        $insert_data['birthday'] = $birthday;
+        $insert_data['icq'] = $data['user_icq'];
+        $insert_data['hideemail'] = $data['user_allow_viewemail'];
+        $insert_data['invisible'] = int_to_01($data['user_allow_viewonline']);
+        $insert_data['allownotices'] = $data['user_notify'];
+        if ($data['user_notify'] == 1) {
+            $insert_data['subscriptionmethod'] = 2;
+        } else {
+            $insert_data['subscriptionmethod'] = 0;
+        }
+        $insert_data['receivepms'] = $data['user_allow_pm'];
+        $insert_data['pmnotice'] = $data['user_notify_pm'];
+        $insert_data['pmnotify'] = $data['user_notify_pm'];
 
-		$insert_data['dateformat'] = get_date_format($data['user_dateformat']);
-		$insert_data['timeformat'] = get_time_format($data['user_dateformat']);
-		if(strpos($data['user_timezone'], ".") !== FALSE)
-		{
-			// phpBB 3.0
-			$insert_data['timezone'] = $data['user_timezone'];
-			$insert_data['timezone'] = str_replace(array('.0', '.00'), array('', ''), $insert_data['timezone']);
-		}
-		else
-		{
-			// phpBB 3.1
-			$insert_data['timezone'] = get_timezone($data['user_timezone']);
-		}
-		$insert_data['dst'] = $data['user_dst'];
-		$insert_data['signature'] = encode_to_utf8($this->bbcode_parser->convert($data['user_sig'], $data['user_sig_bbcode_uid']), "users", "users");
-		$insert_data['regip'] = my_inet_pton($data['user_ip']);
-		$insert_data['lastip'] = my_inet_pton($data['user_ip']);
-		$insert_data['totalpms'] = $this->get_private_messages($data['user_id']);
-		$insert_data['unreadpms'] = $data['user_unread_privmsg'];
-		$insert_data['passwordconvert'] = $data['user_password'];
-		$insert_data['passwordconverttype'] = 'phpbb3';
-		$insert_data['loginkey'] = generate_loginkey();
+        $insert_data['dateformat'] = get_date_format($data['user_dateformat']);
+        $insert_data['timeformat'] = get_time_format($data['user_dateformat']);
+        if (strpos($data['user_timezone'], ".") !== false) {
+            // phpBB 3.0
+            $insert_data['timezone'] = $data['user_timezone'];
+            $insert_data['timezone'] = str_replace(array('.0', '.00'), array('', ''), $insert_data['timezone']);
+        } else {
+            // phpBB 3.1
+            $insert_data['timezone'] = get_timezone($data['user_timezone']);
+        }
+        $insert_data['dst'] = $data['user_dst'];
+        $insert_data['signature'] = encode_to_utf8(
+            $this->bbcode_parser->convert($data['user_sig'], $data['user_sig_bbcode_uid']),
+            "users",
+            "users"
+        );
+        $insert_data['regip'] = my_inet_pton($data['user_ip']);
+        $insert_data['lastip'] = my_inet_pton($data['user_ip']);
+        $insert_data['totalpms'] = $this->get_private_messages($data['user_id']);
+        $insert_data['unreadpms'] = $data['user_unread_privmsg'];
+        $insert_data['passwordconvert'] = $data['user_password'];
+        $insert_data['passwordconverttype'] = 'phpbb3';
+        $insert_data['loginkey'] = generate_loginkey();
 
-		return $insert_data;
-	}
+        return $insert_data;
+    }
 
-	/**
-	 * Get total number of Private Messages the user has from the phpBB database
-	 *
-	 * @param int $uid User ID
-	 * @return int Number of Private Messages
-	 */
-	function get_private_messages($uid)
-	{
-		if(array_key_exists($uid, $this->get_private_messages_cache))
-		{
-			return $this->get_private_messages_cache[$uid];
-		}
+    /**
+     * Get total number of Private Messages the user has from the phpBB database
+     *
+     * @param int $uid User ID
+     * @return int Number of Private Messages
+     */
+    function get_private_messages($uid)
+    {
+        if (array_key_exists($uid, $this->get_private_messages_cache)) {
+            return $this->get_private_messages_cache[$uid];
+        }
 
-		$query = $this->old_db->simple_select("privmsgs", "COUNT(*) as pms", "to_address = '{$uid}' OR author_id = '{$uid}'");
+        $query = $this->old_db->simple_select(
+            "privmsgs",
+            "COUNT(*) as pms",
+            "to_address = '{$uid}' OR author_id = '{$uid}'"
+        );
 
-		$results = $this->old_db->fetch_field($query, 'pms');
-		$this->old_db->free_result($query);
+        $results = $this->old_db->fetch_field($query, 'pms');
+        $this->old_db->free_result($query);
 
-		$this->get_private_messages_cache[$uid] = $results;
+        $this->get_private_messages_cache[$uid] = $results;
 
-		return $results;
-	}
+        return $results;
+    }
 
-	function fetch_total()
-	{
-		global $import_session;
+    function fetch_total()
+    {
+        global $import_session;
 
-		// Get number of members
-		if(!isset($import_session['total_users']))
-		{
-			$query = $this->old_db->simple_select("users", "COUNT(*) as count", "user_id > 0 AND username != 'Anonymous' AND group_id != 6");
-			$import_session['total_users'] = $this->old_db->fetch_field($query, 'count');
-			$this->old_db->free_result($query);
-		}
+        // Get number of members
+        if (!isset($import_session['total_users'])) {
+            $query = $this->old_db->simple_select(
+                "users",
+                "COUNT(*) as count",
+                "user_id > 0 AND username != 'Anonymous' AND group_id != 6"
+            );
+            $import_session['total_users'] = $this->old_db->fetch_field($query, 'count');
+            $this->old_db->free_result($query);
+        }
 
-		return $import_session['total_users'];
-	}
+        return $import_session['total_users'];
+    }
 }
 
 

@@ -41,18 +41,28 @@ class PHPBB3_Converter extends Converter
      *
      * @var array
      */
-    var $modules = array("db_configuration" => array("name" => "Database Configuration", "dependencies" => ""),
+    var $modules = array(
+        "db_configuration" => array("name" => "Database Configuration", "dependencies" => ""),
         "import_usergroups" => array("name" => "Usergroups", "dependencies" => "db_configuration"),
         "import_users" => array("name" => "Users", "dependencies" => "db_configuration,import_usergroups"),
         "import_bans" => array("name" => "Bans", "dependencies" => "db_configuration,import_users"),
         "import_forums" => array("name" => "Forums", "dependencies" => "db_configuration,import_users"),
-        "import_forumperms" => array("name" => "Forum Permissions", "dependencies" => "db_configuration,import_forums,import_usergroups"),
+        "import_forumperms" => array(
+            "name" => "Forum Permissions",
+            "dependencies" => "db_configuration,import_forums,import_usergroups"
+        ),
         "import_threads" => array("name" => "Threads", "dependencies" => "db_configuration,import_forums"),
         "import_polls" => array("name" => "Polls", "dependencies" => "db_configuration,import_threads"),
         "import_pollvotes" => array("name" => "Poll Votes", "dependencies" => "db_configuration,import_polls"),
         "import_posts" => array("name" => "Posts", "dependencies" => "db_configuration,import_threads"),
-        "import_privatemessages" => array("name" => "Private Messages", "dependencies" => "db_configuration,import_users"),
-        "import_moderators" => array("name" => "Moderators", "dependencies" => "db_configuration,import_forums,import_users"),
+        "import_privatemessages" => array(
+            "name" => "Private Messages",
+            "dependencies" => "db_configuration,import_users"
+        ),
+        "import_moderators" => array(
+            "name" => "Moderators",
+            "dependencies" => "db_configuration,import_forums,import_users"
+        ),
         "import_settings" => array("name" => "Settings", "dependencies" => "db_configuration"),
         "import_avatars" => array("name" => "Avatars", "dependencies" => "db_configuration,import_users"),
         "import_attachments" => array("name" => "Attachments", "dependencies" => "db_configuration,import_posts")

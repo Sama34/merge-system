@@ -9,103 +9,103 @@
 
 abstract class Converter_Module_Threads extends Converter_Module
 {
-	public $default_values = array(
-		'import_tid' => 0,
-		'import_uid' => 0,
-		'import_poll' => 0,
-		'import_firstpost' => 0,
+    public $default_values = array(
+        'import_tid' => 0,
+        'import_uid' => 0,
+        'import_poll' => 0,
+        'import_firstpost' => 0,
 
-		'fid' => 0,
-		'subject' => '',
-		'prefix' => 0,
-		'icon' => 0,
-		'poll' => 0,
-		'uid' => 0,
-		'username' => '',
-		'dateline' => 0,
-		'firstpost' => 0,
-		'lastpost' => 0,
-		'lastposter' => '',
-		'lastposteruid' => 0,
-		'views' => 0,
-		'replies' => 0,
-		'closed' => '',
-		'sticky' => 0,
-		'numratings' => 0,
-		'totalratings' => 0,
-		'notes' => '',
-		'visible' => 1,
-		'unapprovedposts' => 0,
-		'deletedposts' => 0,
-		'attachmentcount' => 0,
-		'deletetime' => 0,
-	);
-	
-	public $integer_fields = array(
-		'import_tid',
-		'import_uid',
-		'import_poll',
-		'import_firstpost',
+        'fid' => 0,
+        'subject' => '',
+        'prefix' => 0,
+        'icon' => 0,
+        'poll' => 0,
+        'uid' => 0,
+        'username' => '',
+        'dateline' => 0,
+        'firstpost' => 0,
+        'lastpost' => 0,
+        'lastposter' => '',
+        'lastposteruid' => 0,
+        'views' => 0,
+        'replies' => 0,
+        'closed' => '',
+        'sticky' => 0,
+        'numratings' => 0,
+        'totalratings' => 0,
+        'notes' => '',
+        'visible' => 1,
+        'unapprovedposts' => 0,
+        'deletedposts' => 0,
+        'attachmentcount' => 0,
+        'deletetime' => 0,
+    );
 
-		'fid',
-		'prefix',
-		'icon',
-		'poll',
-		'uid',
-		'dateline',
-		'firstpost',
-		'lastpost',
-		'lastposteruid',
-		'views',
-		'replies',
-		'sticky',
-		'numratings',
-		'totalratings',
-		'visible',
-		'unapprovedposts',
-		'deletedposts',
-		'attachmentcount',
-		'deletetime',
-	);
+    public $integer_fields = array(
+        'import_tid',
+        'import_uid',
+        'import_poll',
+        'import_firstpost',
 
-	var $mark_as_run_modules = array(
-		'polls',
-		'posts',
-	);
+        'fid',
+        'prefix',
+        'icon',
+        'poll',
+        'uid',
+        'dateline',
+        'firstpost',
+        'lastpost',
+        'lastposteruid',
+        'views',
+        'replies',
+        'sticky',
+        'numratings',
+        'totalratings',
+        'visible',
+        'unapprovedposts',
+        'deletedposts',
+        'attachmentcount',
+        'deletetime',
+    );
 
-	/**
-	 * Insert thread into database
-	 *
-	 * @param array $data The insert array going into the MyBB database
-	 * @return int The new id
-	 */
-	public function insert($data)
-	{
-		global $db, $output;
+    var $mark_as_run_modules = array(
+        'polls',
+        'posts',
+    );
 
-		$this->debug->log->datatrace('$data', $data);
+    /**
+     * Insert thread into database
+     *
+     * @param array $data The insert array going into the MyBB database
+     * @return int The new id
+     */
+    public function insert($data)
+    {
+        global $db, $output;
 
-		$output->print_progress("start", $data[$this->settings['progress_column']]);
+        $this->debug->log->datatrace('$data', $data);
 
-		// Call our currently module's process function
-		$data = $this->convert_data($data);
+        $output->print_progress("start", $data[$this->settings['progress_column']]);
 
-		// Should loop through and fill in any values that aren't set based on the MyBB db schema or other standard default values and escape them properly
-		$insert_array = $this->prepare_insert_array($data, 'threads');
+        // Call our currently module's process function
+        $data = $this->convert_data($data);
 
-		$this->debug->log->datatrace('$insert_array', $insert_array);
+        // Should loop through and fill in any values that aren't set based on the MyBB db schema or other standard default values and escape them properly
+        $insert_array = $this->prepare_insert_array($data, 'threads');
 
-		$db->insert_query("threads", $insert_array);
-		$tid = $db->insert_id();
+        $this->debug->log->datatrace('$insert_array', $insert_array);
 
-		$this->get_import->cache_tids[$data['import_tid']] = $tid;
+        $db->insert_query("threads", $insert_array);
+        $tid = $db->insert_id();
 
-		$this->increment_tracker('threads');
+        $this->get_import->cache_tids[$data['import_tid']] = $tid;
 
-		$output->print_progress("end");
+        $this->increment_tracker('threads');
 
-		return $tid;
-	}
+        $output->print_progress("end");
+
+        return $tid;
+    }
 }
 
 

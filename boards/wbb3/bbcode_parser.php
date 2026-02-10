@@ -8,21 +8,21 @@
  */
 
 // Disallow direct access to this file for security reasons
-if(!defined("IN_MYBB"))
-{
-	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
+if (!defined("IN_MYBB")) {
+    die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
-class BBCode_Parser extends BBCode_Parser_Plain {
+class BBCode_Parser extends BBCode_Parser_Plain
+{
 
-	// This contains the attachment bbcode which is handled as special code as the id needs to be changed too
-	var $attachment = "\[attach\]([0-9]+)\[/attach\]";
+    // This contains the attachment bbcode which is handled as special code as the id needs to be changed too
+    var $attachment = "\[attach\]([0-9]+)\[/attach\]";
 
-	function convert($message)
-	{
-		$message =  $this->handle_attachments($message);
+    function convert($message)
+    {
+        $message = $this->handle_attachments($message);
 
-		// You won't believe it: WBB uses the same mycodes like we do!
-		return $message;
-	}
+        // You won't believe it: WBB uses the same mycodes like we do!
+        return $message;
+    }
 }

@@ -41,7 +41,7 @@ abstract class Converter_Module_Bans extends Converter_Module
 
         $output->print_progress("start", $data[$this->settings['progress_column']]);
 
-        $data  = $this->convert_data($data);
+        $data = $this->convert_data($data);
 
         $insert_array = $this->prepare_insert_array($data, 'banned');
 

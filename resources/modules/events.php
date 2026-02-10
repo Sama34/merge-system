@@ -9,65 +9,65 @@
 
 abstract class Converter_Module_Events extends Converter_Module
 {
-	public $default_values = array(
-		'cid' => 0,
-		'uid' => 0,
-		'name' => '',
-		'description' => '',
-		'visible' => 0,
-		'private' => 0,
-		'dateline' => 0,
-		'starttime' => 0,
-		'endtime' => 0,
-		'timezone' => '',
-		'ignoretimezone' => 0,
-		'usingtime' => 0,
-		'repeats' => ''
-	);
-	
-	public $integer_fields = array(
-		'cid',
-		'uid',
-		'visible',
-		'private',
-		'dateline',
-		'starttime',
-		'endtime',
-		'ignoretimezone',
-		'usingtime',
-	);
+    public $default_values = array(
+        'cid' => 0,
+        'uid' => 0,
+        'name' => '',
+        'description' => '',
+        'visible' => 0,
+        'private' => 0,
+        'dateline' => 0,
+        'starttime' => 0,
+        'endtime' => 0,
+        'timezone' => '',
+        'ignoretimezone' => 0,
+        'usingtime' => 0,
+        'repeats' => ''
+    );
 
-	/**
-	 * Insert an event into database
-	 *
-	 * @param array $data The insert array going into the MyBB database
-	 * @return int The new id
-	 */
-	public function insert($data)
-	{
-		global $db, $output;
+    public $integer_fields = array(
+        'cid',
+        'uid',
+        'visible',
+        'private',
+        'dateline',
+        'starttime',
+        'endtime',
+        'ignoretimezone',
+        'usingtime',
+    );
 
-		$output->print_progress("start", $data[$this->settings['progress_column']]);
+    /**
+     * Insert an event into database
+     *
+     * @param array $data The insert array going into the MyBB database
+     * @return int The new id
+     */
+    public function insert($data)
+    {
+        global $db, $output;
 
-		$this->debug->log->datatrace('$data', $data);
+        $output->print_progress("start", $data[$this->settings['progress_column']]);
 
-		// Call our currently module's process function
-		$data = $this->convert_data($data);
+        $this->debug->log->datatrace('$data', $data);
 
-		// Should loop through and fill in any values that aren't set based on the MyBB db schema or other standard default values and escape them properly
-		$insert_array = $this->prepare_insert_array($data, 'events');
+        // Call our currently module's process function
+        $data = $this->convert_data($data);
 
-		$this->debug->log->datatrace('$insert_array', $insert_array);
+        // Should loop through and fill in any values that aren't set based on the MyBB db schema or other standard default values and escape them properly
+        $insert_array = $this->prepare_insert_array($data, 'events');
 
-		$db->insert_query("events", $insert_array);
-		$eid = $db->insert_id();
+        $this->debug->log->datatrace('$insert_array', $insert_array);
 
-		$this->increment_tracker('events');
+        $db->insert_query("events", $insert_array);
+        $eid = $db->insert_id();
 
-		$output->print_progress("end");
+        $this->increment_tracker('events');
 
-		return $eid;
-	}
+        $output->print_progress("end");
+
+        return $eid;
+    }
 }
 
 

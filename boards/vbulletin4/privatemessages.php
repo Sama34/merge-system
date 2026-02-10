@@ -8,139 +8,125 @@
  */
 
 // Disallow direct access to this file for security reasons
-if(!defined("IN_MYBB"))
-{
-	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
+if (!defined("IN_MYBB")) {
+    die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
-class VBULLETIN4_Converter_Module_Privatemessages extends Converter_Module_Privatemessages {
+class VBULLETIN4_Converter_Module_Privatemessages extends Converter_Module_Privatemessages
+{
 
-	var $settings = array(
-		'friendly_name' => 'private messages',
-		'progress_column' => 'pmid',
-		'default_per_screen' => 1000,
-	);
+    var $settings = array(
+        'friendly_name' => 'private messages',
+        'progress_column' => 'pmid',
+        'default_per_screen' => 1000,
+    );
 
-	function import()
-	{
-		global $import_session;
+    function import()
+    {
+        global $import_session;
 
-			$query = $this->old_db->query("
+        $query = $this->old_db->query(
+            "
 				SELECT *
-				FROM ".OLD_TABLE_PREFIX."pm p
-				LEFT JOIN ".OLD_TABLE_PREFIX."pmtext pt ON(p.pmtextid=pt.pmtextid)
-				LIMIT ".$this->trackers['start_privatemessages'].", ".$import_session['privatemessages_per_screen']
-			);
-			while($pm = $this->old_db->fetch_array($query))
-			{
-				$this->insert($pm);
-			}
-	}
+				FROM " . OLD_TABLE_PREFIX . "pm p
+				LEFT JOIN " . OLD_TABLE_PREFIX . "pmtext pt ON(p.pmtextid=pt.pmtextid)
+				LIMIT " . $this->trackers['start_privatemessages'] . ", " . $import_session['privatemessages_per_screen']
+        );
+        while ($pm = $this->old_db->fetch_array($query)) {
+            $this->insert($pm);
+        }
+    }
 
-	function convert_data($data)
-	{
-		// vBulletin 4 values
-		$insert_data['uid'] = $this->get_import->uid($data['userid']);
-		$insert_data['fromid'] = $this->get_import->uid($data['fromuserid']);
-		if($data['folderid'] == -1)
-		{
-			$insert_data['folder'] = PM_FOLDER_OUTBOX;
-		}
-		else
-		{
-			$insert_data['folder'] = PM_FOLDER_INBOX;
-		}
+    function convert_data($data)
+    {
+        // vBulletin 4 values
+        $insert_data['uid'] = $this->get_import->uid($data['userid']);
+        $insert_data['fromid'] = $this->get_import->uid($data['fromuserid']);
+        if ($data['folderid'] == -1) {
+            $insert_data['folder'] = PM_FOLDER_OUTBOX;
+        } else {
+            $insert_data['folder'] = PM_FOLDER_INBOX;
+        }
 
-		// Rebuild the recipients array and toid field
-		$touserarray = unserialize($data['touserarray']);
-		$recipients = array();
+        // Rebuild the recipients array and toid field
+        $touserarray = unserialize($data['touserarray']);
+        $recipients = array();
 
-		// vB has some problems with serialized data. They use strlen (eg "s:1:ü") though PHP uses the byte count (so "s:2:ü")
-		// As PHP notices that and declares the data as invalid we need to try to decode the serialized data (which indirectly forces PHP to use the strlen)
-		// However afterwards we need to properly encode all elements again, otherwise we'd get other issues again
-		if(!is_array($touserarray))
-		{
-			$touserarray = unserialize(utf8_decode($data['touserarray']));
-			array_walk_recursive($touserarray, create_function('&$value, $key', '$value = utf8_encode($value);'));
-		}
+        // vB has some problems with serialized data. They use strlen (eg "s:1:ü") though PHP uses the byte count (so "s:2:ü")
+        // As PHP notices that and declares the data as invalid we need to try to decode the serialized data (which indirectly forces PHP to use the strlen)
+        // However afterwards we need to properly encode all elements again, otherwise we'd get other issues again
+        if (!is_array($touserarray)) {
+            $touserarray = unserialize(utf8_decode($data['touserarray']));
+            array_walk_recursive($touserarray, create_function('&$value, $key', '$value = utf8_encode($value);'));
+        }
 
-		// This is the original check in vB
-		foreach($touserarray AS $key => $item)
-		{
-			if (is_array($item))
-			{
-				foreach($item AS $id => $name)
-				{
-					$recipients[$key][] = $this->get_import->uid($id);
-				}
-			}
-			else
-			{
-				$recipients['bcc'][] = $this->get_import->uid($key);
-			}
-		}
+        // This is the original check in vB
+        foreach ($touserarray as $key => $item) {
+            if (is_array($item)) {
+                foreach ($item as $id => $name) {
+                    $recipients[$key][] = $this->get_import->uid($id);
+                }
+            } else {
+                $recipients['bcc'][] = $this->get_import->uid($key);
+            }
+        }
 
-		// However we use "to" instead of "cc"
-		if(!empty($recipients['cc']))
-		{
-			$recipients['to'] = $recipients['cc'];
-			unset($recipients['cc']);
-		}
+        // However we use "to" instead of "cc"
+        if (!empty($recipients['cc'])) {
+            $recipients['to'] = $recipients['cc'];
+            unset($recipients['cc']);
+        }
 
-		$insert_data['recipients'] = serialize($recipients);
+        $insert_data['recipients'] = serialize($recipients);
 
-		// Now figure out what to do with toid
-		if($insert_data['uid'] != $insert_data['fromid'])
-		{
-			// Inserting a pm for one of the recipients so the toid is our id
-			$insert_data['toid'] = $insert_data['uid'];
-		}
-		elseif(count($recipients['to']) == 1)
-		{
-			// Inserting a pm for the sender with only one recipient so we can set the toid
-			$insert_data['toid'] = $recipients['to'][0];
-		}
-		// Otherwise we're saving a pm with multiple recipients for the sender so the toid is "0" (default)
+        // Now figure out what to do with toid
+        if ($insert_data['uid'] != $insert_data['fromid']) {
+            // Inserting a pm for one of the recipients so the toid is our id
+            $insert_data['toid'] = $insert_data['uid'];
+        } elseif (count($recipients['to']) == 1) {
+            // Inserting a pm for the sender with only one recipient so we can set the toid
+            $insert_data['toid'] = $recipients['to'][0];
+        }
+        // Otherwise we're saving a pm with multiple recipients for the sender so the toid is "0" (default)
 
-		$insert_data['subject'] = encode_to_utf8($data['title'], "pmtext", "privatemessages");
-		$insert_data['dateline'] = $data['dateline'];
-		$insert_data['message'] = encode_to_utf8($this->bbcode_parser->convert($data['message']), "pmtext", "privatemessages");
-		$insert_data['includesig'] = $data['showsignature'];
-		$insert_data['smilieoff'] = int_to_01($data['allowsmilie']);
+        $insert_data['subject'] = encode_to_utf8($data['title'], "pmtext", "privatemessages");
+        $insert_data['dateline'] = $data['dateline'];
+        $insert_data['message'] = encode_to_utf8(
+            $this->bbcode_parser->convert($data['message']),
+            "pmtext",
+            "privatemessages"
+        );
+        $insert_data['includesig'] = $data['showsignature'];
+        $insert_data['smilieoff'] = int_to_01($data['allowsmilie']);
 
-		if($data['messageread'] < 2)
-		{
-			// 0 and 1 are the same (unread, read)
-			$insert_data['status'] = $data['messageread'];
-		}
-		else
-		{
-			// 2 and 3 are replied and forwarded but we use 3 and 4
-			$insert_data['status'] = $data['messageread']+1;
-			$insert_data['statustime'] = TIME_NOW;
-		}
+        if ($data['messageread'] < 2) {
+            // 0 and 1 are the same (unread, read)
+            $insert_data['status'] = $data['messageread'];
+        } else {
+            // 2 and 3 are replied and forwarded but we use 3 and 4
+            $insert_data['status'] = $data['messageread'] + 1;
+            $insert_data['statustime'] = TIME_NOW;
+        }
 
-		if($data['messageread'] == PM_STATUS_READ)
-		{
-			$insert_data['readtime'] = TIME_NOW;
-		}
+        if ($data['messageread'] == PM_STATUS_READ) {
+            $insert_data['readtime'] = TIME_NOW;
+        }
 
-		return $insert_data;
-	}
+        return $insert_data;
+    }
 
-	function fetch_total()
-	{
-		global $import_session;
+    function fetch_total()
+    {
+        global $import_session;
 
-		// Get number of private messages
-		if(!isset($import_session['total_privatemessages']))
-		{
-			$query = $this->old_db->simple_select("pm", "COUNT(*) as count");
-			$import_session['total_privatemessages'] = $this->old_db->fetch_field($query, 'count');
-			$this->old_db->free_result($query);
-		}
+        // Get number of private messages
+        if (!isset($import_session['total_privatemessages'])) {
+            $query = $this->old_db->simple_select("pm", "COUNT(*) as count");
+            $import_session['total_privatemessages'] = $this->old_db->fetch_field($query, 'count');
+            $this->old_db->free_result($query);
+        }
 
-		return $import_session['total_privatemessages'];
-	}
+        return $import_session['total_privatemessages'];
+    }
 }
 

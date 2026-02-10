@@ -8,80 +8,81 @@
  */
 
 // Disallow direct access to this file for security reasons
-if(!defined("IN_MYBB"))
-{
-	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
+if (!defined("IN_MYBB")) {
+    die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
-class BBCode_Parser extends BBCode_Parser_Plain {
+class BBCode_Parser extends BBCode_Parser_Plain
+{
 
-	// This contains the attachment bbcode which is handled as special code as the id needs to be changed too
-	var $attachment = "\[attachment=([0-9]+)\].*?\[/attachment\]";
-	// Cache for attachment codes (pid and counter)
-	var $pid;
+    // This contains the attachment bbcode which is handled as special code as the id needs to be changed too
+    var $attachment = "\[attachment=([0-9]+)\].*?\[/attachment\]";
+    // Cache for attachment codes (pid and counter)
+    var $pid;
 
-	/**
-	 * Converts messages containing phpBB code to MyBB BBcode
-	 *
-	 * @param string $text the text to convert
-	 * @param int $uid user id of the text
-	 * @param int $pid
-	 * @return string the converted text
-	 */
-	function convert($text, $uid=0, $pid=0)
-	{
-		$text = utf8_unhtmlentities($text);
+    /**
+     * Converts messages containing phpBB code to MyBB BBcode
+     *
+     * @param string $text the text to convert
+     * @param int $uid user id of the text
+     * @param int $pid
+     * @return string the converted text
+     */
+    function convert($text, $uid = 0, $pid = 0)
+    {
+        $text = utf8_unhtmlentities($text);
 
-		if(!empty($uid))
-		{
-			$text = str_replace(":{$uid}", '', $text);
-		}
+        if (!empty($uid)) {
+            $text = str_replace(":{$uid}", '', $text);
+        }
 
-		$text = str_replace(array('[/*:m]', '[/list:o]', '[/list:u]'), array('', '[/list]', '[/list]'), $text);
+        $text = str_replace(array('[/*:m]', '[/list:o]', '[/list:u]'), array('', '[/list]', '[/list]'), $text);
 
-		// Smilies are saved as img code, with comments before and after. Remove that stuff.
-		$text = preg_replace("#<!-- s(.*?) --><img src=\"{SMILIES_PATH}(.*?)\" alt=\"(.*?)\" (.*?) /><!-- s(.*?) -->#i", "$1", $text);
+        // Smilies are saved as img code, with comments before and after. Remove that stuff.
+        $text = preg_replace(
+            "#<!-- s(.*?) --><img src=\"{SMILIES_PATH}(.*?)\" alt=\"(.*?)\" (.*?) /><!-- s(.*?) -->#i",
+            "$1",
+            $text
+        );
 
-		// Resett attachment counter
-		$this->pid = $pid;
+        // Resett attachment counter
+        $this->pid = $pid;
 
-		return parent::convert($text);
-	}
+        return parent::convert($text);
+    }
 
-	function convert_title($text)
-	{
-		$text = utf8_unhtmlentities($text);
+    function convert_title($text)
+    {
+        $text = utf8_unhtmlentities($text);
 
-		return $text;
-	}
+        return $text;
+    }
 
-	// Callback for attachment bbcodes
-	function attachment_callback($matches)
-	{
-		// Sorry guys, without pid nothing to do
-		if($this->pid == 0)
-			return '';
+    // Callback for attachment bbcodes
+    function attachment_callback($matches)
+    {
+        // Sorry guys, without pid nothing to do
+        if ($this->pid == 0) {
+            return '';
+        }
 
-		global $module;
+        global $module;
 
-		$options = array(
-			"order_by"		=> "attach_id",
-			"limit"			=> 1,
-			"limit_start"	=> $matches[1],
-		);
-		$query = $module->old_db->simple_select("attachments", "attach_id", "post_msg_id={$this->pid}", $options);
-		$id = $module->old_db->fetch_field($query, "attach_id");
-		$module->old_db->free_result($query);
+        $options = array(
+            "order_by" => "attach_id",
+            "limit" => 1,
+            "limit_start" => $matches[1],
+        );
+        $query = $module->old_db->simple_select("attachments", "attach_id", "post_msg_id={$this->pid}", $options);
+        $id = $module->old_db->fetch_field($query, "attach_id");
+        $module->old_db->free_result($query);
 
-		if($id > 0)
-		{
-			return "[attachment=o{$id}]";
-		}
-		else
-		{
-			// Invalid code, remove it
-			return "[ATTACHMENT NOT FOUND]";
-		}
-	}
+        if ($id > 0) {
+            return "[attachment=o{$id}]";
+        } else {
+            // Invalid code, remove it
+            return "[ATTACHMENT NOT FOUND]";
+        }
+    }
 }
 

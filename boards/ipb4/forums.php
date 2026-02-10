@@ -8,113 +8,121 @@
  */
 
 // Disallow direct access to this file for security reasons
-if(!defined("IN_MYBB"))
-{
-	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
+if (!defined("IN_MYBB")) {
+    die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
 /** @property IPB4_Converter $board */
-class IPB4_Converter_Module_Forums extends Converter_Module_Forums {
+class IPB4_Converter_Module_Forums extends Converter_Module_Forums
+{
 
-	var $settings = array(
-		'friendly_name' => 'forums',
-		'progress_column' => 'id',
-		'default_per_screen' => 1000,
-	);
+    var $settings = array(
+        'friendly_name' => 'forums',
+        'progress_column' => 'id',
+        'default_per_screen' => 1000,
+    );
 
-	function import()
-	{
-		global $import_session, $db;
+    function import()
+    {
+        global $import_session, $db;
 
-		$query = $this->old_db->simple_select("forums_forums", "*", "", array('order_by' => 'parent_id', 'order_dir' => 'asc', 'limit_start' => $this->trackers['start_forums'], 'limit' => $import_session['forums_per_screen']));
-		while($forum = $this->old_db->fetch_array($query))
-		{
-			$fid = $this->insert($forum);
+        $query = $this->old_db->simple_select(
+            "forums_forums",
+            "*",
+            "",
+            array(
+                'order_by' => 'parent_id',
+                'order_dir' => 'asc',
+                'limit_start' => $this->trackers['start_forums'],
+                'limit' => $import_session['forums_per_screen']
+            )
+        );
+        while ($forum = $this->old_db->fetch_array($query)) {
+            $fid = $this->insert($forum);
 
-			// Update parent list.
-			if($forum['parent_id'] == '-1')
-			{
-				$db->update_query("forums", array('parentlist' => $fid), "fid = '{$fid}'");
-			}
-		}
-	}
+            // Update parent list.
+            if ($forum['parent_id'] == '-1') {
+                $db->update_query("forums", array('parentlist' => $fid), "fid = '{$fid}'");
+            }
+        }
+    }
 
-	function convert_data($data)
-	{
-		$insert_data = array();
+    function convert_data($data)
+    {
+        $insert_data = array();
 
-		// Invision Power Board 4 values
-		$insert_data['import_fid'] = $data['id'];
-		$insert_data['name'] = $this->board->getLanguageString("forums_forum_{$data['id']}", 'forums');
+        // Invision Power Board 4 values
+        $insert_data['import_fid'] = $data['id'];
+        $insert_data['name'] = $this->board->getLanguageString("forums_forum_{$data['id']}", 'forums');
 
-		$desc = $this->board->getLanguageString("forums_forum_{$data['id']}_desc", 'forums');
-		if($desc != "forums_forum_{$data['id']}_desc")
-		{
-			$insert_data['description'] = $desc;
-		}
+        $desc = $this->board->getLanguageString("forums_forum_{$data['id']}_desc", 'forums');
+        if ($desc != "forums_forum_{$data['id']}_desc") {
+            $insert_data['description'] = $desc;
+        }
 
-		$insert_data['disporder'] = $data['position'];
-		$insert_data['password'] = $data['password'];
-		if($data['sort_key'] == 'last_post')
-		{
-			$data['sort_key'] = '';
-		}
-		$insert_data['defaultsortby'] = $data['sort_key'];
+        $insert_data['disporder'] = $data['position'];
+        $insert_data['password'] = $data['password'];
+        if ($data['sort_key'] == 'last_post') {
+            $data['sort_key'] = '';
+        }
+        $insert_data['defaultsortby'] = $data['sort_key'];
 
-		// We have a category
-		if($data['parent_id'] == '-1')
-		{
-			$insert_data['type'] = 'c';
-			$insert_data['import_fid'] = $data['id'];
-		}
-		// We have a forum
-		else
-		{
-			$insert_data['linkto'] = $data['redirect_url'];
-			$insert_data['type'] = 'f';
-			$insert_data['import_pid'] = $data['parent_id'];
-		}
-		$insert_data['import_fid'] = $data['id'];
+        // We have a category
+        if ($data['parent_id'] == '-1') {
+            $insert_data['type'] = 'c';
+            $insert_data['import_fid'] = $data['id'];
+        } // We have a forum
+        else {
+            $insert_data['linkto'] = $data['redirect_url'];
+            $insert_data['type'] = 'f';
+            $insert_data['import_pid'] = $data['parent_id'];
+        }
+        $insert_data['import_fid'] = $data['id'];
 
-		return $insert_data;
-	}
+        return $insert_data;
+    }
 
-	function fetch_total()
-	{
-		global $import_session;
+    function fetch_total()
+    {
+        global $import_session;
 
-		// Get number of forums
-		if(!isset($import_session['total_forums']))
-		{
-			$query = $this->old_db->simple_select("forums_forums", "COUNT(*) as count");
-			$import_session['total_forums'] = $this->old_db->fetch_field($query, 'count');
-			$this->old_db->free_result($query);
-		}
+        // Get number of forums
+        if (!isset($import_session['total_forums'])) {
+            $query = $this->old_db->simple_select("forums_forums", "COUNT(*) as count");
+            $import_session['total_forums'] = $this->old_db->fetch_field($query, 'count');
+            $this->old_db->free_result($query);
+        }
 
-		return $import_session['total_forums'];
-	}
+        return $import_session['total_forums'];
+    }
 
-	/**
-	 * Correctly associate any forums with their correct parent ids. This is automagically run after importing
-	 * forums.
-	 */
-	function cleanup()
-	{
-		global $db;
+    /**
+     * Correctly associate any forums with their correct parent ids. This is automagically run after importing
+     * forums.
+     */
+    function cleanup()
+    {
+        global $db;
 
-		$query = $db->query("
+        $query = $db->query(
+            "
 			SELECT f.fid, f2.fid as updatefid, f.import_fid
-			FROM ".TABLE_PREFIX."forums f
-			LEFT JOIN ".TABLE_PREFIX."forums f2 ON (f2.import_fid=f.import_pid)
+			FROM " . TABLE_PREFIX . "forums f
+			LEFT JOIN " . TABLE_PREFIX . "forums f2 ON (f2.import_fid=f.import_pid)
 			WHERE f.import_pid != '0' AND f.pid = '0'
-		");
-		while($forum = $db->fetch_array($query))
-		{
-			$db->update_query("forums", array('pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])), "fid='{$forum['fid']}'", 1);
-		}
+		"
+        );
+        while ($forum = $db->fetch_array($query)) {
+            $db->update_query(
+                "forums",
+                array('pid' => $forum['updatefid'], 'parentlist' => make_parent_list($forum['import_fid'])),
+                "fid='{$forum['fid']}'",
+                1
+            );
+        }
 
-		parent::cleanup();
-	}
+        parent::cleanup();
+    }
 }
 
 
