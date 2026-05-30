@@ -34,8 +34,8 @@ class VANILLA_Converter_Module_Users extends Converter_Module_Users {
 		// Get members
 		$query = $this->old_db->query("
 			SELECT u.*, GROUP_CONCAT(g.RoleID) as usergroups
-			FROM ".OLD_TABLE_PREFIX."user u
-			LEFT JOIN ".OLD_TABLE_PREFIX."userrole g ON(g.UserID=u.UserID)
+			FROM ".OLD_TABLE_PREFIX."User u
+			LEFT JOIN ".OLD_TABLE_PREFIX."UserRole g ON(g.UserID=u.UserID)
 			WHERE u.Name != 'System' AND u.Deleted=0
 			GROUP BY u.UserID
 			LIMIT {$this->trackers['start_users']}, {$import_session['users_per_screen']}
@@ -89,7 +89,7 @@ class VANILLA_Converter_Module_Users extends Converter_Module_Users {
 		// Get number of members
 		if(!isset($import_session['total_users']))
 		{
-			$query = $this->old_db->simple_select("user", "COUNT(*) as count", "Name != 'System' AND Deleted = 0");
+			$query = $this->old_db->simple_select("User", "COUNT(*) as count", "Name != 'System' AND Deleted = 0");
 			$import_session['total_users'] = $this->old_db->fetch_field($query, 'count');
 			$this->old_db->free_result($query);
 		}

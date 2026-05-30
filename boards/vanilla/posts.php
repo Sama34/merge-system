@@ -19,7 +19,7 @@ class VANILLA_Converter_Module_Posts extends Converter_Module_Posts {
 		'friendly_name' => 'posts',
 		'progress_column' => 'CommentID',
 		'default_per_screen' => 1000,
-		'check_table_type' => 'comment',
+		'check_table_type' => 'Comment',
 	);
 
 	function import()
@@ -27,8 +27,8 @@ class VANILLA_Converter_Module_Posts extends Converter_Module_Posts {
 		global $import_session;
 
 		$query = $this->old_db->query("SELECT c.*, d.CategoryID, d.Name
-			FROM ".OLD_TABLE_PREFIX."comment c
-			LEFT JOIN ".OLD_TABLE_PREFIX."discussion d ON(d.DiscussionID=c.DiscussionID)
+			FROM ".OLD_TABLE_PREFIX."Comment c
+			LEFT JOIN ".OLD_TABLE_PREFIX."Discussion d ON(d.DiscussionID=c.DiscussionID)
 			LIMIT {$this->trackers['start_posts']}, {$import_session['posts_per_screen']}");
 		while($post = $this->old_db->fetch_array($query))
 		{
@@ -45,12 +45,12 @@ class VANILLA_Converter_Module_Posts extends Converter_Module_Posts {
 		$insert_data['tid'] = $this->get_import->tid($data['DiscussionID']);
 
 		$insert_data['fid'] = $this->get_import->fid($data['CategoryID']);
-		$insert_data['subject'] = encode_to_utf8($this->bbcode_parser->convert_title($data['Name']), "comment", "posts");
+		$insert_data['subject'] = encode_to_utf8($this->bbcode_parser->convert_title($data['Name']), "Comment", "posts");
 		$insert_data['uid'] = $this->get_import->uid($data['InserUserID']);
 		$insert_data['import_uid'] = $data['InserUserID'];
 		$insert_data['username'] = $this->get_import->username($data['InserUserID']);
 		$insert_data['dateline'] = strtotime($data['DateInserted']);
-		$insert_data['message'] = encode_to_utf8($this->bbcode_parser->convert($data['Body']), "comment", "posts");
+		$insert_data['message'] = encode_to_utf8($this->bbcode_parser->convert($data['Body']), "Comment", "posts");
 		$insert_data['ipaddress'] = my_inet_pton($data['InsertIPAddress']);
 
 		return $insert_data;
@@ -78,7 +78,7 @@ class VANILLA_Converter_Module_Posts extends Converter_Module_Posts {
 		// Get number of posts
 		if(!isset($import_session['total_posts']))
 		{
-			$query = $this->old_db->simple_select("comment", "COUNT(*) as count");
+			$query = $this->old_db->simple_select("Comment", "COUNT(*) as count");
 			$import_session['total_posts'] = $this->old_db->fetch_field($query, 'count');
 			$this->old_db->free_result($query);
 		}

@@ -47,7 +47,7 @@ class VANILLA_Converter_Module_Forums extends Converter_Module_Forums {
 	{
 		global $import_session;
 
-		$query = $this->old_db->simple_select("category", "*", "CategoryID>0", array('limit_start' => $this->trackers['start_forums'], 'limit' => $import_session['forums_per_screen']));
+		$query = $this->old_db->simple_select("Category", "*", "CategoryID>0", array('limit_start' => $this->trackers['start_forums'], 'limit' => $import_session['forums_per_screen']));
 		while($forum = $this->old_db->fetch_array($query))
 		{
 			$this->insert($forum);
@@ -88,7 +88,7 @@ class VANILLA_Converter_Module_Forums extends Converter_Module_Forums {
 		// Get number of forums
 		if(!isset($import_session['total_forums']))
 		{
-			$query = $this->old_db->simple_select("category", "COUNT(*) as count", "CategoryID>0");
+			$query = $this->old_db->simple_select("Category", "COUNT(*) as count", "CategoryID>0");
 			$import_session['total_forums'] = $this->old_db->fetch_field($query, 'count');
 			$this->old_db->free_result($query);
 		}

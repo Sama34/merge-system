@@ -26,8 +26,8 @@ class VANILLA_Converter_Module_Privatemessages extends Converter_Module_Privatem
 		global $import_session;
 
 		$query = $this->old_db->query("SELECT m.*, pm.Subject, pm.Contributors AS recips
-			FROM ".OLD_TABLE_PREFIX."conversationmessage m
-			INNER JOIN ".OLD_TABLE_PREFIX."conversation pm ON(pm.ConversationID=m.ConversationID)
+			FROM ".OLD_TABLE_PREFIX."ConversationMessage m
+			INNER JOIN ".OLD_TABLE_PREFIX."Conversation pm ON(pm.ConversationID=m.ConversationID)
 			WHERE pm.Contributors <> '' AND pm.Contributors IS NOT NULL
 			LIMIT {$this->trackers['start_privatemessages']}, {$import_session['privatemessages_per_screen']}");
    		while($privatemessage = $this->old_db->fetch_array($query))
@@ -145,8 +145,8 @@ class VANILLA_Converter_Module_Privatemessages extends Converter_Module_Privatem
 		if(!isset($import_session['total_privatemessages']))
 		{
 			$query = $this->old_db->query("SELECT COUNT(*) AS count
-			FROM ".OLD_TABLE_PREFIX."conversationmessage m
-			INNER JOIN ".OLD_TABLE_PREFIX."conversation pm ON(pm.ConversationID=m.ConversationID)
+			FROM ".OLD_TABLE_PREFIX."ConversationMessage m
+			INNER JOIN ".OLD_TABLE_PREFIX."Conversation pm ON(pm.ConversationID=m.ConversationID)
 			WHERE pm.Contributors <> '' AND pm.Contributors IS NOT NULL");
 			$import_session['total_privatemessages'] = $this->old_db->fetch_field($query, 'count');
 			$this->old_db->free_result($query);
