@@ -46,9 +46,9 @@ class VANILLA_Converter_Module_Posts extends Converter_Module_Posts {
 
 		$insert_data['fid'] = $this->get_import->fid($data['CategoryID']);
 		$insert_data['subject'] = encode_to_utf8($this->bbcode_parser->convert_title($data['Name']), "Comment", "posts");
-		$insert_data['uid'] = $this->get_import->uid($data['InserUserID']);
-		$insert_data['import_uid'] = $data['InserUserID'];
-		$insert_data['username'] = $this->get_import->username($data['InserUserID']);
+		$insert_data['uid'] = $this->get_import->uid($data['InsertUserID']);
+		$insert_data['import_uid'] = $data['InsertUserID'];
+		$insert_data['username'] = $this->get_import->username($data['InsertUserID']);
 		$insert_data['dateline'] = strtotime($data['DateInserted']);
 		$insert_data['message'] = encode_to_utf8($this->bbcode_parser->convert($data['Body']), "Comment", "posts");
 		$insert_data['ipaddress'] = my_inet_pton($data['InsertIPAddress']);
