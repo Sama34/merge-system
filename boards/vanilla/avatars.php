@@ -30,7 +30,7 @@ class VANILLA_Converter_Module_Avatars extends Converter_Module_Avatars {
 	{
 		global $import_session;
 
-		$query = $this->old_db->simple_select("user", "*", "Photo != '' AND Name != 'System'", array('limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen']));
+		$query = $this->old_db->simple_select("User", "*", "Photo != '' AND Name != 'System'", array('limit_start' => $this->trackers['start_avatars'], 'limit' => $import_session['avatars_per_screen']));
 		while($avatar = $this->old_db->fetch_array($query))
 		{
 			$this->insert($avatar);
@@ -74,7 +74,7 @@ class VANILLA_Converter_Module_Avatars extends Converter_Module_Avatars {
 		// Get number of users with avatar
 		if(!isset($import_session['total_avatars']))
 		{
-			$query = $this->old_db->simple_select("user", "COUNT(*) as count", "Photo != '' AND Name != 'System'");
+			$query = $this->old_db->simple_select("User", "COUNT(*) as count", "Photo != '' AND Name != 'System'");
 			$import_session['total_avatars'] = $this->old_db->fetch_field($query, 'count');
 			$this->old_db->free_result($query);
 		}

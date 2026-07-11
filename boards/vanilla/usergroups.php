@@ -26,7 +26,7 @@ class VANILLA_Converter_Module_Usergroups extends Converter_Module_Usergroups {
 		global $import_session;
 
 		// Get only non-standard groups.
-		$query = $this->old_db->simple_select("role", "*", "RoleID NOT IN ('".implode("','", array_keys($this->board->groups))."')", array('limit_start' => $this->trackers['start_usergroups'], 'limit' => $import_session['usergroups_per_screen']));
+		$query = $this->old_db->simple_select("Role", "*", "RoleID NOT IN ('".implode("','", array_keys($this->board->groups))."')", array('limit_start' => $this->trackers['start_usergroups'], 'limit' => $import_session['usergroups_per_screen']));
 		while($group = $this->old_db->fetch_array($query))
 		{
 			$this->insert($group);
@@ -52,7 +52,7 @@ class VANILLA_Converter_Module_Usergroups extends Converter_Module_Usergroups {
 		// Get number of usergroups
 		if(!isset($import_session['total_usergroups']))
 		{
-			$query = $this->old_db->simple_select("role", "COUNT(*) as count", "RoleID NOT IN ('".implode("','", array_keys($this->board->groups))."')");
+			$query = $this->old_db->simple_select("Role", "COUNT(*) as count", "RoleID NOT IN ('".implode("','", array_keys($this->board->groups))."')");
 			$import_session['total_usergroups'] = $this->old_db->fetch_field($query, 'count');
 			$this->old_db->free_result($query);
 		}

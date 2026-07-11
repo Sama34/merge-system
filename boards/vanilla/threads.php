@@ -27,7 +27,7 @@ class VANILLA_Converter_Module_Threads extends Converter_Module_Threads {
 	{
 		global $import_session, $db;
 
-		$query = $this->old_db->simple_select("discussion", "*", "", array('limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen']));
+		$query = $this->old_db->simple_select("Discussion", "*", "", array('limit_start' => $this->trackers['start_threads'], 'limit' => $import_session['threads_per_screen']));
 		while($thread = $this->old_db->fetch_array($query))
 		{
 			$tid = $this->insert($thread);
@@ -36,7 +36,7 @@ class VANILLA_Converter_Module_Threads extends Converter_Module_Threads {
 			$post = array(
 				"tid"			=> (int)$tid,
 				"fid"			=> (int)$this->get_import->fid($thread['CategoryID']),
-				"subject"		=> $db->escape_string(encode_to_utf8($this->bbcode_parser->convert_title($thread['Name']), "discussion", "posts")),
+				"subject"		=> $db->escape_string(encode_to_utf8($this->bbcode_parser->convert_title($thread['Name']), "Discussion", "posts")),
 				"uid"			=> (int)$this->get_import->uid($thread['InsertUserID']),
 				"username"		=> $db->escape_string($this->get_import->username($thread['InsertUserID'])),
 				"dateline"		=> (int)strtotime($thread['DateInserted']),
@@ -75,7 +75,7 @@ class VANILLA_Converter_Module_Threads extends Converter_Module_Threads {
 		// Get number of threads
 		if(!isset($import_session['total_threads']))
 		{
-			$query = $this->old_db->simple_select("discussion", "COUNT(*) as count");
+			$query = $this->old_db->simple_select("Discussion", "COUNT(*) as count");
 			$import_session['total_threads'] = $this->old_db->fetch_field($query, 'count');
 			$this->old_db->free_result($query);
 		}
